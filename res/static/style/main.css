@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins'); 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+html {
+    height: 100%;
+}
+
+body,
+#entry,
+#entry > div {
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+}
+
+button {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/*=============================
+THEMING
+=============================*/
+
+#entry > div.th_dark {
+    background: #111;
+    color: white;
+}
+
+#entry > div.th_light {
+    background: #eee;
+    color: black;
+}
+
+#entry > div.switching_theme {
+    transition: all 200ms ease-in-out;
+}
+    
+
+header {
+    height: var(--header-hei);
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+header {
+    --header-hei: 64px;
+    --erithax-logo-rel-hei: 0.8;
+    --button-rel-hei: 0.4;
+}
+
+header > div {
+    display: flex;
+    align-items: center;
+    margin-left: calc(var(--header-hei) * 0.1);
+    margin-right: calc(var(--header-hei) * (1 - var(--button-rel-hei)) / 2);
+}
+
+
+header > div.lef a,
+header > div.lef img {
+    height: calc(var(--header-hei) * var(--erithax-logo-rel-hei));
+}
+
+header div.rig {
+    column-gap: calc(var(--header-hei) * (0.2 * var(--button-rel-hei)));
+}
+
+header > div.rig > div.seperator {
+    width: 2px;
+    margin: 0 10px;
+    background: var(--seperator-col);
+    height: 50%;
+}
+
+header > div.rig > button,
+header > div.rig > a {
+    cursor: pointer;
+    height: calc(var(--header-hei) * 1.5 * var(--button-rel-hei));
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header > div.rig img {
+    margin-left: 1px; /*TODO: FIX THIS*/
+    height: calc(var(--header-hei) * var(--button-rel-hei));
+    aspect-ratio: 1/1;
+}
+
+header div.rig > button::after,
+header div.rig > a::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: radial-gradient(var(--back-circle-hover-col) 66%, #0000 66%);
+    opacity: 0;
+    transition: opacity 100ms linear;
+}
+
+header div.rig > button:hover::after,
+header div.rig > a:hover::after {
+    opacity: 1;
+}
+
+/*To add an "opens in new tab" symbol to a button */
+header div.rig img.external {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(var(--header-hei) * var(--button-rel-hei) * 0.5);
+    aspect-ratio: 1/1;
+    opacity: 0.1;
+}
+
+.th_dark header {
+    background: #222;
+    --back-circle-col: #0000;
+    --back-circle-hover-col: #fff1;
+    --seperator-col: #fff1;
+}
+.th_light header {
+    background: #ddd;
+    --back-circle-col: #0000;
+    --back-circle-hover-col: #0001;
+    --seperator-col: #0002;
+}
+
+.th_dark header div.rig button.sunmoon:hover img    {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_yellow" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1.00 0 0 0 0 1.00 0 0 0 0 0.00 0 0 0 1 0"/></filter></defs></svg>#d_yellow');}
+.th_dark header div.rig button.heart:hover img      {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_red"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1.00 0 0 0 0 0.00 0 0 0 0 0.00 0 0 0 1 0"/></filter></defs></svg>#d_red');}
+.th_dark header div.rig button.wrench:hover img     {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_blue"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.10 0 0 0 0 0.65 0 0 0 0 1.00 0 0 0 1 0"/></filter></defs></svg>#d_blue');}
+.th_dark header div.rig a.code:hover img            {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_purple" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.60 0 0 0 0 0.45 0 0 0 0 1.00 0 0 0 1 0"/></filter></defs></svg>#d_purple');}
+.th_dark header div.rig button.font:hover img       {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_green"  color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.00 0 0 0 0 1.00 0 0 0 0 0.30 0 0 0 1 0"/></filter></defs></svg>#d_green');}
+
+.th_light header div.rig button.sunmoon:hover img   {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_yellow" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1.00 0 0 0 0 1.00 0 0 0 0 0.00 0 0 0 1 0"/></filter></defs></svg>#d_yellow');}
+.th_light header div.rig button.heart:hover img     {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_red"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1.00 0 0 0 0 0.00 0 0 0 0 0.00 0 0 0 1 0"/></filter></defs></svg>#d_red');}
+.th_light header div.rig button.wrench:hover img    {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_blue"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.00 0 0 0 0 0.40 0 0 0 0 1.00 0 0 0 1 0"/></filter></defs></svg>#d_blue');}
+.th_light header div.rig a.code:hover img           {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_purple" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.60 0 0 0 0 0.00 0 0 0 0 1.00 0 0 0 1 0"/></filter></defs></svg>#d_purple');}
+.th_light header div.rig button.font:hover img      {filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><defs><filter id="d_green"  color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.00 0 0 0 0 0.90 0 0 0 0 0.35 0 0 0 1 0"/></filter></defs></svg>#d_green');}
+
+
+
+.th_dark header img {
+    filter: invert();
+}
+
+
+/*=======================
+COLLAPSABLES
+=======================*/
+
+.collapsable {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 150ms linear;
+}
+
+.collapsable.expanded {
+    grid-template-rows: 1fr;
+}
+
+.collapsable > * {
+    overflow: hidden;
+    transform: translateX(0px);
+    transition: margin 200ms, padding 200ms linear, border-width 100ms, transform 200ms, opacity 200ms; 
+}
+
+.collapsable.collapsed > * {
+    padding: 0px !important;
+    margin: 0px !important;
+    border-width: 0px !important;
+    opacity: 0 !important;
+    transform: translateX(-5px);
+}

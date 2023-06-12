@@ -1,0 +1,46 @@
+
+
+
+.griddy {
+    border: 1px solid red;
+    display: grid;
+    place-content: center center;
+    min-height: 200px; 
+}
+
+.griddy .line {
+    min-width: 10px;
+    min-height: 10px;
+    border: 1px solid blue;
+}
+
+.boxio {
+    border-top: 1px solid #ff05;
+    border-bottom: 1px solid #ff05;
+}
+
+.bozo {
+    position: relative;
+    overflow: visible;
+}
+
+.stupido {
+    position: relative;
+    overflow: visible;
+    z-index: 4;
+}
+
+.stupidopre {
+    position: relative;
+    overflow: visible;
+    height: 20px;
+    min-width: 20px;
+    top: -10px;
+    right: 0;
+    width: 100%;
+    background: #ff05;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+}

@@ -1,0 +1,29 @@
+[package]
+name = "ui-overview"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+macroni = {path = "./macroni"}
+
+strum = "0.24.1"
+strum_macros = "0.24.1"
+petgraph = {version = "0.6.3", features=["serde-1"]}
+
+dioxus = "0.3.2"
+dioxus-web = "0.3.1"
+serde = "1.0.163"
+dioxus-logger = "0.4.1"
+
+image = "0.24.6"
+sha2 = "0.10.6"
+generic-array = "0.14.7"
+ron = "0.8.0"
+async-std = "1.12.0"
+log = "0.4.18"
+num-integer = "0.1.45"
+wasm-timer = "0.2.5"
+flexbuffers = "2.0.0"
+serde_cbor = "0.11.2"
+

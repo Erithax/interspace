@@ -1,0 +1,30 @@
+[application]
+
+name = "ui_overview"        # dioxus project name
+default_platform = "web"    # default platfrom: web | desktop
+out_dir = "dist"            # Web `build` & `serve` dist path
+asset_dir = "res/static"    # resource (static) file folder
+
+[web.app]
+title = "UI OVERVIEW"       # HTML title tag content
+
+
+[web.watcher]
+index_on_404 = true
+watch_path = ["src", "./res/static"]
+
+
+[web.resource]
+style = ["./style/main.css", "./style/block.css", "./style/section.css", "./style/griddy.css"]  # CSS files
+script = []                     # Javascript files
+
+
+[web.resource.dev]
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+
+[application.plugins]
+available = true
+required = []

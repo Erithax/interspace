@@ -1,0 +1,229 @@
+
+
+/*=============================
+FIXED STYLING
+=============================*/
+
+.block {
+    box-sizing: border-box;
+    z-index: 1;
+    display: inline-block;
+    position: relative;
+    overflow: visible; /*test without */
+}
+    
+.block .content {
+    white-space: nowrap;
+    font-size: calc(1px * var(--font-siz));
+    line-height: var(--line-hei);
+    color: var(--text-col);
+    padding: 0 var(--side-padding);
+    margin: 0 calc(1px * var(--font-siz) * var(--line-hei) * var(--svg-aspect-ratio));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block .content img {
+    height: calc(1px * 0.5 * var(--font-siz));
+}
+
+.block .underlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: inline-flex;
+    justify-content: stretch;
+    z-index: -1;
+}
+
+.block svg.mid {
+    z-index: -2;
+    aspect-ratio: auto;
+    width: 100%;
+    overflow: hidden;
+}
+    
+.block svg.lef,
+.block svg.rig {
+    flex-shrink: 0;
+    aspect-ratio: var(--svg-aspect-ratio);
+    overflow: visible;
+}
+
+.block svg path.fill {
+    fill: var(--fill-col);
+}
+
+.block svg path.stroke {
+    fill: none;
+    stroke: var(--stroke-col);
+    stroke-linecap: square;
+    stroke-width: calc(2px * var(--stroke-wid) / var(--font-siz) / var(--line-hei));
+    stroke-dasharray: var(--stroke-dasharray);
+        /*e.g. calc(2px*var(--stroke-wid) / var(--font-siz) / var(--line-hei));*/
+}
+
+.block svg.lef path.fill {
+    d: var(--svg-path-lef-fill);
+}
+.block svg.lef path.stroke {
+    d: var(--svg-path-lef-stroke);
+    clip-path: var(--svg-path-lef-clip);
+}
+
+.block svg.rig path.fill {
+    d: var(--svg-path-rig-fill);
+}
+.block svg.rig path.stroke {
+    d: var(--svg-path-rig-stroke);
+    clip-path: var(--svg-path-rig-clip);
+}
+
+
+
+.block {
+    --font-siz: 16; /* in px */
+    --line-hei: 1.25;
+    --side-padding: 4px;
+    --svg-aspect-ratio: 0.5;
+        /* Aspect ratio cannot be dynamic currently, 
+        as svg cannot be stretched with respect to its specified viewbox, 
+        as this causes inconsistent stroke widths. 
+        Implementing this would requiring passing a viewbox prop to the component.
+        Viewbox cannot be set via CSS :( */
+}
+
+
+/*=============================
+DEFAULT STYLING
+=============================*/
+
+/*DEFAULT BLOCK STYLING*/
+.block {
+    --svg-path-lef-fill: path("M  1.1,0  1,0  0,0  0,2  1,2  1.1,2 Z");
+    --svg-path-lef-stroke: path("M       1,0  0,0  0,2  1,2         ");
+    --svg-path-lef-clip:   path("M     1.1,0  0,0  0,2  1.1,2       ");
+    --svg-path-rig-fill: path("M -0.1,0  0,0  1,0  1,2  0,2 -0.1,2 Z");
+    --svg-path-rig-stroke: path("M       0,0  1,0  1,2  0,2         ");
+    --svg-path-rig-clip:   path("M    -0.1,0  1,0  1,2  -0.1,2      ");
+    --stroke-wid: 3; /* in px */
+    --stroke-dasharray: 1 0;
+}
+
+.th_dark .block {
+    --text-col: white;
+    --fill-col: blueviolet;
+    --stroke-col: lime;
+}
+.th_light .block {
+    --text-col: black;
+    --fill-col: blueviolet;
+    --stroke-col: lime;
+}
+
+/*=============================
+BLOCKTYPE STYLING
+=============================*/
+
+.th_dark .block.TODO {
+    --fill-col: #222;
+    --stroke-col: #333;
+    --text-col: #666;
+}
+.th_light .block.TODO {
+    --fill-col: #eee;
+    --stroke-col: #ddd;
+    --text-col: #aaa;
+}
+
+.block.Langbridge {
+    /*    (    )     */
+    --svg-path-lef-fill:   path("M  1.1,0  1,0  0,0   A 1 1 -180 0 1 0,2  L 1,2 1.1,2 Z");
+    --svg-path-lef-stroke: path("M  1.2,0  1,0  0,0   A 1 1 -180 0 1 0,2  L 1,2 1.2,2  ");
+    --svg-path-lef-clip:   path("M  1.2,0  1,0  0,0   A 1 1 -180 0 1 0,2  L 1,2 1.2,2  ");
+    --svg-path-rig-fill:   path("M -0.1,0  0,0  1,0   A 1 1  180 0 0 1,2  L 0,2 -0.1,2 ");
+    --svg-path-rig-stroke: path("M -0.2,0  0,0  1,0   A 1 1  180 0 0 1,2  L 0,2 -0.2,2 ");
+    --svg-path-rig-clip:   path("M -0.2,0  0,0  1,0   A 1 1  180 0 0 1,2  L 0,2 -0.2,2 ");
+}
+
+.th_dark .block.Langbridge {
+    --fill-col: #400;
+    --stroke-col: #500;
+}
+.th_light .block.Langbridge {
+    --fill-col: #fbb;
+    --stroke-col: #f99;
+}
+
+
+
+.block.Ui {
+    /*    <   >    */
+    --svg-path-lef-fill:   path("M  1.1,0  1,0  0,1  1,2  1.1,2 Z");
+    --svg-path-lef-stroke: path("M  1.2,0  1,0  0,1  1,2  1.2,2  ");
+    --svg-path-lef-clip:   path("M  1.2,0  1,0  0,1  1,2  1.2,2  ");
+    --svg-path-rig-fill:   path("M -0.1,0  0,0  1,1  0,2 -0.1,2 Z");
+    --svg-path-rig-stroke: path("M -0.2,0  0,0  1,1  0,2 -0.2,2  ");
+    --svg-path-rig-clip:   path("M -0.2,0  0,0  1,1  0,2 -0.2,2  ");
+}
+
+.th_dark .block.Ui {
+    --fill-col: #131;
+    --stroke-col: #141;
+}
+.th_light .block.Ui {
+    --fill-col: #bfb;
+    --stroke-col: #9f9;
+}
+
+
+
+.th_dark .block.Layout {
+    --fill-col: #440;
+    --stroke-col: #550;
+}
+.th_light .block.Layout {
+    --fill-col: #eea;
+    --stroke-col: #ee6;
+}
+
+
+
+.th_dark .block.Render {
+    --fill-col: #114;
+    --stroke-col: #115;
+}
+.th_light .block.Render {
+    --fill-col: #ddf;
+    --stroke-col: #bbf;
+}
+
+.th_dark .block.Intergfx {
+    --fill-col: #133;
+    --stroke-col: #144;
+}
+.th_light .block.Intergfx {
+    --fill-col: #bbf;
+    --stroke-col: #99f;
+}
+
+.th_dark .block.Gfx {
+    --fill-col: #522;
+    --stroke-col: #633;
+}
+.th_light .block.Gfx {
+    --fill-col: #fbb;
+    --stroke-col: #f99;
+}
+
+.th_dark .block.Platform {
+    --fill-col: #525;
+    --stroke-col: #636;
+}
+.th_light .block.Platform {
+    --fill-col: #fbf;
+    --stroke-col: #f9f;
+}
