@@ -70,6 +70,7 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
+
 use core::fmt::LowerHex;
 use log::{info, LevelFilter};
 use dioxus::prelude::*;
@@ -120,11 +121,23 @@ pub enum Theme {
     Light,
 }
 impl Theme {
+
+    pub fn set_favicon() {
+        let prefers_dark_color_theme = web_sys::window().unwrap().match_media("(prefers-color-scheme: dark)");
+        let icon = web_sys::window().unwrap().document().unwrap().get_element_by_id("favicon").unwrap();
+
+        if prefers_dark_color_theme.is_ok() && prefers_dark_color_theme.as_ref().unwrap().is_some() && prefers_dark_color_theme.unwrap().unwrap().matches() {
+            icon.set_attribute("href", "/img/Erithax/Erithax_dark.ico");
+        } else {
+            icon.set_attribute("href", "/img/Erithax/Erithax_light.ico");
+        }
+    }
+
     pub fn toggle(&self) -> Self {
-        match self {
-            Theme::Dark => {return Theme::Light},
-            Theme::Light => {return Theme::Dark},
-        };
+        match *self {
+            Theme::Dark => Theme::Light,
+            Theme::Light => Theme::Dark,
+        }
     }
 
     pub fn to_class(&self) -> String {
@@ -144,6 +157,8 @@ fn App(cx: Scope) -> Element {
 
     use_shared_state_provider(cx, || con);
 
+    Theme::set_favicon();
+
     // let c = Constellation::load(include_str!("../res/state/constellation.ron")).unwrap();
     // use_shared_state_provider(cx, || c);
 
@@ -153,6 +168,7 @@ fn App(cx: Scope) -> Element {
     let switching_themes_class = use_state(cx, || "".to_string());
 
     let switching = "";
+
 
     let switch_theme = move || {
         cx.spawn({
@@ -172,7 +188,7 @@ fn App(cx: Scope) -> Element {
             Header{
                 theme: theme,
                 on_mouse: move |event: MouseEvent| {
-                    switch_theme();
+                    switch_theme();                    
                     theme.set(theme.toggle());
                 },
             },
