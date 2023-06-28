@@ -1,4 +1,4 @@
 
 *target/
 *various/
-/.vscode
+*.vscode/
