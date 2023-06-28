@@ -1,0 +1,27 @@
+
+
+owner_section = {"[" ~ INLINE_WHITE_SPACE ~ "owner" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+
+owner_name = {"name" ~ padded_equals ~ string ~ line_ends}
+owner_website = {"name" ~ padded_equals ~ string ~ line_ends}
+owner_type = {"owner_type" ~ padded_equals ~ ("individual" | "community" | "corporation") ~ line_ends}
+nonprofit = {("non_profit" ~ padded_equals ~ bool ~ line_ends)?}
+sub_corps = {("sub_corporations" ~ padded_equals ~ array_of_ident ~ line_ends)?}
+owner_light_back = {"light_back" ~ padded_equals ~ string ~ line_ends}
+owner_dark_back = {"dark_back" ~ padded_equals ~ string ~ line_ends}
+
+owner = {
+    SOI ~
+    WHITE_SPACE ~
+    owner_section ~
+    owner_name ~
+    owner_website ~ 
+    owner_type ~
+    nonprofit ~
+    sub_corps ~
+    owner_light_back ~
+    owner_dark_back ~
+    WHITE_SPACE ~
+    EOI
+}

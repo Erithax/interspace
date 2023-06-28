@@ -7,9 +7,8 @@ use_all_block_modules!(ui);
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, serde::Deserialize, serde::Serialize)]
 pub enum StateManaPara {
     TODO,
-    React,
-    Elm,
-    Lenses,
+    Reacty,
+    Elmy,
     Signals,
     Swifty,
     Dom,
@@ -121,7 +120,7 @@ impl Blockify<Ui, UiInfo> for Ui {
             },
             UiInfo {
                 ui_lang: Lang::Rust,
-                state_mana_para: StateManaPara::Lenses,
+                state_mana_para: StateManaPara::TODO,
                 ui_mode: UiMode::Retained,
             },
             parsetree!{
@@ -209,7 +208,7 @@ impl Blockify<Ui, UiInfo> for Ui {
             },
             UiInfo {
                 ui_lang: Lang::Rust,
-                state_mana_para: StateManaPara::Elm,
+                state_mana_para: StateManaPara::Elmy,
                 ui_mode: UiMode::Retained,
             },
             parsetree!{
@@ -315,7 +314,7 @@ impl Blockify<Ui, UiInfo> for Ui {
             },
             UiInfo {
                 ui_lang: Lang::Rust,
-                state_mana_para: StateManaPara::Elm,
+                state_mana_para: StateManaPara::Elmy,
                 ui_mode: UiMode::Retained,
             },
             parsetree!{

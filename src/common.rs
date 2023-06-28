@@ -6,7 +6,6 @@ use macroni::{self};
 use sha2::digest::block_buffer::Block;
 use strum::{IntoEnumIterator};
 use strum_macros::{Display, EnumIter};
-use petgraph::prelude::*;
 use dioxus::prelude::*;
 
 use crate::indent;
@@ -1160,168 +1159,168 @@ impl std::fmt::Display for Node {
     }
 }
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub struct Digraph {
-    graph: Graph<BlockType, (), Directed>,
-}
+// #[derive(Debug, serde::Deserialize, serde::Serialize)]
+// pub struct Digraph {
+//     graph: Graph<BlockType, (), Directed>,
+// }
 
-impl Digraph {
+// impl Digraph {
     
-    fn add(&mut self, bt: &BlockType) {
-        assert!(!self.contains(&bt));
-        self.graph.add_node(*bt);
-    }
+//     fn add(&mut self, bt: &BlockType) {
+//         assert!(!self.contains(&bt));
+//         self.graph.add_node(*bt);
+//     }
 
-    fn contains(&self, bt: &BlockType) -> bool {
-        return self.graph.node_indices().any(|x| self.graph.node_weight(x).unwrap() == bt)
-    }
+//     fn contains(&self, bt: &BlockType) -> bool {
+//         return self.graph.node_indices().any(|x| self.graph.node_weight(x).unwrap() == bt)
+//     }
 
-    fn index_from_blocktype(&self, bt: &BlockType) -> NodeIndex {
-        assert!(self.contains(bt));
+//     fn index_from_blocktype(&self, bt: &BlockType) -> NodeIndex {
+//         assert!(self.contains(bt));
 
-        for i in self.graph.node_indices() {
-            if self.graph.node_weight(i).unwrap() == bt {
-                return i
-            }
-        }
-        panic!("node with BlockType {} not in graph", bt);
-    }
+//         for i in self.graph.node_indices() {
+//             if self.graph.node_weight(i).unwrap() == bt {
+//                 return i
+//             }
+//         }
+//         panic!("node with BlockType {} not in graph", bt);
+//     }
 
-    fn link(&mut self, from: &BlockType, to: &BlockType) {
-        assert!(from != to, "from: {} is not equal to to: {}", from, to);
-        assert!(self.contains(from), "self: {:?} does not contain from: {}", self, from);
-        assert!(self.contains(to), "self: {:?} does not contain to: {}, {}", self, to, to.stringify());
+//     fn link(&mut self, from: &BlockType, to: &BlockType) {
+//         assert!(from != to, "from: {} is not equal to to: {}", from, to);
+//         assert!(self.contains(from), "self: {:?} does not contain from: {}", self, from);
+//         assert!(self.contains(to), "self: {:?} does not contain to: {}, {}", self, to, to.stringify());
 
-        self.graph.add_edge(self.index_from_blocktype(from), self.index_from_blocktype(to), ());
-    }
+//         self.graph.add_edge(self.index_from_blocktype(from), self.index_from_blocktype(to), ());
+//     }
 
-    fn get_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
-        let mut res: Vec<BlockType> = Vec::new();
-        for i in self.graph.neighbors(self.index_from_blocktype(bt)) {
-            res.push(*self.graph.node_weight(i).unwrap());
-        }
-        return res
-    }
+//     fn get_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
+//         let mut res: Vec<BlockType> = Vec::new();
+//         for i in self.graph.neighbors(self.index_from_blocktype(bt)) {
+//             res.push(*self.graph.node_weight(i).unwrap());
+//         }
+//         return res
+//     }
 
-    fn get_up_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
-        let mut res: Vec<BlockType> = Vec::new();
-        for i in self.graph.neighbors_directed(self.index_from_blocktype(bt), Direction::Outgoing) {
-            res.push(*self.graph.node_weight(i).unwrap());
-        }
-        return res
-    }
+//     fn get_up_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
+//         let mut res: Vec<BlockType> = Vec::new();
+//         for i in self.graph.neighbors_directed(self.index_from_blocktype(bt), Direction::Outgoing) {
+//             res.push(*self.graph.node_weight(i).unwrap());
+//         }
+//         return res
+//     }
 
-    fn get_down_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
-        let mut res: Vec<BlockType> = Vec::new();
-        for i in self.graph.neighbors_directed(self.index_from_blocktype(bt), Direction::Incoming) {
-            res.push(*self.graph.node_weight(i).unwrap());
-        }
-        return res
-    }
+//     fn get_down_neighbors(&self, bt: &BlockType) -> Vec<BlockType> {
+//         let mut res: Vec<BlockType> = Vec::new();
+//         for i in self.graph.neighbors_directed(self.index_from_blocktype(bt), Direction::Incoming) {
+//             res.push(*self.graph.node_weight(i).unwrap());
+//         }
+//         return res
+//     }
 
-    fn is_downstream_from(&self, one: &BlockType, two: &BlockType) -> bool {
-        assert!(self.contains(one));
-        assert!(self.contains(two));
-        assert!(one != two);
-        for bt in self.get_down_neighbors(two) {
-            if bt == *two {
-                return true
-            } else if self.is_downstream_from(one, &bt){
-                return true
-            }
-        }
-        return false
-    }
+//     fn is_downstream_from(&self, one: &BlockType, two: &BlockType) -> bool {
+//         assert!(self.contains(one));
+//         assert!(self.contains(two));
+//         assert!(one != two);
+//         for bt in self.get_down_neighbors(two) {
+//             if bt == *two {
+//                 return true
+//             } else if self.is_downstream_from(one, &bt){
+//                 return true
+//             }
+//         }
+//         return false
+//     }
 
-    fn is_upstream_from(&self, one: &BlockType, two: &BlockType) -> bool {
-        assert!(self.contains(one));
-        assert!(self.contains(two));
-        assert!(one != two);
-        for bt in self.get_up_neighbors(two) {
-            if bt == *two {
-                return true
-            } else if self.is_upstream_from(one, &bt){
-                return true
-            }
-        }
-        return false
-    }
+//     fn is_upstream_from(&self, one: &BlockType, two: &BlockType) -> bool {
+//         assert!(self.contains(one));
+//         assert!(self.contains(two));
+//         assert!(one != two);
+//         for bt in self.get_up_neighbors(two) {
+//             if bt == *two {
+//                 return true
+//             } else if self.is_upstream_from(one, &bt){
+//                 return true
+//             }
+//         }
+//         return false
+//     }
 
-    pub fn get_all_downstream_from(&self, block: &BlockType) -> Vec<BlockType> {
-        assert!(self.contains(block));
-        let mut res: Vec<BlockType> = Vec::new();
-        for other in self.graph.node_weights() {
-            if self.is_downstream_from(other, block) {
-                res.push(*other);
-            }
-        }
-        return res
-    }
+//     pub fn get_all_downstream_from(&self, block: &BlockType) -> Vec<BlockType> {
+//         assert!(self.contains(block));
+//         let mut res: Vec<BlockType> = Vec::new();
+//         for other in self.graph.node_weights() {
+//             if self.is_downstream_from(other, block) {
+//                 res.push(*other);
+//             }
+//         }
+//         return res
+//     }
 
-    pub fn get_all_upstream_from(&self, block: &BlockType) -> Vec<BlockType> {
-        assert!(self.contains(block));
-        let mut res: Vec<BlockType> = Vec::new();
-        for other in self.graph.node_weights() {
-            if self.is_upstream_from(other, block) {
-                res.push(*other);
-            }
-        }
-        return res
-    }
+//     pub fn get_all_upstream_from(&self, block: &BlockType) -> Vec<BlockType> {
+//         assert!(self.contains(block));
+//         let mut res: Vec<BlockType> = Vec::new();
+//         for other in self.graph.node_weights() {
+//             if self.is_upstream_from(other, block) {
+//                 res.push(*other);
+//             }
+//         }
+//         return res
+//     }
 
-    /// Insert shadow nodes BlockType::SHADOW between linked nodes with non-sequential stages
-    /// e.g. between node1 of stage Langbridge and node2 of stage Render, 2 shadow nodes get inserted
-    pub fn insert_shadow_nodes(&mut self) {
+//     /// Insert shadow nodes BlockType::SHADOW between linked nodes with non-sequential stages
+//     /// e.g. between node1 of stage Langbridge and node2 of stage Render, 2 shadow nodes get inserted
+//     pub fn insert_shadow_nodes(&mut self) {
 
-    }
+//     }
 
-    /// Get subgraph of self, including `block` and all its downstream nodes
-    pub fn get_downstream_subgraph(&self, block: &BlockType) -> Digraph {
-        let mut res: Digraph = Digraph {
-            graph: Graph::<BlockType, (), Directed>::new()
-        };
-        res.add(block);
-        for bt in self.get_all_downstream_from(block) {
-            res.add(&bt);
-        }
+//     /// Get subgraph of self, including `block` and all its downstream nodes
+//     pub fn get_downstream_subgraph(&self, block: &BlockType) -> Digraph {
+//         let mut res: Digraph = Digraph {
+//             graph: Graph::<BlockType, (), Directed>::new()
+//         };
+//         res.add(block);
+//         for bt in self.get_all_downstream_from(block) {
+//             res.add(&bt);
+//         }
 
-        for bt in self.get_all_downstream_from(block) {
-            for e in self.graph.edges_directed(self.index_from_blocktype(&bt), Direction::Incoming) {
-                res.link(self.graph.node_weight(e.source()).unwrap(), self.graph.node_weight(e.target()).unwrap());
-            }
-        }
-        return res
-    }
+//         for bt in self.get_all_downstream_from(block) {
+//             for e in self.graph.edges_directed(self.index_from_blocktype(&bt), Direction::Incoming) {
+//                 res.link(self.graph.node_weight(e.source()).unwrap(), self.graph.node_weight(e.target()).unwrap());
+//             }
+//         }
+//         return res
+//     }
 
-    /// Get subgraph of self, including `block` and all its upstream nodes
-    pub fn get_upstream_subgraph(&self, block: &BlockType) -> Digraph {
-        let mut res: Digraph = Digraph {
-            graph: Graph::<BlockType, (), Directed>::new()
-        };
-        res.add(block);
-        for bt in self.get_all_upstream_from(block) {
-            res.add(&bt);
-        }
+//     /// Get subgraph of self, including `block` and all its upstream nodes
+//     pub fn get_upstream_subgraph(&self, block: &BlockType) -> Digraph {
+//         let mut res: Digraph = Digraph {
+//             graph: Graph::<BlockType, (), Directed>::new()
+//         };
+//         res.add(block);
+//         for bt in self.get_all_upstream_from(block) {
+//             res.add(&bt);
+//         }
 
-        for bt in self.get_all_upstream_from(block) {
-            for e in self.graph.edges_directed(self.index_from_blocktype(&bt), Direction::Incoming) {
-                res.link(self.graph.node_weight(e.source()).unwrap(), self.graph.node_weight(e.target()).unwrap());
-            }
-        }
-        return res
-    }
+//         for bt in self.get_all_upstream_from(block) {
+//             for e in self.graph.edges_directed(self.index_from_blocktype(&bt), Direction::Incoming) {
+//                 res.link(self.graph.node_weight(e.source()).unwrap(), self.graph.node_weight(e.target()).unwrap());
+//             }
+//         }
+//         return res
+//     }
 
-    /// Returns true if  block has no outgoing edges
-    pub fn is_leaf(&self, block: &BlockType) -> bool {
-        return self.graph.edges_directed(self.index_from_blocktype(block), Direction::Outgoing).next().is_none()
-    }
+//     /// Returns true if  block has no outgoing edges
+//     pub fn is_leaf(&self, block: &BlockType) -> bool {
+//         return self.graph.edges_directed(self.index_from_blocktype(block), Direction::Outgoing).next().is_none()
+//     }
 
-    /// Returns true if  block has no outgoing edges
-    pub fn is_root(&self, block: &BlockType) -> bool {
-        return self.graph.edges_directed(self.index_from_blocktype(block), Direction::Incoming).next().is_none()
-    }
+//     /// Returns true if  block has no outgoing edges
+//     pub fn is_root(&self, block: &BlockType) -> bool {
+//         return self.graph.edges_directed(self.index_from_blocktype(block), Direction::Incoming).next().is_none()
+//     }
 
-}
+// }
 
 /*
 Constellation is an interface for the graph using BlockType instances instead of the internally used node indices.
@@ -1667,18 +1666,16 @@ impl Constellation {
     }
 
     pub fn store(&self) {
-        std::fs::write("./res/state/constellation.ron", ron::to_string(self).unwrap())
-            .expect("was unable to store constellation");
+        let mut f = std::fs::File::create("./res/state/constellation.bincode").unwrap();
+        bincode::serialize_into(&mut f, &self).expect("unable to store constellation");
+        // std::fs::write("./res/state/constellation.ron", ron::to_string(self).unwrap())
+        //     .expect("was unable to store constellation");
     }
 
     pub fn load() -> Self {
-        ron::from_str::<Constellation>(&std::fs::read_to_string("./res/state/constellation.ron").unwrap()).unwrap()
+        bincode::deserialize::<Constellation>(&std::fs::read("./res/state/constellation.bincode").unwrap()).unwrap()
+        // ron::from_str::<Constellation>(&std::fs::read_to_string("./res/state/constellation.ron").unwrap()).unwrap()
     }
-
-    pub fn load_on_web() -> Self {
-        ron::from_str::<Constellation>(&std::fs::read_to_string("../../constellation.ron").unwrap()).unwrap()
-    }
-
 }
 
 

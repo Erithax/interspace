@@ -1,0 +1,10 @@
+
+
+style_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.style" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+css = {"css" ~ padded_equals ~ ("none" | "subset" | "full")}
+
+
+style = {
+    css
+}

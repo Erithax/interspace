@@ -1,0 +1,9 @@
+
+
+
+raster_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.raster" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+
+raster = {
+    ""
+}

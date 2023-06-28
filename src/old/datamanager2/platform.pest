@@ -1,0 +1,9 @@
+
+
+platform_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.platform" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+
+
+platform = {
+    ""
+}

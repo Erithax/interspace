@@ -1,0 +1,9 @@
+
+
+
+inter_gfx_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.intergfx" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+
+inter_gfx = {
+    ""
+}

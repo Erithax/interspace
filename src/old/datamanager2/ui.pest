@@ -1,0 +1,24 @@
+
+ui_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.ui" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
+
+
+declarativity = {"declarativity" ~ padded_equals ~ rough_range ~ WS_WITH_ALEAST_ONE_NEWLINE}
+is_immediate = {"is_immediate" ~ padded_equals ~ bool ~ WS_WITH_ALEAST_ONE_NEWLINE}
+reactivity = {"reactivity" ~ padded_equals ~ ("none" | "fine-grained" | "elmy" | "reacty" | "swifty") ~ WS_WITH_ALEAST_ONE_NEWLINE}
+macrotivity = {"macrotivity" ~ padded_equals ~ (NA | rough_range) ~ WS_WITH_ALEAST_ONE_NEWLINE}
+language = {"language" ~ padded_equals ~ ((ident ~ WS_WITH_ALEAST_ONE_NEWLINE) | ("custom_lang" ~ WHITE_SPACE ~ "{" ~ WHITE_SPACE ~ "name" ~ padded_colon ~ string ~ WHITE_SPACE ~ "}" ~ WS_WITH_ALEAST_ONE_NEWLINE))}
+hot_reload = {"hot_reload" ~ padded_equals ~ bool ~ WS_WITH_ALEAST_ONE_NEWLINE}
+ssr = {"ssr" ~ padded_equals ~ bool ~ WS_WITH_ALEAST_ONE_NEWLINE}
+liveview = {"liveview" ~ padded_equals ~ bool ~ WS_WITH_ALEAST_ONE_NEWLINE}
+
+
+ui = {
+    declarativity ~ 
+    is_immediate ~
+    reactivity ~
+    macrotivity ~
+    language ~ 
+    hot_reload ~
+    ssr ~ 
+    liveview
+}

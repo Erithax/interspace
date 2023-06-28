@@ -25,12 +25,6 @@ pub enum Langbridge {
     Gtk3rs,
 }
 
-/*
-> Opengl SELF Vulkan
-> Opengl SELF Vulkan
-
-
-*/
 
 impl Blockify<Langbridge, LangbridgeInfo> for Langbridge {
     fn add_all() -> Vec<(Langbridge, Info, LangbridgeInfo, Vec<Vec<BlockType>>)> {

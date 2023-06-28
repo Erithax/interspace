@@ -156,31 +156,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
         selected: true,
         truespeed: true,
       };
-    let u8buf,u8bufp;let u32buf,u32bufp;const ns_cache = [];
-                    let ns_cache_tmp1, ns_cache_tmp2;
-                    function get_ns_cache() {
-                        ns_cache_tmp2 = u8buf[u8bufp++];
-                        if(ns_cache_tmp2 & 128){
-                            ns_cache_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            ns_cache[ns_cache_tmp2&4294967167]=ns_cache_tmp1;
-                            return ns_cache_tmp1;
-                        }
-                        else{
-                            return ns_cache[ns_cache_tmp2&4294967167];
-                        }
-                    }let s,lsp,sp,sl; let c = new TextDecoder();const evt = [];
-                    let evt_tmp1, evt_tmp2;
-                    function get_evt() {
-                        evt_tmp2 = u8buf[u8bufp++];
-                        if(evt_tmp2 & 128){
-                            evt_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            evt[evt_tmp2&4294967167]=evt_tmp1;
-                            return evt_tmp1;
-                        }
-                        else{
-                            return evt[evt_tmp2&4294967167];
-                        }
-                    }const attr = [];
+    const attr = [];
                     let attr_tmp1, attr_tmp2;
                     function get_attr() {
                         attr_tmp2 = u8buf[u8bufp++];
@@ -192,8 +168,32 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return attr[attr_tmp2&4294967167];
                         }
-                    }
-            let value,ns,event_name,id,field,bubbles,len,ptr;
+                    }const evt = [];
+                    let evt_tmp1, evt_tmp2;
+                    function get_evt() {
+                        evt_tmp2 = u8buf[u8bufp++];
+                        if(evt_tmp2 & 128){
+                            evt_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            evt[evt_tmp2&4294967167]=evt_tmp1;
+                            return evt_tmp1;
+                        }
+                        else{
+                            return evt[evt_tmp2&4294967167];
+                        }
+                    }let u8buf,u8bufp;const ns_cache = [];
+                    let ns_cache_tmp1, ns_cache_tmp2;
+                    function get_ns_cache() {
+                        ns_cache_tmp2 = u8buf[u8bufp++];
+                        if(ns_cache_tmp2 & 128){
+                            ns_cache_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            ns_cache[ns_cache_tmp2&4294967167]=ns_cache_tmp1;
+                            return ns_cache_tmp1;
+                        }
+                        else{
+                            return ns_cache[ns_cache_tmp2&4294967167];
+                        }
+                    }let u32buf,u32bufp;let s,lsp,sp,sl; let c = new TextDecoder();
+            let len,value,ptr,bubbles,field,event_name,ns,id;
             export function create(r){
                 d=r;
             }
