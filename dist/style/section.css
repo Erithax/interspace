@@ -241,6 +241,7 @@ main > section.dynatable {
 /*PRIMARY AND STAGE BOX ============================================*/
 .content .primary {
     border-top: var(--row-border);
+    overflow: hidden;
 }
 
 .content .stage_box {

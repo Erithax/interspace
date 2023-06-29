@@ -94,8 +94,7 @@ impl Blockify<Render, RenderInfo> for Render {
             },
             RenderInfo {},
             parsetree!{
-                $ Angle,
-                $ Skia,
+                $ Skia *,
                 $ Webgpu Dawn *
             }
         ),
