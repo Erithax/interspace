@@ -1399,8 +1399,7 @@ pub fn DynaTable(cx: Scope) -> Element {
                     content_coll.set(CollapsableToggle::Expanded);
                 }
             },
-            div {
-                class: "header",
+            div {class: "header",
                 onclick: move |e| {
                     if *content_coll.get() == CollapsableToggle::Collapsed && *settings_coll.get() == CollapsableToggle::Collapsed {
                         content_coll.set(CollapsableToggle::Expanded);
@@ -1427,8 +1426,7 @@ pub fn DynaTable(cx: Scope) -> Element {
                     }
                 }  
             },
-            div{class:"collapsable {settings_coll}", div {
-                class: "settings",
+            div{class:"collapsable {settings_coll}", div {class: "settings",
                 div {
                     class: "selector",
                     div {class: "title", "Select Tree"},
@@ -1474,8 +1472,7 @@ pub fn DynaTable(cx: Scope) -> Element {
                     }}
                 },
             }},
-            div {class: "collapsable {content_coll}", div {
-                class: "content",
+            div {class: "collapsable {content_coll}", div {class: "content",
                 style: "
                     display: grid; 
                     grid-template-columns: {grid_temp_cols_string};
@@ -1485,8 +1482,8 @@ pub fn DynaTable(cx: Scope) -> Element {
                 div {style:"display: contents;", for (i, (class, do_callback, callback)) in stagger.with(|s| s.get_backerinos_prims()).into_iter().enumerate() {
                     div {
                         onclick: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_callback(callback))};},
-                        // onmouseover: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_onhover_callback(callback))};},
-                        // onmouseout: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_offhover_callback(callback))};},
+                        onmouseover: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_onhover_callback(callback))};},
+                        onmouseout: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_offhover_callback(callback))};},
                         class: "stage_back {class}",
                         style: "
                             grid-column: {i+1} / {i+2};
@@ -1497,8 +1494,8 @@ pub fn DynaTable(cx: Scope) -> Element {
                 div {style:"display: contents;", for (i, (name, class, do_callback, callback)) in stagger.with(|s| s.get_headerino_prims()).into_iter().enumerate() {
                     div {
                         onclick: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_callback(callback))};},
-                        // onmouseover: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_onhover_callback(callback))};},
-                        // onmouseout: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_offhover_callback(callback))};},
+                        onmouseover: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_onhover_callback(callback))};},
+                        onmouseout: move |_| {if do_callback {stagger.with_mut(|s| s.backerinos_offhover_callback(callback))};},
                         class: "stage_header {class}",
                         style: "
                             grid-column: {i+1} / {i+2};
@@ -1943,3 +1940,4 @@ pub fn BlockBox<'a>(
         }
     }
 }
+
