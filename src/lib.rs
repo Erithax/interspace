@@ -1394,13 +1394,13 @@ pub fn DynaTable(cx: Scope) -> Element {
     let stuff = cx.render(rsx!(
         section {
             class: "dynatable expanded{content_coll.get().is_expanded()}",
-            onclick: move |e| {
+            onclick: move |_| {
                 if content_coll.get().is_collapsed() {
                     content_coll.set(CollapsableToggle::Expanded);
                 }
             },
             div {class: "header",
-                onclick: move |e| {
+                onclick: move |_| {
                     if *content_coll.get() == CollapsableToggle::Collapsed && *settings_coll.get() == CollapsableToggle::Collapsed {
                         content_coll.set(CollapsableToggle::Expanded);
                     } else {
@@ -1885,11 +1885,11 @@ pub fn BlockBox<'a>(
                     ",
                     div {
                         class: "block_button delete",
-                        onclick: move |e| {on_bonk.call(BlockBoxerEvent::Delete(prim.id));},
+                        onclick: move |_| {on_bonk.call(BlockBoxerEvent::Delete(prim.id));},
                     },
                     div {
                         class: "block_button group",
-                        onclick: move |e| {on_bonk.call(BlockBoxerEvent::Cluster(prim.id));},
+                        onclick: move |_| {on_bonk.call(BlockBoxerEvent::Cluster(prim.id));},
                     },
                     div {
                         style: "
@@ -1912,7 +1912,7 @@ pub fn BlockBox<'a>(
                         {colspan}
                     ",
                     div {
-                        onclick: move |e| {
+                        onclick: move |_| {
                             on_bonk.call(BlockBoxerEvent::Undelete(prim.id));
                         },
                     }
@@ -1928,7 +1928,7 @@ pub fn BlockBox<'a>(
                         {colspan}
                     ",
                     div {
-                        onclick: move |e| {
+                        onclick: move |_| {
                             on_bonk.call(BlockBoxerEvent::Uncluster(prim.id));
                         },
                         for (i, n) in clustered_nodes.iter().enumerate() {
