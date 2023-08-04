@@ -335,6 +335,7 @@ main > section.dynatable {
     cursor: pointer;
     position: absolute;
     opacity: 0.5;
+    width: 10px;
     aspect-ratio: 1 / 1;
     background-size: contain;
     opacity: 0;

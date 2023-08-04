@@ -40,6 +40,11 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 
 */
 
+mod swig;
+use swig::*;
+mod bowl;
+use bowl::*;
+
 mod common;
 mod lang;
 mod owner;
@@ -98,6 +103,16 @@ pub fn init_dioxus() {
     dioxus_web::launch_cfg(App, dioxus_web::Config::new().rootname("entry"));
 }
 
+pub fn init_dioxus2() {
+    dioxus_logger::init(LevelFilter::Info).expect("failed to init dioxus logger");
+    dioxus_web::launch_cfg(AppV2, dioxus_web::Config::new().rootname("entry"));
+}
+
+pub fn init_dioxus3() {
+    dioxus_logger::init(LevelFilter::Info).expect("failed to init dioxus logger");
+    dioxus_web::launch_cfg(AppV3, dioxus_web::Config::new().rootname("entry"));
+}
+
 pub fn indent(s: &str) -> String {
     let res: String = s.replace("\n", "\n\t");
     return res
@@ -152,7 +167,7 @@ impl Theme {
 fn App(cx: Scope) -> Element {
 
     // let now = wasm_timer::Instant::now();
-    let con = Constellation::generate();
+    let con = common::Constellation::generate();
     // info!("Constellation::generate() in {:?}", now.elapsed());
 
     use_shared_state_provider(cx, || con);
@@ -447,6 +462,8 @@ pub struct DynaRenderPrims {
     pub wid_start_i: i32, 
     pub wid_end_i: i32,
 }
+
+
 
 impl DynaTree {
     pub fn new() -> DynaTree {
@@ -1940,4 +1957,11 @@ pub fn BlockBox<'a>(
         }
     }
 }
+
+
+
+
+
+
+
 

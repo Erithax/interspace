@@ -382,8 +382,7 @@ impl SingleBlockTree {
     }
 
     fn crawl_items_contains(&self, id: SingleBlockId) -> bool {
-        if !self.items.contains_key(&id) {return false}
-        return self.get(id).children.iter().all(|ch_id| self.crawl_items_contains(*ch_id))
+        return self.items.contains_key(&id);
     }
 
     fn crawl_tree_count(&self, curr_id: SingleBlockId, targ: SingleBlockId) -> usize {

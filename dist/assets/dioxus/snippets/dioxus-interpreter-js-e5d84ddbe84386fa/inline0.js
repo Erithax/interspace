@@ -163,7 +163,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
       function truthy(val) {
         return val === "true" || val === true;
       }
-    const evt = [];
+    let u32buf,u32bufp;const evt = [];
                     let evt_tmp1, evt_tmp2;
                     function get_evt() {
                         evt_tmp2 = u8buf[u8bufp++];
@@ -174,6 +174,18 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         }
                         else{
                             return evt[evt_tmp2&4294967167];
+                        }
+                    }let s = "";let lsp,sp,sl; let c = new TextDecoder();let u8buf,u8bufp;const attr = [];
+                    let attr_tmp1, attr_tmp2;
+                    function get_attr() {
+                        attr_tmp2 = u8buf[u8bufp++];
+                        if(attr_tmp2 & 128){
+                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            attr[attr_tmp2&4294967167]=attr_tmp1;
+                            return attr_tmp1;
+                        }
+                        else{
+                            return attr[attr_tmp2&4294967167];
                         }
                     }const ns_cache = [];
                     let ns_cache_tmp1, ns_cache_tmp2;
@@ -187,20 +199,8 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return ns_cache[ns_cache_tmp2&4294967167];
                         }
-                    }let u32buf,u32bufp;let u8buf,u8bufp;const attr = [];
-                    let attr_tmp1, attr_tmp2;
-                    function get_attr() {
-                        attr_tmp2 = u8buf[u8bufp++];
-                        if(attr_tmp2 & 128){
-                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            attr[attr_tmp2&4294967167]=attr_tmp1;
-                            return attr_tmp1;
-                        }
-                        else{
-                            return attr[attr_tmp2&4294967167];
-                        }
-                    }let s = "";let lsp,sp,sl; let c = new TextDecoder();
-            let len,event_name,bubbles,field,ptr,ns,value,id;
+                    }
+            let field,ns,event_name,value,len,id,bubbles,ptr;
             export function create(r){
                 d=r;
             }
@@ -216,10 +216,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                 if ((metaflags>>>3)&1){
                 u32buf=new Uint32Array(m.buffer,m.getUint32(d+3*4,true))
             }
-            u32bufp=0;if ((metaflags>>>5)&1){
-                u8buf=new Uint8Array(m.buffer,m.getUint32(d+5*4,true))
-            }
-            u8bufp=0;if (metaflags&1){
+            u32bufp=0;if (metaflags&1){
                 lsp = m.getUint32(d+1*4,true);
             }
             if ((metaflags>>>2)&1) {
@@ -245,7 +242,10 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                     s = c.decode(new DataView(m.buffer, lsp, sl));
                 }
             }
-            sp=0;
+            sp=0;if ((metaflags>>>5)&1){
+                u8buf=new Uint8Array(m.buffer,m.getUint32(d+5*4,true))
+            }
+            u8bufp=0;
                 for(;;){
                     op=m.getUint32(p,true);
                     p+=4;

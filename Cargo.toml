@@ -10,8 +10,12 @@ macroni = {path = "./macroni"}
 strum = "0.24.1"
 strum_macros = "0.24.1"
 
-dioxus = "0.3.2"
-dioxus-web = "0.3.1"
+#dioxus = "0.3.2"
+dioxus = { git = "https://github.com/dioxuslabs/dioxus.git" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus.git" }
+#dioxus-web = "0.3.1"
+#dioxus-web = { git = "https://github.com/dioxusLabs/dioxus/packages/web.git"}
+
 serde = "1.0.163"
 dioxus-logger = "0.4.1"
 image = "0.24.6"
@@ -21,7 +25,9 @@ async-std = "1.12.0"
 log = "0.4.18"
 num-integer = "0.1.45"
 bincode = "1.3.3"
-web-sys = {version="0.3.64", features = ["Window", "Document", "Element", "Attr", "MediaQueryList"]}
+web-sys = {version="0.3.64", features = ["Window", "Document", "Element", "Attr", "MediaQueryList", "HtmlCollection", "MutationObserver"]}
+lazy_static = "1.4.0"
+wasm-timer = "0.2.5"
 
 #colored = "2.0.0"
 #toml = "0.7.4"
@@ -29,6 +35,6 @@ web-sys = {version="0.3.64", features = ["Window", "Document", "Element", "Attr"
 #pest = "2.6.0"
 #pest_derive = "2.6.0"
 #petgraph = {version = "0.6.3", features=["serde-1"]}
-#wasm-timer = "0.2.5"
+#
 #serde_cbor = "0.11.2"
 

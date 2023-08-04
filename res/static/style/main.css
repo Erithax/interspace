@@ -10,7 +10,7 @@ html {
 body,
 #entry,
 #entry > div {
-    min-height: 100vh;
+    /* min-height: 100vh; */
     font-family: "Poppins", sans-serif;
 }
 

@@ -1,9 +1,9 @@
 
 
-use ui_overview::init_dioxus;
+use ui_overview::*;
 use log::{info, LevelFilter};
 
 pub fn main() {
-    init_dioxus();
+    init_dioxus3();
     info!("main.rs");
 }

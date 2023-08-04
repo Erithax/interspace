@@ -375,6 +375,168 @@ pub fn parsetree(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 }
 
 
+#[proc_macro_error]
+#[proc_macro]
+pub fn parsetree2(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    // set_dummy(quote!("Vec::<Vec<BlockType>>::new()"));
+    let input = proc_macro2::TokenStream::from(input);
+
+    // let (enum_with_variants, all_variants) = get_valid_block_idents_from_files();
+
+    let valid_special_tokens = vec!["*".to_string(), "$".to_string(), ",".to_string()];
+
+
+    // VALIDATE THAT ONLY VALID VARIANT NAMES AND ALLOWED SPECIAL TOKENS ARE USED
+    for tokentree in input.clone().into_iter() {
+        match tokentree {
+            TokenTree::Group(group) => {
+                emit_error!(
+                    group, "invalid tokens '{}'", group.to_string()
+                )
+            },
+            TokenTree::Ident(ident) => {
+                // check ident format
+            },
+            TokenTree::Punct(punct) => {
+                if !valid_special_tokens.contains(&punct.to_string()) {
+                    emit_error!(
+                        punct,
+                        "invalid token '{}'", punct.to_string()
+                    )
+                }
+            },
+            TokenTree::Literal(literal) => {
+                emit_error!(
+                    literal, "invalid token: found literal {}", literal.to_string();
+                    note = "do this and that"
+                );
+            },
+        }
+    }
+    
+    abort_if_dirty();
+
+
+    // check for $ in every row
+    let mut found_dollar = false;
+    for tokentree in input.clone().into_iter() {
+        match tokentree {
+            TokenTree::Punct(ident) => {
+                if ident.to_string() == "$" && !found_dollar {
+                    found_dollar = true;
+                } else if ident.to_string() == "," && !found_dollar {
+                    emit_error!(
+                        ident,
+                        "unexpected token ',' ";
+                        hint = "every line must contain '$'"
+                    )
+                } else if ident.to_string() == "," {
+                    found_dollar = false;
+                } else if ident.to_string() == "$" && found_dollar {
+                    emit_error!(
+                        ident,
+                        "token '$' can only appear once on a line";
+                        info = "did you perhaps forget a ','"
+                    )
+                }
+            },
+            _ => {},
+        }
+    }
+
+    abort_if_dirty();
+
+    // parse into vec
+    let mut literalified_res: Vec<Vec<TokenTree>> = vec![];
+    //                             BlockType Variant, BlockTypeVariant, Variant
+    //                            e.g. (Render, Some(Erithaxrender)) or (SELF, None)
+    // blocktype variant or blocktypevariant variant gets span of corresponding input ident
+    let mut curr_line: Vec<TokenTree> = vec![];
+
+    for tokentree in input.clone().into_iter() {
+        match tokentree {
+            TokenTree::Punct(punct) => {
+                if punct.to_string() == "$" {
+                    let mut lit = proc_macro2::Literal::string("$");
+                    lit.set_span(punct.span());
+                    curr_line.push(TokenTree::Literal(lit));
+                } else if punct.to_string() == "*" {
+                    let mut lit = proc_macro2::Literal::string("*");
+                    lit.set_span(punct.span());
+                    curr_line.push(TokenTree::Literal(lit));
+                } else if punct.to_string() == "," {
+                    literalified_res.push(vec![]);
+                    literalified_res.last_mut().unwrap().append(&mut curr_line);
+                    curr_line.clear();
+                }
+            },
+            TokenTree::Ident(ident) => {
+                let id = ident.to_string();
+                let mut lit = proc_macro2::Literal::string(ident.to_string().as_str());
+                lit.set_span(ident.span());
+                curr_line.push(TokenTree::Literal(lit));
+            },
+            _ => {}
+        }
+    }
+
+
+    if curr_line.len() > 0 {
+        literalified_res.push(curr_line);
+    }
+
+    // verify monotonically increasing stages
+    // for line in identified_res.iter() {
+    //     let mut curr_stage: usize = 0;
+    //     let mut last_non_self_index = 0;
+    //     let mut curr = &line[0];
+    //     for i in 0..line.len()  {
+    //         curr = &line[i];
+    //         match &curr.1 {
+    //             Some(id) => {
+    //                 last_non_self_index = i;
+    //                 if STAGES.get(&curr.0.to_string()).expect("HERIO") < &curr_stage {
+    //                     emit_error!(
+    //                         id,
+    //                         "a block {} of type {} cannot follow a block of type {}", id.to_string(), curr.0.to_string(), line[last_non_self_index].0.to_string()
+    //                     );
+    //                 }
+    //             },
+    //             None => {
+    //                 // curr is SELF or ALL
+    //                 if curr.0.to_string() == "ALL" && i != line.len()-1 {
+    //                     emit_error!(
+    //                         curr.0,
+    //                         "a block ALL can only occur at the end of a line";
+    //                         info = "did you perhaps forget a ','?"
+    //                     );
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    abort_if_dirty();
+
+    let mut lines = TokenStream::new();
+    let mut bt_id = Ident::new("BlockType", Span::call_site());
+
+    for mut line in literalified_res.iter_mut() {
+        let mut line_token_stream = TokenStream::new();
+        for lit in line.iter_mut() {
+            line_token_stream.extend(quote!(#lit,));
+        }
+        let line_in = Group::new(Delimiter::Bracket, line_token_stream);
+        lines.extend(quote!(vec!#line_in, ));
+    }
+    let lines_grouped = Group::new(Delimiter::Bracket, lines);
+    let out = quote!(vec!#lines_grouped);
+    // dbg!(&out.to_string());
+    return quote!(#out).into()
+    // return quote!().into();
+}
+
+
 
 #[proc_macro]
 pub fn TDS(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
