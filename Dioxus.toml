@@ -14,10 +14,9 @@ index_on_404 = true
 watch_path = ["src", "./res/static"]
 
 
-
 [web.resource]
-style = ["./style/main.css", "./style/block.css", "./style/section.css", "./style/griddy.css"]  # CSS files
-script = []                     # Javascript files
+style = ["./style/main.css", "./style/block.css", "./style/section.css", "./style/dynatable.css"]  # CSS files
+script = ["./script/gridsizer.js"]                     # Javascript files
 
 
 [web.resource.dev]

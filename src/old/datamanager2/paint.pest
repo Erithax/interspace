@@ -1,5 +1,0 @@
-paint_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.paint" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
-
-paint = {
-    ""
-}

@@ -1,7 +1,0 @@
-
-layout_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.layout" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
-
-
-layout = {
-    ""
-}

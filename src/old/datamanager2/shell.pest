@@ -1,9 +1,0 @@
-
-
-
-shell_section = {"[" ~ INLINE_WHITE_SPACE ~ "block.shell" ~ INLINE_WHITE_SPACE ~ "]" ~ line_ends}
-
-
-shell = {
-    ""
-}
