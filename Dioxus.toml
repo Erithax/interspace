@@ -5,6 +5,9 @@ default_platform = "web"    # default platfrom: web | desktop
 out_dir = "dist"            # Web `build` & `serve` dist path
 asset_dir = "res/static"    # resource (static) file folder
 
+[application.tools]
+binaryen = { wasm_opt = true }
+
 [web.app]
 title = "UI OVERVIEW"       # HTML title tag content
 
