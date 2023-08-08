@@ -521,7 +521,7 @@ pub fn parsetree2(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let mut lines = TokenStream::new();
     let mut bt_id = Ident::new("BlockType", Span::call_site());
 
-    for mut line in literalified_res.iter_mut() {
+    for line in literalified_res.iter_mut() {
         let mut line_token_stream = TokenStream::new();
         for lit in line.iter_mut() {
             line_token_stream.extend(quote!(#lit,));

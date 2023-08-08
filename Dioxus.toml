@@ -15,7 +15,7 @@ watch_path = ["src", "./res/static"]
 
 
 [web.resource]
-style = ["./style/main.css", "./style/block.css", "./style/section.css", "./style/griddy.css"]  # CSS files
+style = ["./style/main.css", "./style/block.css", "./style/section.css", "./style/dynatable.css"]  # CSS files
 script = ["./script/gridsizer.js"]                     # Javascript files
 
 

@@ -1,0 +1,488 @@
+
+
+
+.dynatable > div:first-child {
+    overflow: hidden;
+}
+
+
+/*/////////////////////////////////////////////////////////*/
+/*DYNATABLE & HEADER*/
+/*/////////////////////////////////////////////////////////*/
+
+main > section.dynatable {
+    border: var(--section-border);
+    padding: 10px;
+    width: calc(88vw + 10px);
+    border-radius: 10px;
+    cursor: default;
+}
+
+.dynatable.expandedfalse:hover {
+    cursor: pointer;
+    background-color: var(--section-hover-col);
+    transition: background-color 100ms linear;
+}
+
+.dynatable {
+    overflow: hidden;
+}
+
+.dynatable .collapsable {
+    overflow: auto;
+}
+
+
+
+/*HEADER=====================================================*/
+
+
+.dynatable .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 1px;
+}
+
+.dynatable.expandedtrue .header:hover {
+    cursor: pointer;
+    background-color: var(--section-hover-col);
+    transition: background-color 100ms linear;
+}
+
+.dynatable .header .title {
+    font-size: var(--section-title-font-siz);
+    line-height: var(--section-title-line-hei);
+    margin-left: calc(  0.5 * (var(--section-title-line-hei) - 1) * var(--section-title-font-siz)  );
+    font-weight: 900;
+}
+
+.dynatable .settingstoggle {
+    height: calc( var(--section-title-line-hei) * var(--section-title-font-siz));
+    aspect-ratio: 1/1;
+    align-self: flex-start;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 100ms linear;
+}
+.dynatable .settingstoggle.showntrue {
+    opacity: 1;
+    cursor: pointer;
+}
+.dynatable .settingstoggle.shownfalse {
+    opacity: 0;
+    cursor: default;
+}
+
+.dynatable .settingstoggle img {
+    height: 20px;
+    aspect-ratio: 1/1;
+    /* z-index: 3; */
+}
+
+.dynatable .settingstoggle::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: radial-gradient(var(--back-circle-hover-col) 66%, #0000 66%);
+    opacity: 0;
+    transition: opacity 100ms linear;
+}
+.dynatable .settingstoggle:hover::after {
+    opacity: 1;
+}
+
+
+/*/////////////////////////////////////////////////////////*/
+/*SETTINGS*/
+/*/////////////////////////////////////////////////////////*/
+
+.dynatable .settings {
+    background: var(--settings-back);
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-size: var(--font-siz);
+    line-height: var(--line-hei);
+}
+
+.dynatable .settings > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.dynatable .settings .title {
+    font-weight: 900;
+    font-size: var(--font-siz-settings-title);
+}
+
+.dynatable .settings .selector > div:last-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    column-gap: calc(0.5 * var(--font-siz));
+}
+
+.dynatable .settings .selector div:last-child > * {
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 2px 10px;
+    border-radius: calc(0.5 * var(--line-hei) * var(--font-siz));
+    transition: background-color 100ms;
+    border: var(--settings-item-border);
+}
+.dynatable .settings .selector div:last-child > *.active {
+    background-color: var(--settings-hover-back);
+}
+.dynatable .settings .selector div:last-child > *.clickablefalse {
+    cursor: default;
+}
+.dynatable .settings .selector div:last-child > *.clickablefalse:not(.active) {
+    opacity: 0.4;
+}
+.dynatable .settings .selector div:last-child > *.clickabletrue:hover {
+    background-color: var(--settings-hover-back);
+}
+
+
+
+
+/*/////////////////////////////////////////////////////////*/
+/*CONTENT*/
+/*/////////////////////////////////////////////////////////*/
+
+/*HEADER AND BACK==========================================*/
+
+.primary:not(:last-child) {
+    padding-bottom: 5px;
+    border-bottom: var(--row-border);
+}
+.primary:not(:first-child) {
+    padding-top: 5px;
+}
+
+.primary .block_box {
+    filter: grayscale(0.7);
+    filter: contrast(0.7);
+    transition: filter 100ms linear;
+}
+
+.primary.hovereffectall-true .block_box,
+.primary > div .block_papa:hover .block_box,
+.primary > div .block_papa:hover + div .block_box {
+    filter: grayscale(0);
+    filter: contrast(1);
+}
+
+/* 
+.content .stage_back,
+.content .stage_header {
+    position: relative;
+}
+
+.content .stage_back.hidden,
+.content .stage_header.hidden {
+    transition: background-color   0ms;
+    background-color: #0000;
+}
+
+.content .stage_back.hidden.hovered,
+.content .stage_header.hidden.hovered {
+    background-color: var(--stage-focus-back-col);
+}
+
+
+.content .stage_header {
+    position: relative;
+    grid-row: 1 / span 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 900;
+    transition: color 200ms, font-size 200ms;
+}
+
+.content .stage_header.hidden::after,
+.content .stage_back.hidden::after {
+    content: "";
+    left: 50%;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    border-left: var(--column-border);
+    border-right: var(--column-border);
+    transition: left 200ms, right 200ms;
+}
+
+.content .stage_header.hidden.hovered::after,
+.content .stage_back.hidden.hovered::after {
+    left: 0%;
+    right: 0%;
+}
+
+.content .stage_header.hidden {
+    color: #0000;
+    font-size: 0px;
+}
+
+.content .stage_header.hidden.hovered {
+    color: inherit;
+    font-size: calc(0.6 * var(--font-siz));
+}
+
+
+
+.content .stage_header,
+.content .stage_back {
+    border-right: var(--column-border);
+    border-left: var(--column-border);
+}
+
+.content .stage_header.hidden,
+.content .stage_back.hidden {
+    border-right: none;
+    border-left: none;
+}
+
+.content .stage_back.prehidden,
+.content .stage_header.prehidden,
+.content .stage_back:last-child,
+.content .stage_header:last-child {
+    border-right: none;
+}
+.content .stage_back.posthidden,
+.content .stage_header.posthidden,
+.content .stage_back:first-child,
+.content .stage_header:first-child {
+    border-left: none;
+}
+ */
+
+
+/*PRIMARY AND STAGE BOX ============================================*/
+/* .content .primary {
+    border-top: var(--row-border);
+    overflow: hidden;
+} */
+
+
+
+
+
+
+/*BLOCK BOX ===================================================*/
+
+
+.content .block_box {
+    padding: 0px 10px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 10px;
+}
+
+
+.content .block_box.focussed-true {
+    background-color: var(--stage-focus-back-col);
+    font-weight: 800;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.content .block_box.draw_top_seperator::before {
+    z-index: 1;
+    content: "";
+    position: absolute;
+    top: -1px;
+    margin-top: 1px;
+    height: 1px;
+    width: 800px;
+}
+
+.content .down .block_box.draw_top_seperator::before {
+    left: -15px;
+    background-image: linear-gradient(to right, #0000 0%, var(--branch-seperator-col) 30px);
+}
+
+.content .up .block_box.draw_top_seperator::before {
+    right: -15px;
+    background-image: linear-gradient(to left, #0000 0%, var(--branch-seperator-col) 30px);
+}
+
+.block_box.grouped > div {
+    border-radius: 2px;
+    border: 1px solid var(--branch-seperator-col);
+    padding: 4px;
+    transition: background-color 100ms;
+}
+
+.block_box.grouped > div:hover {
+    cursor: pointer;
+    background-color: var(--stage-focus-back-col);
+}
+
+.block_box.deleted > div {
+    position: relative;
+    padding: 3px;
+    cursor: pointer;
+    height: calc(1 * var(--font-siz));
+    aspect-ratio: 1;
+    /* background-color: #777; */
+    border-radius: calc(0.3 * var(--font-siz));
+    opacity: 0.4;
+    transition: opacity 100ms;
+}
+.block_box.deleted > div:hover {
+    opacity: 1;
+}
+
+.block_box.deleted > div::after {
+    position: absolute;
+    top: calc(0.1 * var(--font-siz));
+    left: calc(0.1 * var(--font-siz));
+    height: calc(0.8 * var(--font-siz));
+    content: "";
+    aspect-ratio: 1;
+    background-image: url("../img/show.svg");
+    background-size: contain;
+}
+
+
+
+.block_box:hover .block_button {
+    opacity: 0.2;
+}
+
+.block_button {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0.5;
+    aspect-ratio: 1 / 1;
+    background-size: contain;
+    opacity: 0;
+    transition: opacity 100ms linear;
+}
+
+.block_box .block_button:hover {
+    opacity: 1;
+}
+
+.block_button.delete {
+    height: calc(1 * var(--font-siz));
+    bottom: 0;
+    right: 0;
+    background-image: url("../img/hide.svg");
+}
+.block_button.group {
+    height: calc(0.8 * var(--font-siz));
+    margin: calc(0.1 * var(--font-siz));
+    top: 0;
+    left: 0;
+    background-image: url("../img/stack.svg");
+}
+.block_button.skip {
+    height: calc(1 * var(--font-siz));
+    bottom: 0;
+    right: 0;
+    background-image: url("../img/skip.svg");
+}
+.block_button.snip {
+    height: calc(1 * var(--font-siz));
+    top: 0;
+    left: 0;
+    background-image: url("../img/scissors.svg");
+}
+
+
+/*/////////////////////////////////////////////////////////*/
+/*THEMING*/
+/*/////////////////////////////////////////////////////////*/
+
+.dynatable .header {
+    --section-title-font-siz: 24px;
+    --section-title-line-hei: 1.25;
+}
+
+.dynatable .content {
+    --font-siz: 14px;
+    font-size: var(--font-siz);
+}
+
+.th_dark section.dynatable {
+    --section-border: 2px solid white;
+}
+.th_light section.dynatable {
+    --section-border: 2px solid black;
+}
+
+
+.dynatable .settings {
+    --font-siz: 14px;
+    --line-hei: 1.25;
+    --font-siz-settings-title: 16px;
+}
+
+
+.th_dark .dynatable .settingstoggle {
+    --back-circle-hover-col: #0002; /* color is inverted*/
+}
+.th_light .dynatable .settingstoggle {
+    --back-circle-hover-col: #0002;
+}
+.th_dark .dynatable .block_box.deleted > div,
+.th_dark .dynatable .settingstoggle,
+.th_dark .dynatable .block_button {
+    filter: invert();
+}
+
+
+.th_dark .dynatable {
+    --section-hover-col: #222;
+    --column-selected-back: #222;
+    --settings-back: #222;
+    --settings-hover-back: #fff2;
+    --settings-item-border: 1px solid #fff2;
+}
+.th_light .dynatable {
+    --section-hover-col: #e4e4e4;
+    --column-selected-back: #e4e4e4;
+    --settings-back: #e4e4e4;
+    --settings-hover-back: #0001;
+    --settings-item-border: 1px solid #ccc;
+}
+
+.th_dark .dynatable .content {
+    --row-border: 1px solid #333;
+    --branch-border: 2px solid #555;
+    --column-border: 1px dashed #fff4;
+    --column-intra-focus-border: 1px dashed #fff2;
+    --column-border-sides: 1px dashed #444;
+    --branch-seperator-col: #fff3;
+    /* --stage-focus-back-col: #3248; */
+    --stage-focus-back-col: #fff1;
+}
+
+.th_light .dynatable .content {
+    --row-border: 1px solid #aaa;
+    --branch-border: 2px solid #bbb;
+    --column-border: 1px dashed #0004;
+    --column-intra-focus-border: 1px dashed #0002;
+    --column-border-sides: 1px dashed #bbb;
+    --branch-seperator-col: #0004;
+    /* --stage-focus-back-col: #edf5; */
+    --stage-focus-back-col: #0000000a;
+}
+
+
