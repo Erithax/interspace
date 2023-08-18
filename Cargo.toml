@@ -10,9 +10,10 @@ macroni = {path = "./macroni"}
 strum = "0.24.1"
 strum_macros = "0.24.1"
 
-#dioxus = "0.3.2"
-dioxus = { git = "https://github.com/dioxuslabs/dioxus.git" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus.git" }
+dioxus = "0.4.0"
+dioxus-web = "0.4.0"
+#dioxus = { git = "https://github.com/dioxuslabs/dioxus.git" }
+#dioxus-web = { git = "https://github.com/dioxuslabs/dioxus.git" }
 #dioxus-web = "0.3.1"
 #dioxus-web = { git = "https://github.com/dioxusLabs/dioxus/packages/web.git"}
 
@@ -25,9 +26,11 @@ async-std = "1.12.0"
 log = "0.4.18"
 num-integer = "0.1.45"
 bincode = "1.3.3"
-web-sys = {version="0.3.64", features = ["Window", "Document", "Element", "Attr", "MediaQueryList", "HtmlCollection", "MutationObserver"]}
+web-sys = {version="0.3.64", features = ["Window", "Document", "Element", "Attr", "MediaQueryList", "HtmlCollection", "MutationObserver", "CssStyleDeclaration", "DomTokenList"]}
 lazy_static = "1.4.0"
 wasm-timer = "0.2.5"
+wasm-bindgen = "0.2.87"
+js-sys = "0.3.64"
 
 #colored = "2.0.0"
 #toml = "0.7.4"

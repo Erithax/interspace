@@ -47,10 +47,12 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
             },
             if show_debug_info && debug_info.is_some() {
                 rsx!{div {
+                    class: "name",
                     "{CONSTELLATION.get_comp(*comp_id).info.name}\n{debug_info.as_ref().unwrap()}",
                 }}
             } else {
                 rsx!{div {
+                    class: "name",
                     "{CONSTELLATION.get_comp(*comp_id).info.name}",
                 }}
             }

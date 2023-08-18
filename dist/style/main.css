@@ -136,6 +136,24 @@ header div.rig img.external {
     opacity: 0.1;
 }
 
+.th_dark {
+    --prim-back-col: #000;
+    --prim-fore-col: #fff;
+    --emph-back-over-col: #fff1;
+    --emph2-back-over-col: #fff2;
+    --emph-fore-over-col: #0001;
+    --emph2-fore-over-col: #0002;
+}
+
+.th_light {
+    --prim-back-col: #fff;
+    --prim-fore-col: #000;
+    --emph-back-over-col: #0001;
+    --emph2-back-over-col: #0002;
+    --emph-fore-over-col: #fff1;
+    --emph2-fore-over-col: #fff2;
+}
+
 .th_dark header {
     background: #222;
     --back-circle-col: #0000;

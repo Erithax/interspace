@@ -1,57 +1,36 @@
 
 use std::collections::BTreeMap;
+use std::collections::hash_map::DefaultHasher;
+use std::hash::Hasher;
 
 use dioxus::prelude::*;
 
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::constellation::*;
+use crate::dyna_tab::grid_sizer::size_grid;
 use crate::dyna_tab::stage;
 use log::{info};
 
+use super::StageState;
 use super::CONSTELLATION;
 use super::stage::*;
 use super::block::*;
+use super::filters::*;
+use super::filters::{component_type_filter::*, stage_filter::*};
+
 
 pub type BlockId = usize;
 
 const ROOT_COMP_ID: ComponentId = 77777;
 
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Deserialize, serde::Serialize)]
 pub enum BlockType {
     Normal, 
-    Dropped, // dropped because of group cluster
+    Snipped,
+    AfterSnip,
     Skipped,
-    DeleteCluster{
-        clustered_nodes: Vec<BlockId>,
-    },
-    GroupCluster{
-        clustered_nodes: Vec<BlockId>,
-    }
 }
-/*
-Starting with
-    A -> B -> C
-      -> D -> C
-      -> E -> F
-# Skipped cluster
-    e.g skip B & D
-        A -> E -> F
-          -> C
-    e.g. skip B & D & E (cfr. hide stage)
-        A -> C
-          -> F
-# GroupCluster .
-    e.g. groupcluster D & E
-        A -> B -> C
-          -> (D & E) -> C
-                     -> F
-# DeleteCluster 
-    e.g. deletecluster B & D
-        A -> ...
-          -> E -> F
-
-*/
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SelectedCells {
@@ -75,7 +54,7 @@ impl std::fmt::Display for SelectedCells {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Deserialize, serde::Serialize)]
 pub enum TreeType {
     LefToRig,
     RigToLef,
@@ -115,8 +94,20 @@ pub struct Block {
     stage_subtree_dep_end: usize,
     breadth_interval: (usize, usize),
 }
+impl std::hash::Hash for Block {
+    fn hash<H>(&self, state: &mut H)
+       where H: Hasher {
+        self.parent.hash(state);
+        self.children.hash(state);
+        self.block_type.hash(state);
+        self.stage_subtree_dep_len.hash(state);
+        self.stage_subtree_dep_start.hash(state);
+        self.stage_subtree_dep_end.hash(state);
+        self.breadth_interval.hash(state);
+       }
+}
 
-#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, Hash, serde::Deserialize, serde::Serialize)]
 pub struct Tree {
     pub blocks: BTreeMap<BlockId, Block>,
     pub root: BlockId,
@@ -225,6 +216,37 @@ impl Tree {
     pub fn add(&mut self, id: BlockId, block: Block) {
         self.blocks.insert(id, block);
     }
+
+    pub fn iter_tree_attached_blocks(&self) -> impl Iterator<Item = (BlockId, &Block)> {
+        let mut res = vec![];
+        let mut curr_leafs = vec![self.root];
+        while curr_leafs.len() > 0 {
+            let mut new_leafs = vec![];
+            for leaf in curr_leafs {
+                for ch_id in self.get(leaf).children.iter() {
+                    new_leafs.push(*ch_id);
+                    res.push((*ch_id, self.get(*ch_id)));
+                }
+            }
+            curr_leafs = new_leafs;
+        }
+       
+        return res.into_iter();
+    }
+
+    // ComponentType {
+    //     pub fn iterator() -> impl Iterator<Item = ComponentType> {
+    //         [
+    //             ComponentType::Langbridge,
+    //             ComponentType::Ui,
+    //             ComponentType::Layout,
+    //             ComponentType::Paint,
+    //             ComponentType::Raster,
+    //             ComponentType::Gfxapi,
+    //             ComponentType::Intergfx,
+    //             ComponentType::Platform,
+    //         ].iter().copied()
+    //     }
 
     pub fn full_trees_from_paths_of(con: &Constellation, paths: &Vec<Vec<ComponentId>>, targ: ComponentId) -> (Tree, Tree) {
         assert!(paths.iter().enumerate().all(|(i, path)| paths.iter().enumerate().any(
@@ -630,6 +652,10 @@ impl Tree {
         return res
     }
 
+    pub fn is_sub_stage_empty(&self, sub_stage: SubStage) -> bool {
+        return !self.blocks.iter().any(|(id, _)| *id != self.root && self.block_sub_stage(&CONSTELLATION, *id) == sub_stage)
+    }
+
     // SET TREE GRID LINES
     pub fn set_grid_lines(&mut self, constellation: &Constellation) {
         let epsilon = 0.01;
@@ -856,6 +882,7 @@ impl Tree {
         for ch_id in block_children {
             self.get_mut(ch_id).parent = self.get(block_id).parent;
         }
+        assert!(!self.down_tree_from_contains(self.root, block_id));
         self.dedupe_branches_from(self.get(block_id).parent);
         self.set_stage_indices(&CONSTELLATION);
         self.set_grid_lines(&CONSTELLATION);
@@ -864,49 +891,6 @@ impl Tree {
 
     pub fn skip_batch(&mut self, block_ids: Vec<BlockId>) {
         // dedupes only once, from root
-    }
-
-    pub fn cluster(&mut self, block_id: BlockId) {
-        assert!(block_id != self.root);
-        assert!(self.get(block_id).block_type == BlockType::Normal);
- 
-        // check if has cluster sibling
-        let siblings = self.get(self.get(block_id).parent).children.clone();
-        let mut sib_cluster_id = 987;
-        for sib_id in siblings {
-            match self.get_mut(sib_id).block_type {
-                BlockType::GroupCluster{ref mut clustered_nodes} => {
-                    clustered_nodes.push(block_id);
-                    sib_cluster_id = sib_id;
-                    break;
-                },
-                BlockType::DeleteCluster{ref mut clustered_nodes} => {
-                    clustered_nodes.push(block_id);
-                    sib_cluster_id = sib_id;
-                    break;
-                },
-                _ => {}
-            }
-        }
-        if !sib_cluster_id == 987 {
-            self.get_mut(self.get(block_id).parent).children.retain(|&sib_id| sib_id != block_id);
-            for ch_id in self.get(block_id).children.clone() {
-                self.get_mut(sib_cluster_id).children.push(ch_id);
-            }
-            
-        } else {
-            self.get_mut(block_id).block_type = BlockType::GroupCluster {clustered_nodes: vec![block_id]};
-        }
-
-        info!("dedupe");
-        self.dedupe_branches_from(self.get(block_id).parent);
-        info!("stage inds");
-        self.set_stage_indices(&CONSTELLATION);
-        info!("grid lines");
-        self.set_grid_lines(&CONSTELLATION);
-        info!("breadth intervals");
-        self.set_breadth_intervals_from(&CONSTELLATION, self.get(block_id).parent, self.get(block_id).breadth_interval.0);
-        info!("after skip: {}", self.pretty_string(&CONSTELLATION));
     }
 
     pub fn dedupe_branches_from(&mut self, from_block_id: BlockId) {
@@ -955,57 +939,189 @@ impl Tree {
         self.get_mut(parent_id).children.retain(|sib_id| *sib_id != block_id);
     }
 
+    pub fn hash(&self) -> u64 {
+        use std::hash::*;
+        let mut hasher = DefaultHasher::new();
+        self.blocks.hash(&mut hasher);
+        return hasher.finish();
+    }
+
 }
 
 
 
 
-#[inline_props]
-pub fn TreeComp(cx: Scope, comp_id: ComponentId, tree_type: TreeType) -> Element {
-    info!("TreeComp(comp_id: {comp_id}, tree_type: {:?}", tree_type);
 
-    let tree_use_ref = use_ref(cx, || 
-        match tree_type {
+#[inline_props]
+pub fn TreeComp(
+    cx: Scope, 
+    dynatab_id: usize,
+    comp_id: ComponentId, 
+    tree_type: TreeType, 
+    comp_type_filter: UseRef<ComponentTypeFilter>,
+    stage_filter: UseRef<StageFilter>,
+    stage_states: UseRef<BTreeMap<ComponentId, BTreeMap<Stage, StageState>>>,
+) -> Element {
+    // info!("TreeComp(comp_id: {comp_id}, tree_type: {:?}", tree_type);
+
+    let comp_type_filter_inner = comp_type_filter.read().clone();
+
+    let init_tree = |tree_type: TreeType, comp_type_filter: &ComponentTypeFilter, stage_filter: &StageFilter| -> Tree {
+        info!("tree state init");
+        let mut tree = match tree_type {
             TreeType::LefToRig => {CONSTELLATION.get_comp(*comp_id).lefToRigTree.clone()},
             TreeType::RigToLef => {CONSTELLATION.get_comp(*comp_id).rigToLefTree.clone()},
             TreeType::HourglassToLef => {CONSTELLATION.get_comp(*comp_id).splituptree.clone()},
             TreeType::HourglassToRig => {CONSTELLATION.get_comp(*comp_id).splitdowntree.clone()},
-        }
-    );
+        };
+        let to_snip: Vec<BlockId> = tree.blocks.iter()
+            .filter(|(id, bl)| 
+                **id != tree.root && 
+                (
+                    !comp_type_filter.filter(CONSTELLATION.get_comp(bl.comp)) ||
+                    !stage_filter.filter(CONSTELLATION.get_comp(bl.comp))
+                )
+            )
+            .map(|(id, _)| *id).collect();
 
-    let update_flag = use_state(cx, || 0);    
+        to_snip.iter().for_each(|&id| tree.snip(id)); // non-silent write causes infinite rerender loop
+        tree
+    };
 
-    if CONSTELLATION.get_comp(*comp_id).str_id == "Dom" && *tree_type == TreeType::LefToRig {
-        info!("{}", tree_use_ref.read().pretty_string(&CONSTELLATION));
-        info!("{:?}", tree_use_ref.read().get(10));
+    let tree = use_ref(cx, || {init_tree(*tree_type, &*comp_type_filter.read(), &*stage_filter.read())});
+
+    for stage in Stage::iter_reals() {
+        let empty = !tree.read().blocks.iter()
+            .filter(|(block_id, block)| **block_id != tree.read().root)
+            .any(|(block_id, block)| block.block_type == BlockType::Normal && stage == Stage::from_comp_typ(CONSTELLATION.get_comp(block.comp).typ));
+
     }
 
+    let mut to_snip: Vec<BlockId> = tree.read().blocks.iter()
+            .filter(|(id, bl)| 
+                **id != tree.read().root && 
+                ( 
+                    !comp_type_filter.read().filter(CONSTELLATION.get_comp(bl.comp)) ||
+                    !stage_filter.read().filter(CONSTELLATION.get_comp(bl.comp))
+                )
+            )
+            .map(|(id, _)| *id).collect();
 
-    let substages = tree_use_ref.read().get_all_substages(&CONSTELLATION);
+    let grid_sizer_use_effect_flag = use_state(cx, || false);
+
+    use_effect(cx, (&to_snip, tree_type), |(to_snip, tree_type)|{
+        let tree_bonk = tree.clone();
+        let grid_size_flag_bonk = grid_sizer_use_effect_flag.clone();
+        to_owned![tree_type];
+        *tree_bonk.write() = init_tree(tree_type, &*comp_type_filter.read(), &*stage_filter.read());
+        async move {
+            tree_bonk.needs_update();
+            grid_size_flag_bonk.set(!grid_size_flag_bonk.get());
+        }
+    });
+
+    use_effect(cx, (grid_sizer_use_effect_flag), |(grid_sizer_use_effect_flag)|{
+        to_owned![dynatab_id];
+        async move {
+            size_grid(dynatab_id);
+        }
+    });
+
+    use std::hash::Hash;
+    let mut prop_deep_rerender_hasher = DefaultHasher::new();
+    to_snip.hash(&mut prop_deep_rerender_hasher);
+    tree_type.hash(&mut prop_deep_rerender_hasher);
+    let prop_deep_rerender_hash = format!("{:x}", prop_deep_rerender_hasher.finish());
+
+    let tree_hash = format!("{:x}", tree.read().hash());
+    
+    let substages = tree.read().get_all_substages(&CONSTELLATION);
     
     cx.render(rsx!{
-        for ch_id in tree_use_ref.read().get(tree_use_ref.read().root).children.iter() {
-            BlockComp{
+        div {
+            class: "backs",
+            style: "display: contents;",
+            for sub_stage in substages {{
+                let empty = !tree.read().iter_tree_attached_blocks()
+                    .any(|(block_id, block)|
+                            block_id != tree.read().root && 
+                            block.block_type == BlockType::Normal && 
+                            sub_stage.stage == Stage::from_comp_typ(CONSTELLATION.get_comp(block.comp).typ)
+                        );
+                if empty && sub_stage.pseudostage == PseudoStage::All {
+                    let prev_stage_state = stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap().clone();
+                    if prev_stage_state != StageState::Empty && prev_stage_state != StageState::EmptyHovered {
+                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
+                    }
+                } else if sub_stage.pseudostage == PseudoStage::All {
+                    if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Content {
+                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Content;
+                    }
+                }
+                
+                if 
+                    sub_stage.pseudostage == PseudoStage::All && 
+                    (
+                        *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::Empty ||
+                        *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::EmptyHovered
+                    )
+                {
+                    rsx!{
+                        div {
+                            onclick: move |_| {
+                                if !stage_filter.read().allowed.contains(&sub_stage.stage) {
+                                    stage_filter.write().toggle(sub_stage.stage);
+                                }
+                                let allowed_comp_typs = comp_type_filter.read().allowed.clone();
+                                for comp_typ in ComponentType::iterator() {
+                                    if !allowed_comp_typs.contains(&comp_typ) && Stage::from_comp_typ(comp_typ) == sub_stage.stage {
+                                        comp_type_filter.write().toggle(comp_typ);
+                                    }
+                                }
+                            },
+                            onmouseenter: move |_| {
+                                if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::EmptyHovered {
+                                    *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::EmptyHovered;
+                                }
+                            },
+                            onmouseleave: move |_| {
+                                if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Empty {
+                                    *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
+                                }
+                            },
+                            class: "sub_stage_back ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}",
+                            style: " 
+                                grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
+                                grid-row: 1 / -1;
+                            ",
+                        }
+                    }
+                } else {
+                    rsx!{div {
+                        class: "sub_stage_back ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}",
+                        style: " 
+                            grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
+                            grid-row: 1 / -1;
+                        ",
+                    }}
+                }
+                
+            }},
+        },
+        for ch_id in tree.read().get(tree.read().root).children.iter() {
+            NodeComp{
+                dynatab_id: *dynatab_id,
                 block_id: *ch_id,
-                tree_use_ref: tree_use_ref.clone(),
-                key: "{ch_id}{update_flag.get()}"
+                tree_use_ref: tree.clone(),
+                key: "{ch_id}{prop_deep_rerender_hash}"
             }
         },
-        for sub_stage in substages {
-            div {
-                class: "ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()} sub_stage_back",
-                style: "
-                    z-index: -1;
-                    grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
-                    grid-row: 1 / -1;
-                ",
-            }
-        }
+        
     })
 }
 
 #[inline_props]
-pub fn BlockComp(cx: Scope, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> Element {
+pub fn NodeComp(cx: Scope, dynatab_id: usize, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> Element {
         
     let tree = tree_use_ref.read();
 
@@ -1014,10 +1130,6 @@ pub fn BlockComp(cx: Scope, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> El
     if tree.get(*block_id).block_type == BlockType::Normal {
         let rel_pos = Stage::from_comp_typ(CONSTELLATION.get_comp(tree.get(*block_id).comp).typ)
             .cmp(&Stage::from_comp_typ(CONSTELLATION.get_comp(tree.targ).typ));
-
-        if *block_id == 10 {
-            info!("{}", going_to_rig);
-        }
 
         let pseudo_stage = 
             if rel_pos != std::cmp::Ordering::Equal {
@@ -1069,7 +1181,7 @@ pub fn BlockComp(cx: Scope, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> El
 
         cx.render(rsx!{
             div {
-                class: "block_papa",
+                class: "node",
                 style: "
                     grid-row: {breadth_interval.0} / {breadth_interval.1};
                     grid-column: {grid_col_string};
@@ -1086,6 +1198,7 @@ pub fn BlockComp(cx: Scope, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> El
                                 tree_use_ref.write().skip(*block_id);
                             },
                         }
+                        size_grid(*dynatab_id);
                     },
                     debug_info: format!("{block_id}"),
                 },
@@ -1093,7 +1206,8 @@ pub fn BlockComp(cx: Scope, block_id: BlockId, tree_use_ref: UseRef<Tree>) -> El
             div {
                 style: "display: contents;",
                 for ch_id in tree.get(*block_id).children.iter() {
-                    BlockComp{
+                    NodeComp{
+                        dynatab_id: *dynatab_id,
                         block_id: *ch_id,
                         tree_use_ref: tree_use_ref.clone(),
                         key: "{ch_id}",

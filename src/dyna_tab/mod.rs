@@ -16,13 +16,15 @@ mod stage;
 pub mod owner;
 mod lang;
 mod block;
+mod grid_sizer;
 mod filters;
-use filters::*;
 
 use crate::*;
 use {constellation::*, component::*, owner::*, lang::*, stage::*, tree::*};
 use components::{langbridge::*, ui::*, layout::*, render::*, gfxapi::*, intergfx::*, platform::*};
-use filters::{component_type_filter::*};
+use filters::{component_type_filter::*, stage_filter::*};
+use filters::*;
+use grid_sizer::*;
 
   
 lazy_static!{
@@ -55,7 +57,8 @@ impl DynaTabTree {
 
 
 #[inline_props]
-pub fn DynaTabTreeComp(cx: Scope, self_: UseRef<DynaTabTree>) -> Element {
+pub fn DynaTabTreeComp(cx: Scope, dynatab_id: usize, self_: UseRef<DynaTabTree>) -> Element {
+
 
     cx.render(rsx!{
         div {
@@ -69,7 +72,10 @@ pub fn DynaTabTreeComp(cx: Scope, self_: UseRef<DynaTabTree>) -> Element {
                     rsx!{
                         div {
                             onclick: move |_| {
-                                self_.set(pot_dyna_tab_tree);
+                                if *self_.read() != pot_dyna_tab_tree {
+                                    self_.set(pot_dyna_tab_tree);
+                                    // size_grid(*dynatab_id);
+                                }
                             },
                             class: "{active} clickabletrue",
                             "{pot_dyna_tab_tree:?}",
@@ -82,6 +88,8 @@ pub fn DynaTabTreeComp(cx: Scope, self_: UseRef<DynaTabTree>) -> Element {
     })
 }
 
+
+
 pub enum ShowFullInfo {
     InTreeAlways,
     InTreeOnHover,
@@ -89,37 +97,54 @@ pub enum ShowFullInfo {
     AfterTreeOnClick,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StageState {
+    NA,
+    Content,
+    Empty,
+    EmptyHovered,
+}
+
+impl std::fmt::Display for StageState {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, 
+            "{}",
+            match self {
+                Self::NA => {panic!("NA stage state display")},
+                Self::Content => {"content"},
+                Self::Empty => {"empty"},
+                Self::EmptyHovered => {"emptyhovered"},
+            }
+        )
+    }
+}
+
 #[inline_props]
 pub fn DynaTab(cx: Scope, id: usize) -> Element {
 
-    // APPLY SELECTION FILTERS
-    // APPLY SELECTION SORTS
-    // TRAVERSE & RENDER SELECTION LIST PRIMARIES
-        // TRAVERSE & RENDER TREE
-            // APPLY IN-TREE FILTER
-            // APPLY GROUPCLUSTER AND DELETECLUSTER
-
-
-    info!("cloning Constellation");
-    let now = wasm_timer::Instant::now();
-    let constellation = CONSTELLATION.clone();
-    info!("Constellation.clone() in {:?}", now.elapsed());
+    info!("rerender DynaTab[{}]", id);
+    let _ = use_state(cx, || {info!("initializing DynaTab[{}] hooks", id); true});
     
     let settings_coll = use_state(cx, || CollapsableToggle::Expanded);
     let content_coll = use_state(cx, || CollapsableToggle::Expanded);
 
-
     let tree_type = use_ref(cx, || DynaTabTree::Hourglass);
 
-    let comp_type_filter = use_ref(cx, || 
-        Box::new(ComponentTypeFilter{
-            allowed: vec![ComponentType::Ui],
-        })
+    let selection_comp_type_filter = use_ref(cx, || 
+        ComponentTypeFilter{allowed: vec![ComponentType::Ui],}
     );
-    
+
+    let in_tree_comp_type_filter = use_ref(cx, || 
+        ComponentTypeFilter{allowed: ComponentType::iterator().collect()}
+    );
+
+    let in_tree_stage_filter = use_ref(cx, ||
+        StageFilter{allowed: Stage::iter_reals().collect()}
+    );
+
 
     let mut grid_template_rows_string = String::from("grid-template-rows: ");
-    for (comp_id, comp) in constellation.comps.iter().enumerate() {
+    for (comp_id, comp) in CONSTELLATION.comps.iter().enumerate() {
         grid_template_rows_string += &("[".to_owned() + comp.str_id);
         grid_template_rows_string += "-s] ";
         grid_template_rows_string += "auto ";
@@ -140,14 +165,83 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
         }
     }
     
+    let empty_stages = use_ref(cx, || {
+        BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, 0)))
+    });
+
+    use_effect(
+        cx, 
+        (in_tree_comp_type_filter, in_tree_stage_filter, selection_comp_type_filter, tree_type), 
+        |(in_tree_comp_type_filter, in_tree_stage_filter, selection_comp_type_filter, tree_type)| 
+        {
+            to_owned![id];
+            to_owned![empty_stages];
+            async move {
+                size_grid(id);
+                let content = web_sys::window().unwrap().document().unwrap().get_element_by_id(&format!("content_{}", id)).unwrap();
+                for stage in Stage::iter_reals() {
+                    if *empty_stages.read().get(&stage).unwrap() != 0 {
+                        content.class_list().add_1(&format!("stage-empty-{}", stage.short_rep())).unwrap();
+                    }
+                }
+            }
+        }
+    );
+
+    let comps_stage_states = use_ref(cx, || {
+        BTreeMap::from_iter(
+            CONSTELLATION.comps.iter().enumerate()
+                // .filter(|(comp_id, _)| comp_id != ROOT_C)
+                .map(|(comp_id, _)| (
+                    comp_id, 
+                    BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, StageState::NA)))
+                )
+            )
+        )
+    });
+
+    // update stage_states
+    let mut shown_comps: Vec<ComponentId> = vec![];
+    let mut stage_states: BTreeMap<Stage, StageState> = BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, StageState::Empty)));
+    for (comp_id, comp_stage_states) in comps_stage_states.read().iter() {
+        if selection_comp_type_filter.read().filter(CONSTELLATION.get_comp(*comp_id)) {
+            shown_comps.push(*comp_id);
+            for (stage, &stage_state) in comp_stage_states {
+
+                if 
+                    stage_state != StageState::NA && 
+                    stage_state != StageState::Empty && 
+                    *stage_states.get(&stage).unwrap() != StageState::Content 
+                {
+                    *stage_states.get_mut(&stage).unwrap() = stage_state;
+                }
+            }
+        }
+        
+    }    
+
+    let stage_states_classes = || -> String {
+        return stage_states.iter().fold("".to_string(), |acc, nex| acc + &format!(" stage-{}-{}", nex.0.short_rep(), nex.1))
+    };
+
+    // info!("{}", stage_states_classes());
+    
+    let ele = web_sys::window().unwrap().document().unwrap().get_element_by_id(&format!("content_{}", id));
+    match ele {
+        None => {},
+        Some(ele) => {
+            // info!("applying classes");
+            let class_array = js_sys::Array::new();
+            stage_states.iter().for_each(|ss| {class_array.push(&wasm_bindgen::JsValue::from_str(&format!("stage-{}-{}", ss.0.short_rep(), ss.1)));});
+            ele.class_list().add(&class_array).unwrap();
+        }
+    }
+
+
     cx.render(rsx!{
         section {
             onmounted: move |_| {
-                let create_eval = use_eval(cx);
-                create_eval(r#"
-                    console.log("doing the grid yo");
-                    updateGridSizerList();
-                "#).unwrap();
+                size_grid(*id);
             },
             class: "dynatable expanded{content_coll.get().is_expanded()}",
             style: "
@@ -157,6 +251,14 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                 grid-template-rows: auto auto auto;
                 justify-content: stretch;
             ",
+            div {
+                onclick: move |_| {
+                    size_grid(*id);
+                },
+                id: "resize_observer_ele_{id}",
+                class: "resize_observer_ele",
+                style: "display: none;",
+            },
             div {class: "header",
                 onclick: move |_| {
                     if *content_coll.get() == CollapsableToggle::Collapsed && *settings_coll.get() == CollapsableToggle::Collapsed {
@@ -168,7 +270,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                 },
                 div {
                     class: "title",
-                    "Section Title"
+                    "Dynamic Partition Graph"
                 },
                 button {
                     class: "settingstoggle shown{content_coll.get().is_expanded()}",
@@ -185,14 +287,40 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                 }  
             },
             div{class:"collapsable {settings_coll}", div {class: "settings",
-                DynaTabTreeComp{
-                    self_: tree_type.clone(),
-                }
-                ComponentTypeFilterComp{
-                    self_: comp_type_filter.clone(),
+                div {
+                    h3 {
+                        "General settings",
+                    },
+                    DynaTabTreeComp{
+                        dynatab_id: *id,
+                        self_: tree_type.clone(),
+                    }
+                },
+                div {
+                    h3 {
+                        "Selection component filter",
+                    },
+                    ComponentTypeFilterComp{
+                        dynatab_id: *id,
+                        self_: selection_comp_type_filter.clone(),
+                    },
+                },
+                div {
+                    h3 {
+                        "In-tree component filter",
+                    },
+                    ComponentTypeFilterComp{
+                        dynatab_id: *id,
+                        self_: in_tree_comp_type_filter.clone(),
+                    },
+                    StageFilterComp{
+                        dynatab_id: *id,
+                        self_: in_tree_stage_filter.clone(),
+                    },
                 },
             }}
-            div {class: "collapsable {content_coll}", div {class: "content",
+            div {class: "collapsable {content_coll}", div {id: "content_{id}", 
+                class: "content {stage_states_classes()}",
                 style: "
                     display: grid;
                     width: min-content;
@@ -208,22 +336,32 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                     class: "grid_sizer_anchor",
                     // innerHTML overridden
                 },
+                style {
+                    class: "stage_hover_style",
+                    // innerHMTL overridden
+                },
                 div {
                     for stage in Stage::iter_reals() {
                         div {
-                            class: "ssb-{stage.short_rep()}-all",
-                            style: "display: inline-block; text-align: center; box-sizing: border-box; border-left: 1px solid gray; border-right: 1px solid gray; overflow: hidden;",
-                            "{stage:?}",
+                            class: "ssb-{stage.short_rep()}-all stage_header",
+                            div {
+                                "{stage:?}",
+                            }
                         }
                     }
                 },
                 div {
+                    id: "mutation_observer_container_{id}",
                     class: "mutation_observer_container",
                     style: "display:contents;",
-                    for comp in CONSTELLATION.comps.iter().filter(|comp| comp_type_filter.read().filter(comp)) {
+                    for comp_id in shown_comps {
                         ComponentusComp{
-                            comp_id: comp.id,
+                            dynatab_id: *id,
+                            comp_id: comp_id,
                             tree_type: *tree_type.read(),
+                            comp_type_filter: in_tree_comp_type_filter.clone(),
+                            stage_filter: in_tree_stage_filter.clone(),
+                            stage_states: comps_stage_states.clone(),
                         }
                     }
                 }

@@ -1,8 +1,9 @@
 
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::filters::*;
+use super::super::grid_sizer::*;
 
-
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ComponentTypeFilter {
     pub allowed: Vec<ComponentType>,    
 }
@@ -31,7 +32,8 @@ impl CompFilter for ComponentTypeFilter {
 
 
 #[inline_props]
-pub fn ComponentTypeFilterComp(cx: Scope, self_: UseRef<Box<ComponentTypeFilter>>) -> Element {
+pub fn ComponentTypeFilterComp(cx: Scope, dynatab_id: usize, self_: UseRef<ComponentTypeFilter>) -> Element {
+
     cx.render(rsx!{
         div {
             class: "selector",
@@ -40,11 +42,12 @@ pub fn ComponentTypeFilterComp(cx: Scope, self_: UseRef<Box<ComponentTypeFilter>
             },
             div {
                 for comp_type in ComponentType::iterator() {{
-                    let class_s = if (*self_.read()).allowed.contains(&comp_type) {"active"} else {"inactive"};
+                    let class_s = if (*self_.read()).allowed.contains(&comp_type) {"inactive"} else {"active"};
                     rsx!{
                         div {
                             onclick: move |_| {
                                 self_.write().toggle(comp_type);
+                                // size_grid(*dynatab_id);
                             },
                             class: "{class_s} clickabletrue",
                             "{comp_type:?}",

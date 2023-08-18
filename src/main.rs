@@ -88,13 +88,6 @@ pub fn indent(s: &str) -> String {
     return res
 }
 
-// pub fn variant_eq<T>(a: &T, b: &T) -> bool {
-//     return std::mem::discriminant(a) == std::mem::discriminant(b)
-// }
-
-
-
-
 
 fn App(cx: Scope) -> Element {
 
@@ -139,6 +132,7 @@ fn App(cx: Scope) -> Element {
         },
     })
 }
+
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Theme {
@@ -260,7 +254,7 @@ fn Header(cx: Scope) -> Element {
                         alt: "support me",
                     },
                     if *show_love_dialog.get() {
-                        rsx!{LoveDialog {show: show_love_dialog.clone()}}
+                        rsx!{HeartDialog {show: show_love_dialog.clone()}}
                     }
                 },
                 // button {
@@ -338,7 +332,7 @@ pub fn erithax<T: Into<f64>>(id: String, col: String, size: T, stroke_wid: T) ->
 }
 
 #[inline_props]
-pub fn LoveDialog(cx: Scope, show: UseState<bool>) -> Element {
+pub fn HeartDialog(cx: Scope, show: UseState<bool>) -> Element {
     render!{
         div {
             onclick: move |_| {

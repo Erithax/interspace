@@ -145,7 +145,6 @@ impl Constellation {
     }
 
     pub fn get_all_ids_of_stage(&self, st: Stage) -> Vec<ComponentId> {
-        assert!(st != Stage::LEFT && st != Stage::RIGHT);
         let mut res: Vec<ComponentId> = Vec::new();
         for (id, comp) in self.comps.iter().enumerate() {
             if Stage::from_comp_typ(comp.typ) == st {
@@ -156,7 +155,6 @@ impl Constellation {
     }
 
     pub fn get_all_comps_of_stage(&self, st: Stage) -> Vec<&Componentus> {
-        assert!(st != Stage::LEFT && st != Stage::RIGHT);
         let mut res = Vec::new();
         for comp in self.comps.iter() {
             if Stage::from_comp_typ(comp.typ) == st {

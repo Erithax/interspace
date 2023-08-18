@@ -89,9 +89,23 @@ pub struct Info {
 
 
 #[inline_props]
-pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) -> Element {
+pub fn ComponentusComp(
+    cx: Scope, 
+    dynatab_id: usize,
+    comp_id: ComponentId, 
+    tree_type: DynaTabTree, 
+    comp_type_filter: UseRef<ComponentTypeFilter>,
+    stage_filter: UseRef<StageFilter>,
+    stage_states: UseRef<BTreeMap<ComponentId, BTreeMap<Stage, StageState>>>,
+) -> Element {
     let comp = CONSTELLATION.get_comp(*comp_id);
     let hovereffectall = use_state(cx, || false);
+
+    *stage_states.write_silent().get_mut(comp_id).unwrap().get_mut(&Stage::from_comp_typ(CONSTELLATION.get_comp(*comp_id).typ)).unwrap() = StageState::Content;
+
+    let primary_hovered = use_state(cx, || false);
+
+    let tree_remount_trigger = use_state(cx, || 0);
 
     match tree_type {
         DynaTabTree::LefToRig => {
@@ -110,8 +124,12 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
                             grid-template-rows: {comp.lefToRigTree.grid_rows_str};
                         ",
                         TreeComp{
+                            dynatab_id: *dynatab_id,
                             comp_id: comp.id,
                             tree_type: TreeType::LefToRig,
+                            comp_type_filter: comp_type_filter.clone(),
+                            stage_filter: stage_filter.clone(),
+                            stage_states: stage_states.clone(),
                         },
                     }
                 },
@@ -133,8 +151,12 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
                             grid-template-rows: {comp.rigToLefTree.grid_rows_str};
                         ",
                         TreeComp{
+                            dynatab_id: *dynatab_id,
                             comp_id: comp.id,
                             tree_type: TreeType::RigToLef,
+                            comp_type_filter: comp_type_filter.clone(),
+                            stage_filter: stage_filter.clone(),
+                            stage_states: stage_states.clone(),
                         }
                     }
                 },
@@ -149,12 +171,20 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
             let targ_stage = Stage::from_comp_typ(comp.typ);
             cx.render(rsx!{
                 div {
-                    class: "primary hovereffectall-{hovereffectall.get()}",
+                    onmouseenter: move |_| {primary_hovered.set(true);},
+                    onmouseleave: move |_| {primary_hovered.set(false);},
+                    class: "primary hovereffectall-{hovereffectall.get()} hovered-{primary_hovered.get()}",
                     style: "
                         display: grid;
                         grid-template-columns: auto auto auto;
                         grid-template-rows: auto;
+                        display: relative;
                     ",
+                    div {
+                        onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1); info!("bonk {}", tree_remount_trigger.get());},
+                        class: "component_reset_button shown-{primary_hovered.get()}",
+
+                    },
                     div {
                         style: "
                             grid-column: 1 / span 1;
@@ -163,10 +193,17 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
                             grid-template-columns: {comp.splituptree.grid_cols_str};
                             grid-template-rows: {comp.splituptree.grid_rows_str};
                         ",
-                        TreeComp{
-                            comp_id: comp.id,
-                            tree_type: TreeType::HourglassToLef,
-                        },
+                        for i in 0..1 {
+                            TreeComp{
+                                dynatab_id: *dynatab_id,
+                                comp_id: comp.id,
+                                tree_type: TreeType::HourglassToLef,
+                                comp_type_filter: comp_type_filter.clone(),
+                                stage_filter: stage_filter.clone(),
+                                stage_states: stage_states.clone(),
+                                key: "{tree_remount_trigger.get()}",
+                            }
+                        }
                     },
                     div {
                         style: "
@@ -175,8 +212,12 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
                             display: grid;
                         ",
                         div {
-                            onmouseenter: move |_| {hovereffectall.set(true)},
-                            onmouseleave: move |_| {hovereffectall.set(false)},
+                            onmouseenter: move |_| {
+                                hovereffectall.set(true);
+                            },
+                            onmouseleave: move |_| {
+                                hovereffectall.set(false);
+                            },
                             style: "
                                 grid-column: 1 / -1;
                                 grid-row: 1 / -1;
@@ -210,11 +251,18 @@ pub fn ComponentusComp(cx: Scope, comp_id: ComponentId, tree_type: DynaTabTree) 
                             grid-template-columns: {comp.splitdowntree.grid_cols_str};
                             grid-template-rows: {comp.splitdowntree.grid_rows_str};
                         ",
-                        TreeComp{
-                            comp_id: comp.id,
-                            tree_type: TreeType::HourglassToRig,
-                        },
-                    },
+                        for i in 0..1 {
+                            TreeComp{
+                                dynatab_id: *dynatab_id,
+                                comp_id: comp.id,
+                                tree_type: TreeType::HourglassToRig,
+                                comp_type_filter: comp_type_filter.clone(),
+                                stage_filter: stage_filter.clone(),
+                                stage_states: stage_states.clone(),
+                                key: "{tree_remount_trigger.get()}",
+                            }
+                        }
+                    }
                 },
             })
         }

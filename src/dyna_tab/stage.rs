@@ -5,7 +5,6 @@ use strum::IntoEnumIterator;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, serde::Deserialize, serde::Serialize, strum_macros::EnumIter)]
 pub enum Stage {
-    LEFT,
     Langbridge,
     Ui,
     Layout,
@@ -13,27 +12,23 @@ pub enum Stage {
     Raster,
     Gfx,
     Platform,
-    RIGHT,
 }
 
 impl Stage {
     pub fn lvl(&self) -> usize {
         match self {
-            Self::LEFT          => {0},
-            Self::Langbridge    => {1},
-            Self::Ui            => {2},
-            Self::Layout        => {3},
-            Self::Paint         => {4},
-            Self::Raster        => {5},
-            Self::Gfx           => {6},
-            Self::Platform      => {7},
-            Self::RIGHT          => {8},
+            Self::Langbridge    => {0},
+            Self::Ui            => {1},
+            Self::Layout        => {2},
+            Self::Paint         => {3},
+            Self::Raster        => {4},
+            Self::Gfx           => {5},
+            Self::Platform      => {6},
         }
     }
 
     pub fn short_rep(&self) -> &'static str {
         match self {
-            Self::LEFT => {"RT"},
             Self::Langbridge => {"lb"},
             Self::Ui => {"ui"},
             Self::Layout => {"ly"},
@@ -41,19 +36,11 @@ impl Stage {
             Self::Raster => {"ra"},
             Self::Gfx => {"gx"},
             Self::Platform => {"pf"},
-            Self::RIGHT => {"LF"},
         }
     }
 
     pub fn iter_reals() -> impl Iterator<Item = Stage> {
         let mut res = Stage::iter()
-            .filter(|bt|
-                match bt {
-                    Stage::LEFT => {false},
-                    Stage::RIGHT => {false},
-                    _ => {true}
-                }
-            )
             .collect::<Vec<Stage>>();
         
         res.sort_unstable();

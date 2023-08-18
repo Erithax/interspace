@@ -151,7 +151,18 @@ main > section.dynatable {
     background-color: var(--settings-hover-back);
 }
 
+.dynatable .settings > div > h3 {
+    margin: 0;
+    border-bottom: 0.2px solid var(--emph2-back-over-col);
+}
 
+.dynatable .settings > div:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.dynatable .settings > div > div {
+    margin-left: 20px;
+}
 
 
 /*/////////////////////////////////////////////////////////*/
@@ -159,6 +170,10 @@ main > section.dynatable {
 /*/////////////////////////////////////////////////////////*/
 
 /*HEADER AND BACK==========================================*/
+
+.dynatable .content {
+    --hover-stage-expand: width 100ms linear, font-size 100ms linear;
+}
 
 .primary:not(:last-child) {
     padding-bottom: 5px;
@@ -168,119 +183,112 @@ main > section.dynatable {
     padding-top: 5px;
 }
 
-.primary .block_box {
-    filter: grayscale(0.7);
-    filter: contrast(0.7);
-    transition: filter 100ms linear;
-}
-
-.primary.hovereffectall-true .block_box,
-.primary > div .block_papa:hover .block_box,
-.primary > div .block_papa:hover + div .block_box {
-    filter: grayscale(0);
-    filter: contrast(1);
-}
-
-/* 
-.content .stage_back,
-.content .stage_header {
+.primary {
     position: relative;
 }
 
-.content .stage_back.hidden,
-.content .stage_header.hidden {
-    transition: background-color   0ms;
-    background-color: #0000;
-}
-
-.content .stage_back.hidden.hovered,
-.content .stage_header.hidden.hovered {
-    background-color: var(--stage-focus-back-col);
-}
-
-
-.content .stage_header {
-    position: relative;
-    grid-row: 1 / span 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 900;
-    transition: color 200ms, font-size 200ms;
-}
-
-.content .stage_header.hidden::after,
-.content .stage_back.hidden::after {
-    content: "";
-    left: 50%;
-    right: 50%;
-    top: 0;
-    bottom: 0;
+.component_reset_button {
+    cursor: pointer;
     position: absolute;
-    border-left: var(--column-border);
-    border-right: var(--column-border);
-    transition: left 200ms, right 200ms;
+    top: 0;
+    left: 0;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    transition: opacity 100ms linear 0ms;
+    background-image: url("../img/rotate_right_arrow.svg");
 }
 
-.content .stage_header.hidden.hovered::after,
-.content .stage_back.hidden.hovered::after {
-    left: 0%;
-    right: 0%;
+.component_reset_button.shown-true {
+    opacity: 0.7;
+    visibility: visible;
 }
 
-.content .stage_header.hidden {
-    color: #0000;
-    font-size: 0px;
+.component_reset_button.shown-true:hover {
+    opacity: 1;
+
 }
 
-.content .stage_header.hidden.hovered {
-    color: inherit;
-    font-size: calc(0.6 * var(--font-siz));
+.component_reset_button.shown-false {
+    opacity: 0;
+    visibility: hidden;
 }
 
 
-
-.content .stage_header,
-.content .stage_back {
-    border-right: var(--column-border);
-    border-left: var(--column-border);
+.content .sub_stage_back {
+    z-index: -1;
+    transition: var(--hover-stage-expand);
 }
 
-.content .stage_header.hidden,
-.content .stage_back.hidden {
-    border-right: none;
-    border-left: none;
+
+.stage_header {
+    font-weight: 800;
+    transition: var(--hover-stage-expand);
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    box-sizing: border-box; 
 }
 
-.content .stage_back.prehidden,
-.content .stage_header.prehidden,
-.content .stage_back:last-child,
-.content .stage_header:last-child {
-    border-right: none;
+
+.content .sub_stage_back:not(:first-child) {
+    border-left: 1px dashed var(--emph2-back-over-col);
 }
-.content .stage_back.posthidden,
-.content .stage_header.posthidden,
-.content .stage_back:first-child,
-.content .stage_header:first-child {
-    border-left: none;
+.content .sub_stage_back:not(:last-child) {
+    border-right: 1px dashed var(--emph2-back-over-col);
 }
- */
 
 
-/*PRIMARY AND STAGE BOX ============================================*/
-/* .content .primary {
-    border-top: var(--row-border);
-    overflow: hidden;
-} */
+.content .stage_header:not(:first-child) {
+    border-left: 1px dashed var(--emph2-back-over-col);
+}
+.content .stage_header:not(:last-child) {
+    border-right: 1px dashed var(--emph2-back-over-col);
+}
 
 
+.stage-lb-empty .ssb-lb-all,
+.stage-ui-empty .ssb-ui-all,
+.stage-ly-empty .ssb-ly-all,
+.stage-pa-empty .ssb-pa-all,
+.stage-ra-empty .ssb-ra-all,
+.stage-gx-empty .ssb-gx-all,
+.stage-pl-empty .ssb-pl-all {
+    cursor: pointer;
+    font-size: 8px;
+    color: #777;
+    z-index: 2;
+    width: 5px;
+}
+.stage-lb-emptyhovered .ssb-lb-all,
+.stage-ui-emptyhovered .ssb-ui-all,
+.stage-ly-emptyhovered .ssb-ly-all,
+.stage-pa-emptyhovered .ssb-pa-all,
+.stage-ra-emptyhovered .ssb-ra-all,
+.stage-gx-emptyhovered .ssb-gx-all,
+.stage-pl-emptyhovered .ssb-pl-all {
+    cursor: pointer;
+    background-color: var(--emph2-back-over-col);
+    z-index: 2;
+    width: 30px;
+}
 
 
 
 
 /*BLOCK BOX ===================================================*/
 
+.primary .block_box {
+    filter: contrast(0.4);
+    transition: filter 125ms linear;
+}
+
+.primary.hovered-false .block_box,
+.primary.hovereffectall-true .block_box,
+.primary > div .node:hover .block_box,
+.primary > div .node:hover + div .block_box {
+    filter: contrast(1);
+}
 
 .content .block_box {
     padding: 0px 10px;
@@ -293,73 +301,18 @@ main > section.dynatable {
     font-size: 10px;
 }
 
-
-.content .block_box.focussed-true {
-    background-color: var(--stage-focus-back-col);
-    font-weight: 800;
-    font-size: 16px;
-    z-index: 10;
+.block_box.focussed-true .name {
+    font-size: 14px;
+    font-weight: 700;
 }
 
-.content .block_box.draw_top_seperator::before {
-    z-index: 1;
-    content: "";
-    position: absolute;
-    top: -1px;
-    margin-top: 1px;
-    height: 1px;
-    width: 800px;
+.block_box.focussed-true {
+    background-position: 10% 50%;
 }
 
-.content .down .block_box.draw_top_seperator::before {
-    left: -15px;
-    background-image: linear-gradient(to right, #0000 0%, var(--branch-seperator-col) 30px);
+.block_box .name {
+    white-space: nowrap;
 }
-
-.content .up .block_box.draw_top_seperator::before {
-    right: -15px;
-    background-image: linear-gradient(to left, #0000 0%, var(--branch-seperator-col) 30px);
-}
-
-.block_box.grouped > div {
-    border-radius: 2px;
-    border: 1px solid var(--branch-seperator-col);
-    padding: 4px;
-    transition: background-color 100ms;
-}
-
-.block_box.grouped > div:hover {
-    cursor: pointer;
-    background-color: var(--stage-focus-back-col);
-}
-
-.block_box.deleted > div {
-    position: relative;
-    padding: 3px;
-    cursor: pointer;
-    height: calc(1 * var(--font-siz));
-    aspect-ratio: 1;
-    /* background-color: #777; */
-    border-radius: calc(0.3 * var(--font-siz));
-    opacity: 0.4;
-    transition: opacity 100ms;
-}
-.block_box.deleted > div:hover {
-    opacity: 1;
-}
-
-.block_box.deleted > div::after {
-    position: absolute;
-    top: calc(0.1 * var(--font-siz));
-    left: calc(0.1 * var(--font-siz));
-    height: calc(0.8 * var(--font-siz));
-    content: "";
-    aspect-ratio: 1;
-    background-image: url("../img/show.svg");
-    background-size: contain;
-}
-
-
 
 .block_box:hover .block_button {
     opacity: 0.2;
@@ -443,7 +396,8 @@ main > section.dynatable {
 }
 .th_dark .dynatable .block_box.deleted > div,
 .th_dark .dynatable .settingstoggle,
-.th_dark .dynatable .block_button {
+.th_dark .dynatable .block_button,
+.th_dark .dynatable .primary .component_reset_button {
     filter: invert();
 }
 
