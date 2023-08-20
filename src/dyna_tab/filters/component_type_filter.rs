@@ -1,7 +1,5 @@
 
-use crate::dyna_tab::component::*;
 use crate::dyna_tab::filters::*;
-use super::super::grid_sizer::*;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ComponentTypeFilter {

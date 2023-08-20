@@ -1,11 +1,8 @@
 use serde;
-use strum::IntoEnumIterator;
-use strum_macros::EnumIter;
 
 use crate::dyna_tab::{*, owner::*, lang::*};
 use crate::dyna_tab::components::*;
 use crate::dyna_tab::stage::*;
-use crate::dyna_tab::components::{langbridge::*, ui::*, layout::*, render::*, intergfx::*, gfxapi::*, platform::*};
 use crate::dyna_tab::tree::*;
 use crate::dyna_tab::block::*;
 
@@ -111,10 +108,16 @@ pub fn ComponentusComp(
         DynaTabTree::LefToRig => {
             cx.render(rsx!{
                 div {
-                    class: "primary",
+                    onmouseenter: move |_| {primary_hovered.set(true);},
+                    onmouseleave: move |_| {primary_hovered.set(false);},
+                    class: "primary hovered-{primary_hovered.get()}",
                     style: "
                         display: grid;
                     ",
+                    div {
+                        onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1); info!("bonk {}", tree_remount_trigger.get());},
+                        class: "component_reset_button shown-{primary_hovered.get()}",
+                    },
                     div {
                         style: "
                             grid-column: 1 / -1;
@@ -138,10 +141,16 @@ pub fn ComponentusComp(
         DynaTabTree::RigToLef => {
             cx.render(rsx!{
                 div {
-                    class: "primary",
+                    onmouseenter: move |_| {primary_hovered.set(true);},
+                    onmouseleave: move |_| {primary_hovered.set(false);},
+                    class: "primary hovered-{primary_hovered.get()}",
                     style: "
                         display: grid;
                     ",
+                    div {
+                        onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1); info!("bonk {}", tree_remount_trigger.get());},
+                        class: "component_reset_button shown-{primary_hovered.get()}",
+                    },
                     div {
                         style: "
                             grid-column: 1 / -1;
@@ -163,11 +172,6 @@ pub fn ComponentusComp(
             })
         },
         DynaTabTree::Hourglass => {
-            let selected_grid_col_str = format!(
-                "grid-column: {}-mid-0-1 / {}-mid-1-1", 
-                Stage::from_comp_typ(comp.typ).short_rep(), 
-                Stage::from_comp_typ(comp.typ).short_rep(),
-            );
             let targ_stage = Stage::from_comp_typ(comp.typ);
             cx.render(rsx!{
                 div {
@@ -183,7 +187,6 @@ pub fn ComponentusComp(
                     div {
                         onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1); info!("bonk {}", tree_remount_trigger.get());},
                         class: "component_reset_button shown-{primary_hovered.get()}",
-
                     },
                     div {
                         style: "
@@ -193,7 +196,7 @@ pub fn ComponentusComp(
                             grid-template-columns: {comp.splituptree.grid_cols_str};
                             grid-template-rows: {comp.splituptree.grid_rows_str};
                         ",
-                        for i in 0..1 {
+                        for _ in 0..1 {
                             TreeComp{
                                 dynatab_id: *dynatab_id,
                                 comp_id: comp.id,
@@ -251,7 +254,7 @@ pub fn ComponentusComp(
                             grid-template-columns: {comp.splitdowntree.grid_cols_str};
                             grid-template-rows: {comp.splitdowntree.grid_rows_str};
                         ",
-                        for i in 0..1 {
+                        for _ in 0..1 {
                             TreeComp{
                                 dynatab_id: *dynatab_id,
                                 comp_id: comp.id,

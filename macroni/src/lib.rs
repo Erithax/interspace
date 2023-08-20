@@ -17,7 +17,7 @@ use proc_macro_error::abort_if_dirty;
 use proc_macro_error::set_dummy;
 use quote::quote_spanned;
 use syn::{Item, Token, Ident, parse::{Parse, ParseStream, Result}};
-use quote::{quote};
+use quote::quote;
 use proc_macro_error::{abort, emit_error, proc_macro_error};
 use strsim::normalized_damerau_levenshtein;
 
@@ -315,9 +315,9 @@ pub fn parsetree(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
     // verify monotonically increasing stages
     for line in identified_res.iter() {
-        let mut curr_stage: usize = 0;
-        let mut last_non_self_index = 0;
-        let mut curr = &line[0];
+        let curr_stage: usize = 0;
+        let mut last_non_self_index;
+        let mut curr: &(Ident, Option<Ident>);
         for i in 0..line.len()  {
             curr = &line[i];
             match &curr.1 {
@@ -349,7 +349,7 @@ pub fn parsetree(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let mut lines = TokenStream::new();
     let mut bt_id = Ident::new("BlockType", Span::call_site());
 
-    for mut line in identified_res.iter_mut() {
+    for line in identified_res.iter_mut() {
         let mut line_token_stream = TokenStream::new();
         for (ref mut en, var) in line.iter_mut() {
             match var {
@@ -519,7 +519,7 @@ pub fn parsetree2(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     abort_if_dirty();
 
     let mut lines = TokenStream::new();
-    let mut bt_id = Ident::new("BlockType", Span::call_site());
+    let bt_id = Ident::new("BlockType", Span::call_site());
 
     for line in literalified_res.iter_mut() {
         let mut line_token_stream = TokenStream::new();

@@ -1,9 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
-#![allow(unused_variables)]
-#![allow(unused_imports)]
 #![allow(unused_braces)]
-
+#![allow(unused_variables)]
 
 
 
@@ -42,29 +40,15 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 */
 
 
-
 mod dyna_tab;
 mod image;
 
-use crate::image::*;
 use crate::dyna_tab::DynaTab;
 
-
-use std::collections::HashMap;
-use std::collections::VecDeque;
-use std::fs;
-use std::io;
-use std::path::Path;
-
-
-use dioxus::html::a;
 use dioxus::prelude::*;
-use num_integer;
-use sha2::{Sha256, Sha512, Digest};
-use log::{info, LevelFilter};
+use log::LevelFilter;
 
-use serde::Serialize;
-use serde::Deserialize;
+
 
 /*
 Before rewrite: size in bytes:
@@ -104,27 +88,28 @@ fn App(cx: Scope) -> Element {
                     background: #ff03;
                     padding: 20px;
                     border-radius: 10px;
+                    max-width: 90vw;
                 ",
                 "⚠️Work in progress. Data is incomplete and contains errors.",
             },
-            div {
-                onclick: move |_| {
-                    d_count.set(d_count.get()+1 % 5);
-                    dyna_tab_id.set(dyna_tab_id.get() + 1);
-                    let create_eval = use_eval(cx);
-                    create_eval(r#"
-                        updateGridSizerList()
-                    "#).unwrap();
-                },
-                style: "
-                    width: 40px; height: 40px; border-radius: 20px; background: #777; display: flex; justify-content: center; align-items: center;
-                    margin: 10px 0;
-                ",
-                span {
-                    "+"
-                }
-            },
-            for i in 0..*d_count.get() {
+            // div {
+            //     onclick: move |_| {
+            //         d_count.set(d_count.get()+1 % 5);
+            //         dyna_tab_id.set(dyna_tab_id.get() + 1);
+            //         let create_eval = use_eval(cx);
+            //         create_eval(r#"
+            //             updateGridSizerList()
+            //         "#).unwrap();
+            //     },
+            //     style: "
+            //         width: 40px; height: 40px; border-radius: 20px; background: #777; display: flex; justify-content: center; align-items: center;
+            //         margin: 10px 0;
+            //     ",
+            //     span {
+            //         "+"
+            //     }
+            // },
+            for _ in 0..*d_count.get() {
                 rsx!{DynaTab{
                     id: *dyna_tab_id.get(),
                 }}
@@ -145,9 +130,9 @@ impl Theme {
         let icon = web_sys::window().unwrap().document().unwrap().get_element_by_id("favicon").unwrap();
 
         if prefers_dark_color_theme.is_ok() && prefers_dark_color_theme.as_ref().unwrap().is_some() && prefers_dark_color_theme.unwrap().unwrap().matches() {
-            icon.set_attribute("href", "/img/Erithax/Erithax_dark.ico");
+            icon.set_attribute("href", "/img/Erithax/Erithax_dark.ico").unwrap();
         } else {
-            icon.set_attribute("href", "/img/Erithax/Erithax_light.ico");
+            icon.set_attribute("href", "/img/Erithax/Erithax_light.ico").unwrap();
         }
     }
 
@@ -293,20 +278,20 @@ fn Header(cx: Scope) -> Element {
     })
 }
 
-pub fn inline_erithax<T: Into<f64>>(id: String, col: String, size: T, stroke_wid: T) -> String {
-    let mut res = erithax(id, col, size, stroke_wid);
+pub fn inline_erithax<T: Into<f64>>(col: String, size: T, stroke_wid: T) -> String {
+    let mut res = erithax(col, size, stroke_wid);
     res.retain(|char| char != '\n');
     return res
 }
 
-pub fn erithax<T: Into<f64>>(id: String, col: String, size: T, stroke_wid: T) -> String {
+pub fn erithax<T: Into<f64>>(col: String, size: T, stroke_wid: T) -> String {
     let size: f64 = size.into();
     let stroke_wid: f64 = stroke_wid.into();
 
     let octa_side_len = (size-stroke_wid) / (1.0 + 2.0_f64.sqrt()); // top flat
     let octa_side_proj = 2.0_f64.sqrt()/2.0 * octa_side_len;
 
-    let cs0: f64 = 0.0;
+    let _cs0: f64 = 0.0;
     let cs1: f64 = 0.0 + stroke_wid/2.0;
     let cs2: f64 = 0.0 + stroke_wid/2.0 + octa_side_proj;
     let cm: f64 = size/2.0;
@@ -355,7 +340,7 @@ pub fn HeartDialog(cx: Scope, show: UseState<bool>) -> Element {
             ",
             div {
                 onclick: move |e| {e.stop_propagation();},
-                style: "padding: 40px; border: 1px solid white; background-color: #000;",
+                style: "padding: 40px; border: 1px solid white; background-color: #000; border-radius: 6px; max-width: 95vw;",
                 div {
                     "Hire me! 𝕖𝕣𝕚𝕥𝕙𝕒𝕩@𝕡𝕣𝕠𝕥𝕠𝕟.𝕞𝕖",
                 },
@@ -369,6 +354,7 @@ pub fn HeartDialog(cx: Scope, show: UseState<bool>) -> Element {
                 },
                 div {
                     a {
+                        style: "text-shadow: 0 0 8px blue;",
                         href: "https://www.github.com/erithax/ui-overview",
                         target: "_blank",
                         "Contribute code/data",

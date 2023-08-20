@@ -1,20 +1,13 @@
 
 use serde;
-use log::info;
 
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::Blockify;
 
-use crate::dyna_tab::components::*;
 use crate::dyna_tab::stage::*;
 use crate::dyna_tab::owner::*;
-use crate::dyna_tab::components::{langbridge::*, ui::*, layout::*, render::*, intergfx::*, gfxapi::*, platform::*};
+use crate::dyna_tab::components::{langbridge::*, ui::*, layout::*, paint::*, raster::*, intergfx::*, gfxapi::*, platform::*};
 use crate::dyna_tab::tree::*;
-
-pub struct TempConstellationHelper {
-    paths: Vec<Vec<ComponentId>>,
-    staged_paths: Vec<Vec<Vec<ComponentId>>>,
-}
 
 
 #[derive(Debug, Clone, serde::Serialize)] 
@@ -35,11 +28,12 @@ impl Constellation {
         let mut id_paths: Vec<Vec<Vec<ComponentId>>>;
     
 
-        let mut r: Vec<(ComponentType, Box<dyn Blockify>)> = vec![
+        let r: Vec<(ComponentType, Box<dyn Blockify>)> = vec![
             (ComponentType::Langbridge, Box::new(Langbridge{})),
             (ComponentType::Ui, Box::new(Ui{})),
             (ComponentType::Layout, Box::new(Layout{})),
-            (ComponentType::Paint, Box::new(Render{})),
+            (ComponentType::Paint, Box::new(Paint{})),
+            (ComponentType::Raster, Box::new(Raster{})),
             (ComponentType::Gfxapi, Box::new(Gfxapi{})),
             (ComponentType::Intergfx, Box::new(Intergfx{})),
             (ComponentType::Platform, Box::new(Platform{})),
@@ -75,7 +69,7 @@ impl Constellation {
                                 components.iter().position(|compy| &compy.str_id == s)
                                 .or( if s == &"$" {Some(comp_id)} else {None})
                                 .or( if s == &"*" {Some(ASTERISK_ID)} else {None})
-                                .unwrap()
+                                .expect(&format!("comp {} has messed up string paths {:?}", comp_id, str_paths))
                         ).collect()
                 ).collect()
         ).collect();
@@ -166,19 +160,19 @@ impl Constellation {
 
     pub fn get_all_ids_of_owner(&self, owner: Owner) -> Vec<ComponentId> {
         return self.comps.iter().clone().enumerate().filter(
-            |(id, comp)| comp.info.owner == owner
-        ).map(|(id, comp)| id).collect()
+            |(_, comp)| comp.info.owner == owner
+        ).map(|(id, _)| id).collect()
     }
 
     pub fn get_all_comps_of_owner(&self, owner: Owner) -> Vec<&Componentus> {
         return self.comps.iter().clone().enumerate().filter(
-            |(id, comp)| comp.info.owner == owner
-        ).map(|(id, comp)| comp).collect()
+            |(_, comp)| comp.info.owner == owner
+        ).map(|(_, comp)| comp).collect()
     }
 
     fn expand_paths(&self, id_paths: Vec<Vec<Vec<ComponentId>>>) -> Vec<Vec<ComponentId>>{
         let mut new_paths = Vec::new();
-        for (id, comp) in self.comps.iter().enumerate() {
+        for (id, _) in self.comps.iter().enumerate() {
             new_paths.append(&mut self.get_expanded_paths_from(&id_paths, id));
         }
 
@@ -216,7 +210,6 @@ impl Constellation {
                 base_path.remove(base_path.len()-1);
                 let last_node = base_path.last().unwrap();
                 assert!(*last_node != ASTERISK_ID, "invalid branch contains consecutive ALL {:?}", path);
-                let expanded_path: Vec<BlockType>;
                 for sub_path in self.get_expanded_paths_from(id_paths, *last_node) {
                     let mut new_path = base_path.clone();
                     new_path.append(&mut (&sub_path[1..]).to_vec());

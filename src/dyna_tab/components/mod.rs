@@ -6,7 +6,8 @@ use crate::dyna_tab::{owner::*, lang::*};
 pub mod langbridge;
 pub mod ui;
 pub mod layout;
-pub mod render;
+pub mod paint;
+pub mod raster;
 pub mod gfxapi;
 pub mod intergfx;
 pub mod platform;
@@ -65,7 +66,6 @@ pub enum ExtraInfo {
         flexbox: bool,
         grid: bool,
     },
-    Render {},
     Paint {
 
     },

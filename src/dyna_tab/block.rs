@@ -2,7 +2,6 @@
 use dioxus::prelude::*;
 use super::*;
 use sha2::{Sha256, Digest};
-use log::info;
 
 pub enum BlockBoxerEvent {
     Snip,

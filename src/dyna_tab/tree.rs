@@ -8,8 +8,7 @@ use dioxus::prelude::*;
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::constellation::*;
 use crate::dyna_tab::grid_sizer::size_grid;
-use crate::dyna_tab::stage;
-use log::{info};
+use log::info;
 
 use super::StageState;
 use super::CONSTELLATION;
@@ -156,7 +155,7 @@ impl Tree {
 
     pub fn assert_valid(&self) {
         // bidirectional consistency
-        for (id, block) in self.blocks.iter().enumerate() {
+        for (id, _block) in self.blocks.iter().enumerate() {
             assert!(self.get(self.get(id).parent).children.contains(&id));
             for ch in self.get(id).children.iter() {
                 assert!(self.get(*ch).parent == id);
@@ -233,20 +232,6 @@ impl Tree {
        
         return res.into_iter();
     }
-
-    // ComponentType {
-    //     pub fn iterator() -> impl Iterator<Item = ComponentType> {
-    //         [
-    //             ComponentType::Langbridge,
-    //             ComponentType::Ui,
-    //             ComponentType::Layout,
-    //             ComponentType::Paint,
-    //             ComponentType::Raster,
-    //             ComponentType::Gfxapi,
-    //             ComponentType::Intergfx,
-    //             ComponentType::Platform,
-    //         ].iter().copied()
-    //     }
 
     pub fn full_trees_from_paths_of(con: &Constellation, paths: &Vec<Vec<ComponentId>>, targ: ComponentId) -> (Tree, Tree) {
         assert!(paths.iter().enumerate().all(|(i, path)| paths.iter().enumerate().any(
@@ -761,7 +746,7 @@ impl Tree {
             );
         }
         for (block_id, (len, start, end)) in stage_indices {
-            let mut block = self.get_mut(block_id);
+            let block = self.get_mut(block_id);
             block.stage_subtree_dep_len = len;
             block.stage_subtree_dep_start = start;
             block.stage_subtree_dep_end = end;
@@ -853,7 +838,7 @@ impl Tree {
         
         for (sub, dep_len_max) in res.iter_mut() {
             let mut curr_max_dep_len = 0;
-            for (&block_id, block) in self.blocks.iter()
+            for (_, block) in self.blocks.iter()
                     .filter(|(id, b)| **id != self.root && *sub == self.block_sub_stage(constellation, **id)) 
             {
                 curr_max_dep_len = curr_max_dep_len.max(block.stage_subtree_dep_len)
@@ -964,8 +949,6 @@ pub fn TreeComp(
 ) -> Element {
     // info!("TreeComp(comp_id: {comp_id}, tree_type: {:?}", tree_type);
 
-    let comp_type_filter_inner = comp_type_filter.read().clone();
-
     let init_tree = |tree_type: TreeType, comp_type_filter: &ComponentTypeFilter, stage_filter: &StageFilter| -> Tree {
         info!("tree state init");
         let mut tree = match tree_type {
@@ -997,7 +980,7 @@ pub fn TreeComp(
 
     }
 
-    let mut to_snip: Vec<BlockId> = tree.read().blocks.iter()
+    let to_snip: Vec<BlockId> = tree.read().blocks.iter()
             .filter(|(id, bl)| 
                 **id != tree.read().root && 
                 ( 
@@ -1020,7 +1003,7 @@ pub fn TreeComp(
         }
     });
 
-    use_effect(cx, (grid_sizer_use_effect_flag), |(grid_sizer_use_effect_flag)|{
+    use_effect(cx, grid_sizer_use_effect_flag, |grid_sizer_use_effect_flag|{
         to_owned![dynatab_id];
         async move {
             size_grid(dynatab_id);
@@ -1033,7 +1016,7 @@ pub fn TreeComp(
     tree_type.hash(&mut prop_deep_rerender_hasher);
     let prop_deep_rerender_hash = format!("{:x}", prop_deep_rerender_hasher.finish());
 
-    let tree_hash = format!("{:x}", tree.read().hash());
+    // let tree_hash = format!("{:x}", tree.read().hash());
     
     let substages = tree.read().get_all_substages(&CONSTELLATION);
     

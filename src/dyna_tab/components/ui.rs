@@ -1,13 +1,7 @@
-use macroni::use_all_block_modules;
 
-// use_all_block_modules!(ui);
-
-use macroni::parsetree;
 use macroni::parsetree2;
 use crate::dyna_tab::Blockify;
 use crate::dyna_tab::component::*;
-use crate::dyna_tab::owner::*;
-use crate::dyna_tab::*;
 use super::ExtraInfo;
 use super::*;
 
@@ -65,9 +59,10 @@ impl Blockify for Ui {
                 liveview: false,
             },
             parsetree2!{
-                $ Gecko *,
-                $ Servo *,
-                $ Blink *,
+                $ Gecko_ly *,
+                $ Servo_ly *,
+                $ Blink_ly *,
+                $ Webkit_ly *,
             }
         ),
         ("Dioxus",
@@ -328,6 +323,30 @@ impl Blockify for Ui {
                 $ Skia,
                 $ Slintcpu,
                 $ Femtovg,
+            }
+        ),
+        (
+            "SwiftUI",
+            Info {
+                name: "SwiftUI",
+                owner: Owner::Apple,
+                description: "TODO",
+                website: "",
+                source_openess: SourceOpeness::NA,
+                impl_langs: vec![],
+            },
+            ExtraInfo::Ui {
+                is_immediate: false,
+                reactivity: Reactivity::Swifty,
+                declarativity: RoughRange::TODO,
+                macrotivity: RoughRange::TODO,
+                language: UiLang::Lang(Lang::Swift),
+                hot_reload: false,
+                ssr: false,
+                liveview: false,
+            },
+            parsetree2!{
+                $ Coregraphics *
             }
         ),
         ("Xilem", 

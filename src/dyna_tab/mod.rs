@@ -1,12 +1,10 @@
 
 
-use core::fmt::LowerHex;
-use std::{collections::BTreeMap, char::MAX};
-use log::{info, LevelFilter};
-use dioxus::{prelude::*, html::a};
-use strum::{self, IntoEnumIterator};
-use strum_macros::{Display, EnumIter};
+use std::collections::BTreeMap;
+use log::info;
+use dioxus::prelude::*;
 use lazy_static::lazy_static;
+use strum::IntoEnumIterator;
 
 pub mod constellation;
 mod component;
@@ -20,8 +18,9 @@ mod grid_sizer;
 mod filters;
 
 use crate::*;
-use {constellation::*, component::*, owner::*, lang::*, stage::*, tree::*};
-use components::{langbridge::*, ui::*, layout::*, render::*, gfxapi::*, intergfx::*, platform::*};
+use constellation::*;
+use component::*;
+use stage::*;
 use filters::{component_type_filter::*, stage_filter::*};
 use filters::*;
 use grid_sizer::*;
@@ -94,6 +93,7 @@ pub enum ShowFullInfo {
     InTreeAlways,
     InTreeOnHover,
     InTreeOnClick,
+    AfterTreeAlways,
     AfterTreeOnClick,
 }
 
@@ -144,7 +144,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
 
 
     let mut grid_template_rows_string = String::from("grid-template-rows: ");
-    for (comp_id, comp) in CONSTELLATION.comps.iter().enumerate() {
+    for (_, comp) in CONSTELLATION.comps.iter().enumerate() {
         grid_template_rows_string += &("[".to_owned() + comp.str_id);
         grid_template_rows_string += "-s] ";
         grid_template_rows_string += "auto ";

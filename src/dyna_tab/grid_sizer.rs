@@ -1,8 +1,6 @@
 
-use std::collections::BTreeMap;
 
-use wasm_timer::*;
-use log::info;
+// use wasm_timer::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -39,7 +37,7 @@ pub fn size_grid(id: usize) {
     let stages: [&'static str; 7] = ["lb", "ui", "ly", "pa", "ra", "gx", "pf"];
     let pseudos: [&'static str; 4] = ["all", "pre", "mid", "post"];
 
-    let execution_timer = Instant::now();
+    // let execution_timer = Instant::now();
 
     let docu = web_sys::window().unwrap().document().unwrap();
 
@@ -67,7 +65,7 @@ pub fn size_grid(id: usize) {
             let sub_backs: web_sys::HtmlCollection = mutation_observer_ele.get_elements_by_class_name(& format!("ssb-{stage}-{pseudo}"));
             for back_i in 0..sub_backs.length() {
                 let back = sub_backs.item(back_i).unwrap();
-                let mut back_wid = back.scroll_width();
+                let back_wid = back.scroll_width();
                 // back_wid += web_sys::window().unwrap().get_computed_style(&back).unwrap().unwrap()
                 //     .get_property_value("border-left").unwrap()
                 //     .split("px").next().unwrap_or("0")
@@ -118,7 +116,7 @@ pub fn size_grid(id: usize) {
     let minimum_wid = stage_wids.iter().fold(0, |acc, nex| acc + nex[ALL_IND]);
 
     // 32 is hack to determine collapsed stages
-    let non_collapsed_stage_count = stage_wids.iter().fold(0, |acc, nex| {if (nex[ALL_IND] > 32) {return acc + 1} else {return acc}});
+    let non_collapsed_stage_count = stage_wids.iter().fold(0, |acc, nex| {if nex[ALL_IND] > 32 {return acc + 1} else {return acc}});
 
     if non_collapsed_stage_count == 0 as i32 {
         for stage_pseudo_wids in stage_wids.iter_mut() {

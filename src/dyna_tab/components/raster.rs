@@ -1,34 +1,31 @@
-use macroni::use_all_block_modules;
-// use_all_block_modules!(render);
 
-use macroni::parsetree;
 use macroni::parsetree2;
 use crate::dyna_tab::Blockify;
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::owner::*;
-use crate::dyna_tab::*;
+use crate::dyna_tab::lang::*;
 use super::ExtraInfo;
 
 
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy, serde::Deserialize, serde::Serialize)]
-pub struct Render {}
+pub struct Raster {}
 
 
-impl Blockify for Render {
+impl Blockify for Raster {
     fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
         vec!
         [
-        ("Erithaxrender",
+        ("Erithaxraster",
             Info {
-                name: "Erithax Render",
+                name: "Erithax Raster",
                 owner: Owner::Erithax,
                 description: "TODO",
                 website: "",
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $
             }
@@ -42,41 +39,26 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Cpp],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
             }
         ),
-        ("Servo", 
+        ("Webrender", 
             Info {
-                name: "Servo",
+                name: "WebRender",
                 owner: Owner::LinuxFoundation,
                 description: "TODO",
                 website: "",
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
                 $ Webgpu Wgpu,
                 $ Skia,
                 $ Cairo,
-            }
-        ),
-        ("Blink", 
-            Info {
-                name: "Blink",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                source_openess: SourceOpeness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
-            ExtraInfo::Render {},
-            parsetree2!{
-                $ Skia *,
-                $ Webgpu Dawn *
             }
         ),
         ("Webkit", 
@@ -88,7 +70,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Cpp],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
             }
@@ -102,7 +84,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $
             }
@@ -116,7 +98,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ D3d Windows,
             }
@@ -130,7 +112,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Metal,
                 $ Metal Macos,
@@ -146,7 +128,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Xwindow Linux,
                 $ Coregraphics Macos,
@@ -162,7 +144,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Xwindow *,
                 $ Coregraphics,
@@ -184,7 +166,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Opengles
             }
@@ -198,7 +180,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Direct2d Windows,
                 $ Coregraphics Macos,
@@ -214,7 +196,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Vulkan,
                 $ Vulkan Windows,
@@ -241,7 +223,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::TODO],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Cpu
             }
@@ -255,7 +237,7 @@ impl Blockify for Render {
                 source_openess: SourceOpeness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Render {},
+            ExtraInfo::Raster {},
             parsetree2!{
                 $ Wgpu *
             }

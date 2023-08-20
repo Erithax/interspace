@@ -288,6 +288,7 @@ main > section.dynatable {
 .primary > div .node:hover .block_box,
 .primary > div .node:hover + div .block_box {
     filter: contrast(1);
+    text-shadow: 0 0 8px var(--text-glow-col)
 }
 
 .content .block_box {
@@ -301,14 +302,13 @@ main > section.dynatable {
     font-size: 10px;
 }
 
+
+
 .block_box.focussed-true .name {
     font-size: 14px;
     font-weight: 700;
 }
 
-.block_box.focussed-true {
-    background-position: 10% 50%;
-}
 
 .block_box .name {
     white-space: nowrap;

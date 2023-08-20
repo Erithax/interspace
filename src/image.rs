@@ -1,15 +1,14 @@
-use std::collections::{HashSet, LinkedList};
+
+use std::collections::HashSet;
 use std::ffi::OsStr;
 use std::path::PathBuf;
 use std::str::FromStr;
-use std::{fs, io, path::Path};
+use std::{fs, path::Path};
 use std::time::SystemTime;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
 use sha2::{self, Digest};
-// use generic_array::*;
-use core::fmt::LowerHex;
 
 use crate::{dyna_tab::constellation::Constellation, dyna_tab::owner::Owner};
 
@@ -181,23 +180,6 @@ impl ImageList {
         }
     }
 
-    pub fn loadFromFilesDir() {
-        // check that the ./res/img/ file directory structure is valid
-        for imgdir_item in 
-            fs::read_dir(SRC_DIR).expect(&format!("Image source directory SRC_DIR = {} could not be opened", SRC_DIR)) 
-        {
-            let imgdir_item = imgdir_item.unwrap().path();
-            
-
-            for ownerdir_item in fs::read_dir(imgdir_item).unwrap() {
-                let ownerdir_item = ownerdir_item.unwrap().path();
-
-                let file_stem = ownerdir_item.file_stem().unwrap().to_str().unwrap();
-
-            }
-        }
-    }
-
     pub fn assert_self_valid(&self) {
         for o in self.stuffio.iter() {
             assert!(o.1.len() == o.2.len(), "ImageList is not internally consistent for owner {}", o.0);
@@ -250,7 +232,7 @@ impl ImageList {
         self.stuffio.retain_mut(|e|{
 
             let src_owner_path = Path::new(SRC_DIR).join(e.0.clone());
-            let dst_owner_path: PathBuf = Path::new(DST_DIR).join(e.0.clone());
+            // let dst_owner_path: PathBuf = Path::new(DST_DIR).join(e.0.clone());
             if ! Owner::iter().any(|x: Owner| e.0 == x.to_string()) || ! src_owner_path.exists(){
                 dbg!("owner {} was removed since last compilation", e.0.clone());
                 dbg!("removing directories is currently disabled");
@@ -290,7 +272,7 @@ impl ImageList {
             }
            
             for j in 0..e.1.len() {
-                let mut src_img = &mut e.1[j];
+                let src_img = &mut e.1[j];
                 let src_img_path = src_owner_path.join(src_img.relpath());
                 let dst_img_path = dst_owner_path.join(src_img.relpath()); // may or may not exist right now
             
@@ -299,7 +281,7 @@ impl ImageList {
                 let mut hasher = sha2::Sha256::new();
                 let mut file = fs::File::open(&src_img_path).unwrap();
         
-                let bytes_written = io::copy(&mut file, &mut hasher).unwrap();
+                let bytes_written = std::io::copy(&mut file, &mut hasher).unwrap();
                 let hash_bytes = hasher.finalize();
 
                 if format!("{:x}", hash_bytes) != src_img.hash || !dst_img_path.exists() {

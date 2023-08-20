@@ -143,6 +143,7 @@ header div.rig img.external {
     --emph2-back-over-col: #fff2;
     --emph-fore-over-col: #0001;
     --emph2-fore-over-col: #0002;
+    --text-glow-col: #fff;
 }
 
 .th_light {
@@ -152,6 +153,7 @@ header div.rig img.external {
     --emph2-back-over-col: #0002;
     --emph-fore-over-col: #fff1;
     --emph2-fore-over-col: #fff2;
+    --text-glow-col: #0000;
 }
 
 .th_dark header {
