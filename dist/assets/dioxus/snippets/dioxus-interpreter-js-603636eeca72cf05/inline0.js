@@ -163,19 +163,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
       function truthy(val) {
         return val === "true" || val === true;
       }
-    let s = "";let lsp,sp,sl; let c = new TextDecoder();let u8buf,u8bufp;const attr = [];
-                    let attr_tmp1, attr_tmp2;
-                    function get_attr() {
-                        attr_tmp2 = u8buf[u8bufp++];
-                        if(attr_tmp2 & 128){
-                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            attr[attr_tmp2&4294967167]=attr_tmp1;
-                            return attr_tmp1;
-                        }
-                        else{
-                            return attr[attr_tmp2&4294967167];
-                        }
-                    }let u32buf,u32bufp;const ns_cache = [];
+    const ns_cache = [];
                     let ns_cache_tmp1, ns_cache_tmp2;
                     function get_ns_cache() {
                         ns_cache_tmp2 = u8buf[u8bufp++];
@@ -187,7 +175,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return ns_cache[ns_cache_tmp2&4294967167];
                         }
-                    }const evt = [];
+                    }let s = "";let lsp,sp,sl; let c = new TextDecoder();let u8buf,u8bufp;const evt = [];
                     let evt_tmp1, evt_tmp2;
                     function get_evt() {
                         evt_tmp2 = u8buf[u8bufp++];
@@ -199,8 +187,20 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return evt[evt_tmp2&4294967167];
                         }
-                    }
-            let bubbles,field,ptr,id,event_name,len,value,ns;
+                    }const attr = [];
+                    let attr_tmp1, attr_tmp2;
+                    function get_attr() {
+                        attr_tmp2 = u8buf[u8bufp++];
+                        if(attr_tmp2 & 128){
+                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            attr[attr_tmp2&4294967167]=attr_tmp1;
+                            return attr_tmp1;
+                        }
+                        else{
+                            return attr[attr_tmp2&4294967167];
+                        }
+                    }let u32buf,u32bufp;
+            let len,value,event_name,ptr,id,ns,bubbles,field;
             export function create(r){
                 d=r;
             }
