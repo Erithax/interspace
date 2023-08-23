@@ -288,8 +288,16 @@ main > section.dynatable {
 .primary > div .node:hover .block_box,
 .primary > div .node:hover + div .block_box {
     filter: contrast(1);
-    text-shadow: 0 0 8px var(--text-glow-col)
 }
+
+.primary.hovered-false .block_box .name,
+.primary.hovereffectall-true .block_box .name,
+.primary > div .node:hover .block_box .name,
+.primary > div .node:hover + div .block_box .name {
+    text-shadow: 0 0 8px var(--text-glow-col);
+}
+
+
 
 .content .block_box {
     padding: 0px 10px;
@@ -297,6 +305,7 @@ main > section.dynatable {
     position: relative;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     font-size: 10px;
@@ -308,6 +317,53 @@ main > section.dynatable {
     font-size: 14px;
     font-weight: 700;
 }
+
+.block_box .info {
+    color: #777;
+    font-size: 12px;
+    position: relative;
+}
+
+.block_box > * {
+    display: inline-block;
+}
+
+.block_box .info > .website::before,
+.block_box .info > .openness::before,
+.block_box .info > .impl_langs::before,
+.block_box .info > .owner > .label::before {
+    content: "";
+    background-size: contain;
+    display: inline-block;
+    overflow: hidden;
+    height: 14px;
+    aspect-ratio: 1 / 1;
+    margin-right: 4px;
+    top: 3px;
+    position: relative;
+}
+
+.block_box .owner > .label {
+    padding: 2px 4px 2px 0;
+    display: inline-block;
+    cursor: pointer;
+    transition: background 150ms linear;
+    border-radius: 5px;
+}
+
+.block_box .owner > .label:hover {
+    background: var(--emph2-back-over-col);
+}   
+
+.block_box .info > .website {
+    color: inherit;
+    text-decoration: none;
+}
+
+.block_box .info > .owner > .label::before {background-image: url("../img/hand_with_key.svg");}
+.block_box .info > .website::before {background-image: url("../img/www_globe.svg");}
+.block_box .info > .openness::before {background-image: url("../img/legal_document.svg");}
+.block_box .info > .impl_langs::before {background-image: url("../img/cube_code.svg");}
 
 
 .block_box .name {

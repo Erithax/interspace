@@ -63,7 +63,7 @@ impl ComponentType {
 
 
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub enum SourceOpeness {
+pub enum SourceOpenness {
     NA,
     Superopen,          // MIT, Apache
     Copyleft,           // GPL
@@ -77,7 +77,7 @@ pub struct Info {
     pub name: &'static str,
     pub owner: Owner,
     pub description: &'static str,
-    pub source_openess: SourceOpeness,
+    pub code_openness: SourceOpenness,
     pub website: &'static str,
     pub impl_langs: Vec<Lang>,
 }

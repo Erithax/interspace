@@ -22,7 +22,7 @@ impl Blockify for Paint {
                 owner: Owner::Erithax,
                 description: "TODO",
                 website: "",
-                source_openess: SourceOpeness::NA,
+                code_openness: SourceOpenness::NA,
                 impl_langs: vec![Lang::Rust],
             },
             ExtraInfo::Paint {},
@@ -36,13 +36,29 @@ impl Blockify for Paint {
                 owner: Owner::Google,
                 description: "TODO",
                 website: "",
-                source_openess: SourceOpeness::NA,
+                code_openness: SourceOpenness::NA,
                 impl_langs: vec![Lang::Cpp],
             },
-            ExtraInfo::Raster {},
+            ExtraInfo::Paint {},
             parsetree2!{
                 $ Skia *,
                 $ Webgpu Dawn *
+            }
+        ),
+        (
+            "Flutter_pa",
+            Info {
+                name: "Flutter paint",
+                owner: Owner::Google,
+                description: "TODO",
+                website: "",
+                code_openness: SourceOpenness::Superopen,
+                impl_langs: vec![Lang::Dart],
+            },
+            ExtraInfo::Paint{},
+            parsetree2!{
+                $ Skia *,
+                $ Impeller *
             }
         ),
         ("Gecko_pa", 
@@ -51,10 +67,10 @@ impl Blockify for Paint {
                 owner: Owner::Mozilla,
                 description: "TODO",
                 website: "",
-                source_openess: SourceOpeness::NA,
+                code_openness: SourceOpenness::NA,
                 impl_langs: vec![],
             },
-            ExtraInfo::Raster {},
+            ExtraInfo::Paint {},
             parsetree2!{
                 $ Webrender *
             }
@@ -65,10 +81,10 @@ impl Blockify for Paint {
                 owner: Owner::LinuxFoundation,
                 description: "TODO",
                 website: "",
-                source_openess: SourceOpeness::NA,
+                code_openness: SourceOpenness::NA,
                 impl_langs: vec![Lang::Rust],
             },
-            ExtraInfo::Raster {},
+            ExtraInfo::Paint {},
             parsetree2!{
                 $ Webrender *
             }
@@ -79,10 +95,10 @@ impl Blockify for Paint {
                 owner: Owner::Apple,
                 description: "TODO",
                 website: "",
-                source_openess: SourceOpeness::NA,
+                code_openness: SourceOpenness::NA,
                 impl_langs: vec![],
             },
-            ExtraInfo::Raster {},
+            ExtraInfo::Paint {},
             parsetree2!{
                 $ Coregraphics *
             }

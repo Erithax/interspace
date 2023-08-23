@@ -72,11 +72,18 @@ pub fn indent(s: &str) -> String {
     return res
 }
 
+pub fn strip_website(mut s: &str) -> &str {
+    s = s.strip_prefix("https://").unwrap_or(s);
+    s = s.strip_prefix("www.").unwrap_or(s);
+    s = s.strip_suffix("/").unwrap_or(s);
+    return s
+}
 
 fn App(cx: Scope) -> Element {
 
     let dyna_tab_id = use_state(cx, || 0 as usize);
     let d_count = use_state(cx, || 1);
+
 
     cx.render(rsx!{
         Header{},

@@ -23,7 +23,7 @@ impl Blockify for Layout {
                     owner: Owner::Erithax,
                     description: "TODO",
                     website: "erithax.com",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![Lang::Rust],
                 },
                 ExtraInfo::Layout {
@@ -43,7 +43,7 @@ impl Blockify for Layout {
                     owner: Owner::Google,
                     description: "TODO",
                     website: "",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![],
                 },
                 ExtraInfo::Layout {
@@ -57,13 +57,33 @@ impl Blockify for Layout {
                 }
             ),
             (
+                "Flutter_ly",
+                Info {
+                    name: "Flutter layout",
+                    owner: Owner::Google,
+                    description: "TODO",
+                    website: "https://api.flutter.dev/flutter/rendering/rendering-library.html",
+                    code_openness: SourceOpenness::Superopen,
+                    impl_langs: vec![Lang::Dart],
+                },
+                ExtraInfo::Layout {
+                    css: false,
+                    flexbox: true,
+                    grid: true,
+                    constraint_based: false,
+                },
+                parsetree2!{
+                    $ Flutter_pa *
+                }
+            ),
+            (
                 "Gecko_ly", 
                 Info {
                     name: "Gecko",
                     owner: Owner::Mozilla,
                     description: "TODO",
                     website: "",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![],
                 },
                 ExtraInfo::Layout {
@@ -83,7 +103,7 @@ impl Blockify for Layout {
                     owner: Owner::LinuxFoundation,
                     description: "TODO",
                     website: "",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![Lang::Rust],
                 },
                 ExtraInfo::Layout {
@@ -103,7 +123,7 @@ impl Blockify for Layout {
                     owner: Owner::Apple,
                     description: "TODO",
                     website: "",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![],
                 },
                 ExtraInfo::Layout {
@@ -123,7 +143,7 @@ impl Blockify for Layout {
                     owner: Owner::Dioxuslabs,
                     description: "TODO",
                     website: "",
-                    source_openess: SourceOpeness::NA,
+                    code_openness: SourceOpenness::NA,
                     impl_langs: vec![Lang::Rust],
                 },
                 ExtraInfo::Layout {

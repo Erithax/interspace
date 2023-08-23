@@ -1,6 +1,9 @@
 
 use serde;
 use strum_macros::Display;
+use dioxus::prelude::*;
+
+use crate::{CollapsableToggle, strip_website};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, serde::Deserialize, serde::Serialize)]
 pub enum OwnerType {
@@ -48,11 +51,14 @@ pub enum Owner {
     Leptosrs,
     Linebender,
     LinuxFoundation,
+    Meta,
     Microsoft,
     Mozilla,
     Qtcompany,
     Sixtyfps,
+    Svelte,
     Terrainformatica,
+    Vue,
     Webstandards,
     Yew,
     Xorg,
@@ -75,7 +81,7 @@ impl Owner {
             Owner::Erithax => OwnerInfo {
                 name: "Erithax",
                 website: "https://www.erithax.com/",
-                ownertype: OwnerType::Corporation { nonprofit: false, sub_corps: vec![] },
+                ownertype: OwnerType::Individual,
                 light_back: Some("black"),
                 dark_back: Some("white"),
             },
@@ -160,12 +166,12 @@ impl Owner {
                 website: "abc.xyz",
                 ownertype: OwnerType::Corporation { nonprofit: false, sub_corps: vec![] },
                 light_back: Some("
-                    linear-gradient(to top left,  #ff0f 0%, #0000 50%, #04ff 100%), 
-                    linear-gradient(to top right, #f00f 0%, #0000 50%, #0f0f 100%), 
+                    linear-gradient(to top left,  #f4b400 0%, #0000 50%, #4285f4 100%), 
+                    linear-gradient(to top right, #db4437 0%, #0000 50%, #0f9d58 100%), 
                     #0000;"),
                 dark_back: Some("
-                    linear-gradient(to top left,  #ff0f 0%, #0000 50%, #04ff 100%), 
-                    linear-gradient(to top right, #f00f 0%, #0000 50%, #0f0f 100%), 
+                    linear-gradient(to top left,  #f4b400 0%, #0000 50%, #4285f4 100%), 
+                    linear-gradient(to top right, #db4437 0%, #0000 50%, #0f9d58 100%), 
                     #0000;")
             },
             Owner::Grovesnl => OwnerInfo {
@@ -225,6 +231,19 @@ impl Owner {
                 light_back: Some("linear-gradient(to top right, #0094ff 0%, #0000 30%, #0000 60%, #003778 100%)"),
                 dark_back: Some("linear-gradient(to top right, #0094ff 0%, #0000 30%, #0000 60%, #003778 100%)"),
             },
+            Owner::Meta => OwnerInfo {
+                name: "Meta",
+                website: "https://meta.com",
+                ownertype: OwnerType::Corporation { nonprofit: false, sub_corps: vec![]},
+                light_back: Some("
+                    linear-gradient(to top right, #0094ff 0%, #0000 50%, #0094ff 100%),
+                    linear-gradient(to top left,  #003778 0%, #0000 50%, #003778 100%)
+                "),
+                dark_back: Some("
+                    linear-gradient(to top right, #0094ff 0%, #0000 50%, #0094ff 100%),
+                    linear-gradient(to top left,  #003778 0%, #0000 50%, #003778 100%)
+                "),
+            },
             Owner::Microsoft => OwnerInfo {
                 name: "Microsoft",
                 website: "https://microsoft.com",
@@ -259,6 +278,13 @@ impl Owner {
                 light_back: Some("#2379f4"),
                 dark_back: Some("#2379f4"),
             },
+            Owner::Svelte => OwnerInfo {
+                name: "Svelte Team",
+                website: "https://github.com/sveltejs",
+                ownertype: OwnerType::Community,
+                light_back: Some("#ff3d01"),
+                dark_back: Some("#ff3d01"),
+            },
             Owner::Terrainformatica => OwnerInfo {
                 name: "Terra Informatica",
                 website: "https://terrainformatica.com",
@@ -268,6 +294,19 @@ impl Owner {
                     linear-gradient(to top right, #d93131 0%, #0000 50%, #d93131 100%)
                 "),
                 dark_back: Some("#d93131"),
+            },
+            Owner::Vue => OwnerInfo {
+                name: "Vue Team",
+                website: "w3.org",
+                ownertype: OwnerType::Community,
+                light_back: Some("
+                    linear-gradient(to top left: #3fb984 0%, #0000 50%, #31475e 100%),
+                    linear-gradient(to top right: #3fb984 0%, #0000 50%, #31475e 100%),
+                "),
+                dark_back: Some("
+                    linear-gradient(to top left: #3fb984 0%, #0000 50%, #31475e 100%),
+                    linear-gradient(to top right: #3fb984 0%, #0000 50%, #31475e 100%),
+                "),
             },
             Owner::Webstandards => OwnerInfo {
                 name: "WebStandards",
@@ -301,6 +340,70 @@ impl Owner {
             //     incorporated: *incorporated,
             //     nonprofit: *nonprofit,
             // },
+        }
+    }
+
+    
+}
+
+
+#[inline_props]
+pub fn OwnerComp(cx: Scope, self_: Owner) -> Element {
+
+    let collapsed = use_state(cx, || CollapsableToggle::Collapsed);
+    let disp_website = strip_website(self_.value().website.clone());
+    
+    render!{
+        div {
+            onclick: move |_| {collapsed.set(collapsed.get().toggle());},
+            class: "owner",
+            div {
+                class: "label",
+                "{self_.value().name}"
+            },
+            div{class:"collapsable {collapsed}", div {class: "ownerinfo",
+                a {
+                    class: "website",
+                    href: "{disp_website}",
+                    target: "_blank",
+                    "{disp_website}"
+                },
+                match self_.value().ownertype {
+                    OwnerType::Individual => {
+                        rsx!{
+                            div {
+                                "individual"
+                            }
+                        }
+                    },
+                    OwnerType::Community => {
+                        rsx!{
+                            div {
+                                "community"
+                            }
+                        }
+                    },
+                    OwnerType::Corporation{nonprofit, sub_corps} => {
+                        let nonprofit_str = if nonprofit {"non-profit"} else {"for-profit"};
+                        rsx!{
+                            div {
+                                "{nonprofit_str} corporation"
+                            },
+                            if sub_corps.len() > 0 {
+                                rsx!{div {
+                                    "sub corporations:",
+                                    for sub_corp in sub_corps {
+                                        div {
+                                            "{sub_corp.value().name}"
+                                        }
+                                    }
+                                }}
+                            }
+                            
+                        }
+                    }
+                }
+            }}
         }
     }
 }

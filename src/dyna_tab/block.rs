@@ -2,6 +2,7 @@
 use dioxus::prelude::*;
 use super::*;
 use sha2::{Sha256, Digest};
+use super::owner::*;
 
 pub enum BlockBoxerEvent {
     Snip,
@@ -47,13 +48,49 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
             if show_debug_info && debug_info.is_some() {
                 rsx!{div {
                     class: "name",
-                    "{CONSTELLATION.get_comp(*comp_id).info.name}\n{debug_info.as_ref().unwrap()}",
+                    "{comp.info.name}\n{debug_info.as_ref().unwrap()}",
                 }}
             } else {
                 rsx!{div {
                     class: "name",
-                    "{CONSTELLATION.get_comp(*comp_id).info.name}",
+                    "{comp.info.name}",
                 }}
+            },
+            if *is_focussed {
+                let disp_website = strip_website(comp.info.website);
+                let disp_impl_langs = if comp.info.impl_langs.len() == 0 {
+                    "".to_owned()
+                } else {
+                    comp.info.impl_langs[0].value().name.to_owned() + &comp.info.impl_langs.iter().skip(1).fold("".to_owned(), |acc: String, nex| acc + ", " + nex.value().name)
+                };
+                
+                rsx!{div {
+                    class: "info",
+                    OwnerComp {
+                        self_: comp.info.owner,
+                    },
+                    if disp_website != "" {
+                        render!{a {
+                            class: "website",
+                            href: "comp.info.website",
+                            target: "_blank",
+                            "{disp_website}",
+                        }}
+                    },
+                    div {
+                        class: "openness",
+                        "{comp.info.code_openness:?}",
+                    },
+                    div {
+                        class: "impl_langs",
+                        "{disp_impl_langs}",
+                    },
+                    div {
+                        "{comp.info.description}",
+                    }
+                }}
+            } else {
+                rsx!{pre {hidden: "", style: "display: none;"}}
             }
         }
     })

@@ -1,7 +1,7 @@
 
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, serde::Deserialize, serde::Serialize)]
-enum LangType {
+pub enum LangType {
     AOT,
     JIT,
     Interpreted,
@@ -9,8 +9,8 @@ enum LangType {
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, serde::Deserialize, serde::Serialize)]
 pub struct LangInfo {
-    name: String,
-    langtype: LangType,
+    pub name: &'static str,
+    pub langtype: LangType,
 }
 
 // =======================
@@ -42,17 +42,29 @@ pub enum Lang {
 }
 
 impl Lang {
-    fn value(&self) -> LangInfo {
+    pub fn value(&self) -> LangInfo {
         match *self {
-            Lang::Rust => LangInfo {
-                name: String::from("Rust"),
+            Lang::TODO => LangInfo {
+                name: "TODO",
+                langtype: LangType::AOT,
+            },
+            Lang::C => LangInfo {
+                name: "C",
                 langtype: LangType::AOT,
             },
             Lang::Cpp => LangInfo {
-                name: String::from("C++"),
+                name: "C",
                 langtype: LangType::AOT,
             },
-            _ => panic!("did not implement language data for Lang variant")
+            Lang::Javascript => LangInfo {
+                name: "Javascript",
+                langtype: LangType::JIT,
+            },
+            Lang::Rust => LangInfo {
+                name: "Rust",
+                langtype: LangType::AOT,
+            },
+            _ => panic!("did not implement language data for Lang variant {:?}", self)
         }
     }
 }
