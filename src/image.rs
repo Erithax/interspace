@@ -162,9 +162,9 @@ impl ImageList {
             assert!(Owner::iter().any(|x| imgdir_item.file_name().unwrap().to_str().unwrap() == x.to_string()), 
                 "Directory {} in ./res/img/ does not have the name of a valid owner", imgdir_item.display());
             let owner = Owner::from_str(imgdir_item.file_name().unwrap().to_str().unwrap()).unwrap();
-            let mut valid_file_names: Vec<&str> = c.get_all_comps_of_owner(owner).iter().map(|comp| comp.str_id).collect();
+            let mut valid_file_names: Vec<String> = c.get_all_comps_of_owner(owner).iter().map(|comp| comp.str_id.clone()).collect();
             let o = owner.to_string();
-            valid_file_names.push(o.as_str());
+            valid_file_names.push(o);
             let mut used_file_names: HashSet<String> = HashSet::new();
 
             for ownerdir_item in fs::read_dir(imgdir_item).unwrap() {
@@ -173,7 +173,7 @@ impl ImageList {
                 assert!(ownerdir_item.is_file(), 
                     "dir named {} found in ./res/img/, only a dir named 'archive' is allowed here", ownerdir_item.display());
                 let file_stem = ownerdir_item.file_stem().unwrap().to_str().unwrap();
-                assert!(valid_file_names.contains(&file_stem), "file in dir ./res/img/{} has invalid name {}", owner, file_stem);
+                assert!(valid_file_names.contains(&file_stem.to_owned()), "file in dir ./res/img/{} has invalid name {}", owner, file_stem);
                 assert!(!used_file_names.contains(file_stem), "multiple files with name {} in ./res/img/{}", file_stem, owner);
                 used_file_names.insert(file_stem.to_string());
             }
@@ -245,14 +245,14 @@ impl ImageList {
                 return false
             }
             
-            let mut src_valid_names: Vec<&str> = c.get_all_comps_of_owner(Owner::from_str(&e.0).unwrap())
-                .iter().map(|comp| comp.str_id).collect();
+            let mut src_valid_names: Vec<String> = c.get_all_comps_of_owner(Owner::from_str(&e.0).unwrap())
+                .iter().map(|comp| comp.str_id.clone()).collect();
 
             let o = e.0.clone();
-            src_valid_names.push(o.as_str());
+            src_valid_names.push(o);
 
             e.1.retain(|src_img| {
-                return src_valid_names.contains(&src_img.name.as_str()) && 
+                return src_valid_names.contains(&src_img.name) && 
                 containsfilestem(&src_owner_path, &src_img.name)    //src_owner_path.join(src_img.name.clone()).exists()
             });
             e.2.retain(|dst_img| {

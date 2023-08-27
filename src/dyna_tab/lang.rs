@@ -2,6 +2,7 @@
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, serde::Deserialize, serde::Serialize)]
 pub enum LangType {
+    NA,
     AOT,
     JIT,
     Interpreted,
@@ -36,35 +37,85 @@ pub enum Lang {
     Slintmarkup,
     Swift,
     Typescript,
-
-    SlintMarkUp,
-    QML,
 }
 
 impl Lang {
     pub fn value(&self) -> LangInfo {
+        use LangType::*;
+
         match *self {
+            Lang::NA => LangInfo {
+                name: "N/A",
+                langtype: NA,
+            },
             Lang::TODO => LangInfo {
                 name: "TODO",
-                langtype: LangType::AOT,
+                langtype: NA,
             },
             Lang::C => LangInfo {
                 name: "C",
-                langtype: LangType::AOT,
+                langtype: AOT,
             },
             Lang::Cpp => LangInfo {
-                name: "C",
-                langtype: LangType::AOT,
+                name: "C++",
+                langtype: AOT,
+            },
+            Lang::Csharp => LangInfo {
+                name: "C#",
+                langtype: JIT,
+            },
+            Lang::Dart => LangInfo {
+                name: "Dart",
+                langtype: JIT,
+            },
+            Lang::Html => LangInfo {
+                name: "HTML",
+                langtype: NA,
+            },
+            Lang::Java => LangInfo {
+                name: "Java",
+                langtype: JIT,
             },
             Lang::Javascript => LangInfo {
                 name: "Javascript",
-                langtype: LangType::JIT,
+                langtype: JIT,
+            },
+            Lang::Kotlin => LangInfo {
+                name: "Kotlin",
+                langtype: JIT,
+            },
+            Lang::Objectivec => LangInfo {
+                name: "Objective C",
+                langtype: AOT,
+            },
+            Lang::Python => LangInfo {
+                name: "Python",
+                langtype: NA,
+            },
+            Lang::Qml => LangInfo {
+                name: "QML",
+                langtype: NA,
+            },
+            Lang::Ruby => LangInfo {
+                name: "Ruby",
+                langtype: JIT,
             },
             Lang::Rust => LangInfo {
                 name: "Rust",
-                langtype: LangType::AOT,
+                langtype: AOT,
             },
-            _ => panic!("did not implement language data for Lang variant {:?}", self)
+            Lang::Slintmarkup => LangInfo {
+                name: "Slint Markup",
+                langtype: NA,
+            },
+            Lang::Swift => LangInfo {
+                name: "Swift",
+                langtype: AOT,
+            },
+            Lang::Typescript => LangInfo {
+                name: "Typescript",
+                langtype: JIT,
+            }
         }
     }
 }

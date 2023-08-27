@@ -13,18 +13,19 @@ pub struct Ui {}
 
 
 impl Blockify for Ui {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
         vec!
         [
         ("Erithaxui",
-            Info {
-                name: "Erithax UI",
-                owner: Owner::Erithax,
-                description: "TODO",
-                website: "https://www.erithax.com/",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Erithax UI",
+                Owner::Erithax,
+                "TODO",
+                "https://www.erithax.com/",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                None,
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -41,14 +42,15 @@ impl Blockify for Ui {
         ),
         (
             "Angular",
-            Info {
-                name: "Angular",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![Lang::Javascript],
-            },
+            Info::new(
+                "Angular",
+                Owner::Google,
+                "TODO",
+                "",
+                SourceOpenness::Superopen,
+                vec![Lang::Javascript],
+                Repo::opt_with_url("github.com/angular/angular"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -64,14 +66,15 @@ impl Blockify for Ui {
             }
         ),
         ("Dom",
-            Info {
-                name: "DOM",
-                owner: Owner::Webstandards,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "DOM",
+                Owner::Webstandards,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -90,14 +93,15 @@ impl Blockify for Ui {
             }
         ),
         ("Dioxus",
-            Info {
-                name: "Dioxus",
-                owner: Owner::Dioxuslabs,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Dioxus",
+                Owner::Dioxuslabs,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/dioxuslabs/dioxus"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -113,14 +117,15 @@ impl Blockify for Ui {
             }
         ),
         ("Druid",
-            Info {
-                name: "Druid",
-                owner: Owner::Linebender,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Druid",
+                Owner::Linebender,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/linebender/druid"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -136,14 +141,15 @@ impl Blockify for Ui {
             }
         ),
         ("Egui",
-            Info {
-                name: "Egui",
-                owner: Owner::Emilk,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Egui",
+                Owner::Emilk,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/emilk/egui"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: true,
                 reactivity: Reactivity::TODO,
@@ -159,14 +165,15 @@ impl Blockify for Ui {
             }
         ),
         ("Fltk",
-            Info {
-                name: "Fltk",
-                owner: Owner::TODO,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Fltk",
+                Owner::TODO,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                Repo::opt_with_url("https://github.com/fltk/fltk"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -184,14 +191,15 @@ impl Blockify for Ui {
             },
         ),
         ("Flutter",
-            Info {
-                name: "Flutter",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::C],
-            },
+            Info::new(
+                "Flutter",
+                Owner::Google,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::C],
+                Repo::opt_with_url("https://github.com/flutter/flutter"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -207,14 +215,15 @@ impl Blockify for Ui {
             }
         ),
         ("Gtk",
-            Info {
-                name: "GTK",
-                owner: Owner::Gnome,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::C],
-            },
+            Info::new(
+                "GTK",
+                Owner::Gnome,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::C],
+                Repo::opt_with_url("https://gitlab.gnome.org/GNOME/gtk"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -231,14 +240,15 @@ impl Blockify for Ui {
             }
         ),
         ("Iced",
-            Info {
-                name: "Iced",
-                owner: Owner::Icedrs,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Iced",
+                Owner::Icedrs,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/iced-rs/iced"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -254,14 +264,15 @@ impl Blockify for Ui {
             }
         ),
         ("Leptos",
-            Info {
-                name: "Leptos",
-                owner: Owner::Leptosrs,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Leptos",
+                Owner::Leptosrs,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/leptos-rs/leptos"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -277,14 +288,15 @@ impl Blockify for Ui {
             }
         ),
         ("Qt",
-            Info {
-                name: "Qt",
-                owner: Owner::Qtcompany,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Qt",
+                Owner::Qtcompany,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Cpp],
+                Repo::opt_with_url("https://code.qt.io/cgit/")
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -301,14 +313,15 @@ impl Blockify for Ui {
         ),
         (
             "React",
-            Info {
-                name: "React",
-                owner: Owner::Meta,
-                description: "TODO",
-                website: "https://react.dev",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![Lang::Javascript],
-            },
+            Info::new(
+                "React",
+                Owner::Meta,
+                "TODO",
+                "https://react.dev",
+                SourceOpenness::Superopen,
+                vec![Lang::Javascript],
+                Repo::opt_with_url("https://github.com/facebook/react"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::Reacty,
@@ -324,14 +337,15 @@ impl Blockify for Ui {
             }
         ),
         ("Scither",
-            Info {
-                name: "Scither",
-                owner: Owner::Terrainformatica,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Scither",
+                Owner::Terrainformatica,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Cpp],
+                Repo::opt_with_url("https://github.com/sciter-sdk/rust-sciter"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -349,14 +363,15 @@ impl Blockify for Ui {
             }
         ),
         ("Slint",
-            Info {
-                name: "Slint",
-                owner: Owner::Sixtyfps,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Slint",
+                Owner::Sixtyfps,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/slint-ui/slint"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -375,14 +390,15 @@ impl Blockify for Ui {
         ),
         (
             "Svelte",
-            Info {
-                name: "Svelte",
-                owner: Owner::Svelte,
-                description: "TODO",
-                website: "https://svelte.dev/",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![Lang::Javascript],
-            },
+            Info::new(
+                "Svelte",
+                Owner::Svelte,
+                "TODO",
+                "https://svelte.dev/",
+                SourceOpenness::Superopen,
+                vec![Lang::Javascript],
+                Repo::opt_with_url("https://github.com/sveltejs/svelte"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -399,14 +415,15 @@ impl Blockify for Ui {
         ),
         (
             "SwiftUI",
-            Info {
-                name: "SwiftUI",
-                owner: Owner::Apple,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![],
-            },
+            Info::new(
+                "SwiftUI",
+                Owner::Apple,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![],
+                None,
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::Swifty,
@@ -423,14 +440,15 @@ impl Blockify for Ui {
         ),
         (
             "Vue",
-            Info {
-                name: "Vue",
-                owner: Owner::Vue,
-                description: "",
-                website: "https://vuejs.org",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![],
-            },
+            Info::new(
+                "Vue",
+                Owner::Vue,
+                "",
+                "https://vuejs.org",
+                SourceOpenness::Superopen,
+                vec![],
+                Repo::opt_with_url("https://github.com/vuejs/vue"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -446,14 +464,15 @@ impl Blockify for Ui {
             }
         ),
         ("Xilem", 
-            Info {
-                name: "Xilem",
-                owner: Owner::Linebender,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Xilem",
+                Owner::Linebender,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/linebender/xilem"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,
@@ -469,14 +488,15 @@ impl Blockify for Ui {
             }
         ),
         ("Yew",
-            Info {
-                name: "Yew",
-                owner: Owner::Yew,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Yew",
+                Owner::Yew,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/yewstack/yew"),
+            ),
             ExtraInfo::Ui {
                 is_immediate: false,
                 reactivity: Reactivity::TODO,

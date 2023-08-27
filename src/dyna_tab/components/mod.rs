@@ -36,7 +36,7 @@ pub enum UiLang {
     TODO,
     Lang(Lang),
     Custom{
-        name: &'static str,
+        name: String,
         logic_langs: Vec<Lang>,
     }
 }
@@ -45,7 +45,7 @@ pub enum UiLang {
 
 
 // Componenttype-specific info
-#[derive(Debug, PartialEq, Eq, Clone, serde::Serialize)]
+#[derive(Debug, PartialEq, Eq, Clone, serde::Serialize, serde::Deserialize)]
 pub enum ExtraInfo {
     Langbridge{
         bind_langs: Vec<Lang>,

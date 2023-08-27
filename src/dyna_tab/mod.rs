@@ -7,7 +7,7 @@ use lazy_static::lazy_static;
 use strum::IntoEnumIterator;
 
 pub mod constellation;
-mod component;
+pub mod component;
 mod components;
 mod tree;
 mod stage;
@@ -27,12 +27,12 @@ use grid_sizer::*;
 
   
 lazy_static!{
-    static ref CONSTELLATION: Constellation = Constellation::generate();
-}   
+    pub static ref CONSTELLATION: Constellation = Constellation::load();
+}
 
 
 pub trait Blockify {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, crate::dyna_tab::components::ExtraInfo, Vec<Vec<ComponentStrId>>)>;
+    fn add_all(&self) -> Vec<(&'static str, Info, crate::dyna_tab::components::ExtraInfo, Vec<Vec<&'static str>>)>;
 }
 
 
@@ -123,6 +123,7 @@ impl std::fmt::Display for StageState {
 pub fn DynaTab(cx: Scope, id: usize) -> Element {
 
     info!("rerender DynaTab[{}]", id);
+
     let _ = use_state(cx, || {info!("initializing DynaTab[{}] hooks", id); true});
     
     let settings_coll = use_state(cx, || CollapsableToggle::Expanded);
@@ -145,10 +146,10 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
 
     let mut grid_template_rows_string = String::from("grid-template-rows: ");
     for (_, comp) in CONSTELLATION.comps.iter().enumerate() {
-        grid_template_rows_string += &("[".to_owned() + comp.str_id);
+        grid_template_rows_string += &("[".to_owned() + &comp.str_id);
         grid_template_rows_string += "-s] ";
         grid_template_rows_string += "auto ";
-        grid_template_rows_string += &("[".to_owned() + comp.str_id);
+        grid_template_rows_string += &("[".to_owned() + &comp.str_id);
         grid_template_rows_string += "-e] ";
         grid_template_rows_string += "auto ";
     } 

@@ -13,19 +13,20 @@ use super::ExtraInfo;
 pub struct Layout {}
 
 impl Blockify for Layout {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
 
 
         vec![
             ("Erithaxlayout",
-                Info {
-                    name: "Erithax Layout",
-                    owner: Owner::Erithax,
-                    description: "TODO",
-                    website: "erithax.com",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![Lang::Rust],
-                },
+                Info::new(
+                    "Erithax Layout",
+                    Owner::Erithax,
+                    "TODO",
+                    "erithax.com",
+                    SourceOpenness::NA,
+                    vec![Lang::Rust],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: false,
                     flexbox: false,
@@ -38,14 +39,15 @@ impl Blockify for Layout {
             ),
             (
                 "Blink_ly", 
-                Info {
-                    name: "Blink",
-                    owner: Owner::Google,
-                    description: "TODO",
-                    website: "",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![],
-                },
+                Info::new(
+                    "Blink",
+                    Owner::Google,
+                    "TODO",
+                    "",
+                    SourceOpenness::NA,
+                    vec![],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: true,
                     flexbox: true,
@@ -58,14 +60,15 @@ impl Blockify for Layout {
             ),
             (
                 "Flutter_ly",
-                Info {
-                    name: "Flutter layout",
-                    owner: Owner::Google,
-                    description: "TODO",
-                    website: "https://api.flutter.dev/flutter/rendering/rendering-library.html",
-                    code_openness: SourceOpenness::Superopen,
-                    impl_langs: vec![Lang::Dart],
-                },
+                Info::new(
+                    "Flutter layout",
+                    Owner::Google,
+                    "TODO",
+                    "https://api.flutter.dev/flutter/rendering/rendering-library.html",
+                    SourceOpenness::Superopen,
+                    vec![Lang::Dart],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: false,
                     flexbox: true,
@@ -78,14 +81,15 @@ impl Blockify for Layout {
             ),
             (
                 "Gecko_ly", 
-                Info {
-                    name: "Gecko",
-                    owner: Owner::Mozilla,
-                    description: "TODO",
-                    website: "",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![],
-                },
+                Info::new(
+                    "Gecko",
+                    Owner::Mozilla,
+                    "TODO",
+                    "",
+                    SourceOpenness::NA,
+                    vec![],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: true,
                     flexbox: true,
@@ -98,14 +102,15 @@ impl Blockify for Layout {
             ),
             (
                 "Servo_ly", 
-                Info {
-                    name: "Servo",
-                    owner: Owner::LinuxFoundation,
-                    description: "TODO",
-                    website: "",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![Lang::Rust],
-                },
+                Info::new(
+                    "Servo",
+                    Owner::LinuxFoundation,
+                    "TODO",
+                    "",
+                    SourceOpenness::NA,
+                    vec![Lang::Rust],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: true,
                     flexbox: true,
@@ -118,14 +123,15 @@ impl Blockify for Layout {
             ),
             (
                 "Webkit_ly", 
-                Info {
-                    name: "Webkit",
-                    owner: Owner::Apple,
-                    description: "TODO",
-                    website: "",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![],
-                },
+                Info::new(
+                    "Webkit",
+                    Owner::Apple,
+                    "TODO",
+                    "",
+                    SourceOpenness::NA,
+                    vec![],
+                    None,
+                ),
                 ExtraInfo::Layout {
                     css: true,
                     flexbox: true,
@@ -138,14 +144,15 @@ impl Blockify for Layout {
             ),
             (
                 "Taffy", 
-                Info {
-                    name: "Taffy",
-                    owner: Owner::Dioxuslabs,
-                    description: "TODO",
-                    website: "",
-                    code_openness: SourceOpenness::NA,
-                    impl_langs: vec![Lang::Rust],
-                },
+                Info::new(
+                    "Taffy",
+                    Owner::Dioxuslabs,
+                    "TODO",
+                    "",
+                    SourceOpenness::NA,
+                    vec![Lang::Rust],
+                    Repo::opt_with_url("https://github.com/DioxusLabs/taffy"),
+                ),
                 ExtraInfo::Layout {
                     css: true,
                     flexbox: true,

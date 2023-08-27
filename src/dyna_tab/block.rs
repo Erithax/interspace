@@ -57,13 +57,12 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
                 }}
             },
             if *is_focussed {
-                let disp_website = strip_website(comp.info.website);
+                let disp_website = strip_website(&comp.info.website);
                 let disp_impl_langs = if comp.info.impl_langs.len() == 0 {
                     "".to_owned()
                 } else {
                     comp.info.impl_langs[0].value().name.to_owned() + &comp.info.impl_langs.iter().skip(1).fold("".to_owned(), |acc: String, nex| acc + ", " + nex.value().name)
                 };
-                
                 rsx!{div {
                     class: "info",
                     OwnerComp {
@@ -85,6 +84,33 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
                         class: "impl_langs",
                         "{disp_impl_langs}",
                     },
+                    match &comp.info.source {
+                        None => {None},
+                        Some(repo) => {
+                            render!{
+                                div {
+                                    class: "source_repo",
+                                    a {
+                                        class: "url",
+                                        href: "{&repo.url}",
+                                        target: "_blank",
+                                        "{strip_website(&repo.url)}"
+                                    },
+                                    match repo.stars {
+                                        None => {None},
+                                        Some(s) => {
+                                            render!{
+                                                div {
+                                                    class: "stars",
+                                                    "{s}"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     div {
                         "{comp.info.description}",
                     }

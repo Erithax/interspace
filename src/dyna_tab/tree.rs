@@ -238,7 +238,6 @@ impl Tree {
             |(j, other_path)| i == j || path != other_path
         )));
 
-
         let mut id: BlockId = 0;
 
         let mut to_lef_tree = Self::new(id, Block{
@@ -280,29 +279,34 @@ impl Tree {
         // remove duplicate subpaths
         let mut new_paths: Vec<&Vec<ComponentId>> = vec![];
         for (i, path) in paths.iter().enumerate() {
-            let mut include = true;
-            for (j, other_path) in paths.iter().enumerate() { 
-                if i == j || other_path.len() <= path.len() {continue}
-                let other_i = other_path.iter().position(|e| *e == path[0]);
-                if other_i.is_none() {continue}
-                let mut other_i = other_i.unwrap();
-
-                assert!(path[0] == other_path[other_i]);
-                
-                for i in 0..path.len() {
-                    if other_i >= other_path.len() {continue}
-                    if other_path[other_i] != path[i] {continue}
-                    other_i += 1;
-                }
-                include = false
-            }
-            if include {
-                new_paths.push(*path)
+            let is_sub_path = !paths.iter().enumerate()
+                .filter(|(j, other_path)| *j != i)
+                .any(
+                    |(_, other_path)| {
+                        // check if path is subpath of other_path
+                        let mut i = 0;
+                        let mut j = 0;
+                        while i < path.len() && j < other_path.len() {
+                            if path[i] == other_path[j] {
+                                i += 1;
+                                j += 1;
+                                if j == other_path.len() {
+                                    return true // is sub_path
+                                }
+                            } else {
+                                i = i - j + 1;
+                                j = 0;
+                            }
+                        }
+                        return false
+                    }
+                );
+            if !is_sub_path {
+                new_paths.push(*path);
             }
         }
 
         for path in new_paths {
-            
             // ADD PATH TO to_lef_tree
             let mut curr_node_id: usize = to_lef_tree.root;
             let mut before_targ = true;
@@ -366,7 +370,7 @@ impl Tree {
             }
         }
 
-        return (to_rig_tree, to_lef_tree)
+        return (to_rig_tree, to_lef_tree) 
     }
     
     pub fn split_trees_from_paths_of(paths: &Vec<Vec<ComponentId>>, targ: ComponentId) -> (Tree, Tree) {
@@ -948,7 +952,7 @@ pub fn TreeComp(
     stage_states: UseRef<BTreeMap<ComponentId, BTreeMap<Stage, StageState>>>,
 ) -> Element {
     // info!("TreeComp(comp_id: {comp_id}, tree_type: {:?}", tree_type);
-
+    
     let init_tree = |tree_type: TreeType, comp_type_filter: &ComponentTypeFilter, stage_filter: &StageFilter| -> Tree {
         info!("tree state init");
         let mut tree = match tree_type {

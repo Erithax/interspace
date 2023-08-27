@@ -13,44 +13,47 @@ use super::ExtraInfo;
 pub struct Gfxapi {}
 
 impl Blockify for Gfxapi {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
         vec!
         [
         ("Erithaxgfx",
-            Info {
-                name: "Erithax GFX",
-                owner: Owner::Erithax,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-                website: "",
-            },
+            Info::new(
+                "Erithax GFX",
+                Owner::Erithax,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                None,
+            ),
             ExtraInfo::Gfxapi {},
             parsetree2!{
                 $
             }
         ),
         ("Cpu", 
-            Info {
-                name: "CPU",
-                owner: Owner::TODO,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::NA],
-                website: "",
-            },
+            Info::new(
+                "CPU",
+                Owner::TODO,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::NA],
+                None,
+            ),
             ExtraInfo::Gfxapi {},
             parsetree2!{$}
         ),
         ("Vulkan", 
-            Info {
-                name: "Vulkan",
-                owner: Owner::Khronos,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::C],
-                website: "",
-            },
+            Info::new(
+                "Vulkan",
+                Owner::Khronos,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::C],
+                None,
+            ),
             ExtraInfo::Gfxapi {
             },
             parsetree2!{
@@ -58,14 +61,15 @@ impl Blockify for Gfxapi {
             }
         ),
         ("Opengl",
-            Info {
-                name: "OpenGL",
-                owner: Owner::Khronos,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-                website: "",
-            },
+            Info::new(
+                "OpenGL",
+                Owner::Khronos,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Gfxapi {
             },
             parsetree2!{
@@ -77,14 +81,15 @@ impl Blockify for Gfxapi {
             }
         ),
         ("Opengles",
-            Info {
-                name: "OpenGL ES",
-                owner: Owner::Khronos,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-                website: "",
-            },
+            Info::new(
+                "OpenGL ES",
+                Owner::Khronos,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Gfxapi {
             },
             parsetree2!{
@@ -96,14 +101,15 @@ impl Blockify for Gfxapi {
             }
         ),
         ("Webgl",
-            Info {
-                name: "WebGL",
-                owner: Owner::Khronos,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-                website: "",
-            },
+            Info::new(
+                "WebGL",
+                Owner::Khronos,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Gfxapi {
             },
             parsetree2!{
@@ -111,42 +117,45 @@ impl Blockify for Gfxapi {
             }
         ),
         ("Webgpu",
-            Info {
-                name: "WebGPU",
-                owner: Owner::Webstandards,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::NA],
-                website: "",
-            },
+            Info::new(
+                "WebGPU",
+                Owner::Webstandards,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::NA],
+                None,
+            ),
             ExtraInfo::Gfxapi {},
             parsetree2!{
                 $ Web,
             }
         ),
         ("D3d",
-            Info {
-                name: "D3d",
-                owner: Owner::Microsoft,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-                website: "",
-            },
+            Info::new(
+                "D3d",
+                Owner::Microsoft,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Gfxapi {},
             parsetree2!{
                 $ Windows,
             }
         ),
         ("Metal", 
-            Info {
-                name: "Metal",
-                owner: Owner::Apple,
-                description: "TODO",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-                website: "",
-            },
+            Info::new(
+                "Metal",
+                Owner::Apple,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Gfxapi {
                 
             },

@@ -11,7 +11,7 @@
 /*/////////////////////////////////////////////////////////*/
 
 main > section.dynatable {
-    border: var(--section-border);
+    /* border: var(--section-border); */
     padding: 10px;
     width: calc(88vw + 10px);
     border-radius: 10px;
@@ -331,7 +331,9 @@ main > section.dynatable {
 .block_box .info > .website::before,
 .block_box .info > .openness::before,
 .block_box .info > .impl_langs::before,
-.block_box .info > .owner > .label::before {
+.block_box .info > .owner > .label::before,
+.block_box .info .stars::before,
+.block_box .info > .source_repo::before {
     content: "";
     background-size: contain;
     display: inline-block;
@@ -360,10 +362,16 @@ main > section.dynatable {
     text-decoration: none;
 }
 
+.block_box .info > .source_repo .url {
+    display: inline-block;
+}
+
 .block_box .info > .owner > .label::before {background-image: url("../img/hand_with_key.svg");}
 .block_box .info > .website::before {background-image: url("../img/www_globe.svg");}
 .block_box .info > .openness::before {background-image: url("../img/legal_document.svg");}
 .block_box .info > .impl_langs::before {background-image: url("../img/cube_code.svg");}
+.block_box .info > .source_repo::before {background-image: url("../img/code.svg");}
+.block_box .info  .stars::before {background-image: url("../img/star.svg");}
 
 
 .block_box .name {

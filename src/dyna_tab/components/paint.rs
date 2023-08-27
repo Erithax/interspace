@@ -13,32 +13,34 @@ pub struct Paint {}
 
 
 impl Blockify for Paint {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
         vec!
         [
         ("Erithaxpaint",
-            Info {
-                name: "Erithax Paint",
-                owner: Owner::Erithax,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Erithax Paint",
+                Owner::Erithax,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                None,
+            ),
             ExtraInfo::Paint {},
             parsetree2!{
                 $
             }
         ),
         ("Blink_pa", 
-            Info {
-                name: "Blink",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Blink",
+                Owner::Google,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Cpp],
+                None,
+            ),
             ExtraInfo::Paint {},
             parsetree2!{
                 $ Skia *,
@@ -47,14 +49,15 @@ impl Blockify for Paint {
         ),
         (
             "Flutter_pa",
-            Info {
-                name: "Flutter paint",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![Lang::Dart],
-            },
+            Info::new(
+                "Flutter paint",
+                Owner::Google,
+                "TODO",
+                "",
+                SourceOpenness::Superopen,
+                vec![Lang::Dart],
+                None,
+            ),
             ExtraInfo::Paint{},
             parsetree2!{
                 $ Skia *,
@@ -62,42 +65,45 @@ impl Blockify for Paint {
             }
         ),
         ("Gecko_pa", 
-            Info {
-                name: "Gecko",
-                owner: Owner::Mozilla,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![],
-            },
+            Info::new(
+                "Gecko",
+                Owner::Mozilla,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![],
+                None,
+            ),
             ExtraInfo::Paint {},
             parsetree2!{
                 $ Webrender *
             }
         ),
         ("Servo_pa", 
-            Info {
-                name: "Servo",
-                owner: Owner::LinuxFoundation,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Servo",
+                Owner::LinuxFoundation,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                None,
+            ),
             ExtraInfo::Paint {},
             parsetree2!{
                 $ Webrender *
             }
         ),
         ("Webkit_pa", 
-            Info {
-                name: "Webkit",
-                owner: Owner::Apple,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![],
-            },
+            Info::new(
+                "Webkit",
+                Owner::Apple,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![],
+                None,
+            ),
             ExtraInfo::Paint {},
             parsetree2!{
                 $ Coregraphics *

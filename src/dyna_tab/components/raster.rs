@@ -13,46 +13,49 @@ pub struct Raster {}
 
 
 impl Blockify for Raster {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
         vec!
         [
         ("Erithaxraster",
-            Info {
-                name: "Erithax Raster",
-                owner: Owner::Erithax,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Erithax Raster",
+                Owner::Erithax,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $
             }
         ),
         ("Gecko", 
-            Info {
-                name: "Gecko",
-                owner: Owner::Mozilla,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Gecko",
+                Owner::Mozilla,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Cpp],
+                Repo::opt_with_url("https://hg.mozilla.org/"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
             }
         ),
         ("Webrender", 
-            Info {
-                name: "WebRender",
-                owner: Owner::LinuxFoundation,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "WebRender",
+                Owner::LinuxFoundation,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/servo/webrender"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
@@ -62,56 +65,60 @@ impl Blockify for Raster {
             }
         ),
         ("Webkit", 
-            Info {
-                name: "Webkit",
-                owner: Owner::Apple,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Webkit",
+                Owner::Apple,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Cpp],
+                Repo::opt_with_url("https://github.com/WebKit/WebKit"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Angle,
             }
         ),
         ("Xwindow", 
-            Info {
-                name: "XWindow Render",
-                owner: Owner::Xorg,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "XWindow Render",
+                Owner::Xorg,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                Repo::opt_with_url("https://gitlab.freedesktop.org/xorg"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $
             }
         ),
         ("Direct2d", 
-            Info {
-                name: "Direct2D",
-                owner: Owner::Microsoft,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Direct2D",
+                Owner::Microsoft,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ D3d Windows,
             }
         ),
         ("Coregraphics", 
-            Info {
-                name: "Quartz",
-                owner: Owner::Apple,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Quartz",
+                Owner::Apple,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Metal,
@@ -120,14 +127,15 @@ impl Blockify for Raster {
             }
         ),
         ("Gdk", 
-            Info {
-                name: "GTK Drawing Kit",
-                owner: Owner::Gnome,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "GTK Drawing Kit",
+                Owner::Gnome,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                Repo::opt_with_url("https://gitlab.gnome.org/GNOME/gtk/-/tree/main/gdk"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Xwindow Linux,
@@ -136,14 +144,15 @@ impl Blockify for Raster {
             }
         ),
         ("Cairo", 
-            Info {
-                name: "Cairo",
-                owner: Owner::Cairogfx,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Cairo",
+                Owner::Cairogfx,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Xwindow *,
@@ -158,14 +167,15 @@ impl Blockify for Raster {
             }
         ),
         ("Femtovg",
-            Info {
-                name: "femtovg",
-                owner: Owner::Femtovg,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "femtovg",
+                Owner::Femtovg,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/femtovg/femtovg"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Opengles
@@ -173,14 +183,15 @@ impl Blockify for Raster {
         ),
         (
             "Impeller",
-            Info {
-                name: "Impeller",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "https://docs.flutter.dev/perf/impeller",
-                code_openness: SourceOpenness::Superopen,
-                impl_langs: vec![Lang::Cpp],
-            },
+            Info::new(
+                "Impeller",
+                Owner::Google,
+                "TODO",
+                "https://docs.flutter.dev/perf/impeller",
+                SourceOpenness::Superopen,
+                vec![Lang::Cpp],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Metal Ios,
@@ -189,14 +200,15 @@ impl Blockify for Raster {
             }
         ),
         ("Piet", 
-            Info {
-                name: "Piet",
-                owner: Owner::Linebender,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Piet",
+                Owner::Linebender,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/linebender/piet"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Direct2d Windows,
@@ -205,14 +217,15 @@ impl Blockify for Raster {
             }
         ),
         ("Skia", 
-            Info {
-                name: "Skia",
-                owner: Owner::Google,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Skia",
+                Owner::Google,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                Repo::opt_with_url("https://github.com/google/skia"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Vulkan,
@@ -232,28 +245,30 @@ impl Blockify for Raster {
             }
         ),
         ("Slintcpu",
-            Info {
-                name: "Slint CPU",
-                owner: Owner::Sixtyfps,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::TODO],
-            },
+            Info::new(
+                "Slint CPU",
+                Owner::Sixtyfps,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::TODO],
+                None,
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Cpu
             }
         ),
         ("Vello", 
-            Info {
-                name: "Vello",
-                owner: Owner::Linebender,
-                description: "TODO",
-                website: "",
-                code_openness: SourceOpenness::NA,
-                impl_langs: vec![Lang::Rust],
-            },
+            Info::new(
+                "Vello",
+                Owner::Linebender,
+                "TODO",
+                "",
+                SourceOpenness::NA,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/linebender/vello"),
+            ),
             ExtraInfo::Raster {},
             parsetree2!{
                 $ Wgpu *

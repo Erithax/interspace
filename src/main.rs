@@ -40,14 +40,12 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 */
 
 
-mod dyna_tab;
-mod image;
-
-use crate::dyna_tab::DynaTab;
+use ui_overview::dyna_tab::DynaTab;
+use ui_overview::dyna_tab::CONSTELLATION;
 
 use dioxus::prelude::*;
 use log::LevelFilter;
-
+use log::info;
 
 
 /*
@@ -67,23 +65,14 @@ pub fn main() {
 
 
 
-pub fn indent(s: &str) -> String {
-    let res: String = s.replace("\n", "\n\t");
-    return res
-}
-
-pub fn strip_website(mut s: &str) -> &str {
-    s = s.strip_prefix("https://").unwrap_or(s);
-    s = s.strip_prefix("www.").unwrap_or(s);
-    s = s.strip_suffix("/").unwrap_or(s);
-    return s
-}
-
 fn App(cx: Scope) -> Element {
+
+    let execution_timer = wasm_timer::Instant::now();
+    CONSTELLATION.noop();
+    info!("constellation generation took {} ms", execution_timer.elapsed().as_millis());
 
     let dyna_tab_id = use_state(cx, || 0 as usize);
     let d_count = use_state(cx, || 1);
-
 
     cx.render(rsx!{
         Header{},
@@ -372,48 +361,7 @@ pub fn HeartDialog(cx: Scope, show: UseState<bool>) -> Element {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum CollapsableToggle {
-    Collapsed,
-    Expanded
-}
 
-impl CollapsableToggle {
-
-    pub fn toggle_mut(&mut self) {
-        *self = self.toggle();
-    }
-
-    pub fn toggle(&self) -> Self {
-        match self {
-            CollapsableToggle::Collapsed => {CollapsableToggle::Expanded},
-            CollapsableToggle::Expanded => {CollapsableToggle::Collapsed},
-        }
-    }
-
-    pub fn is_collapsed(&self) -> bool {
-        match self {
-            Self::Collapsed => {true},
-            Self::Expanded => {false},
-        }
-    }
-
-    pub fn is_expanded(&self) -> bool {
-        match self {
-            Self::Collapsed => {false},
-            Self::Expanded => {true},
-        }
-    }
-}
-
-impl std::fmt::Display for CollapsableToggle {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            CollapsableToggle::Collapsed => { write!(f, "collapsed")},
-            CollapsableToggle::Expanded => {write!(f, "expanded")},
-        }
-    }
-}
 
 
 

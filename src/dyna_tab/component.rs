@@ -1,3 +1,4 @@
+use log::kv::Source;
 use serde;
 
 use crate::dyna_tab::{*, owner::*, lang::*};
@@ -6,10 +7,10 @@ use crate::dyna_tab::stage::*;
 use crate::dyna_tab::tree::*;
 use crate::dyna_tab::block::*;
 
-pub  type ComponentId = usize;
-pub type ComponentStrId = &'static str;
+pub type ComponentId = usize;
+pub type ComponentStrId = String;
 
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Componentus {
     pub id: ComponentId,
     pub str_id: ComponentStrId,
@@ -71,15 +72,52 @@ pub enum SourceOpenness {
     Closed 
 }
 
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct Repo {
+    pub url: String,
+    pub stars: Option<u64>,
+}
+impl Repo {
+    pub fn opt_with_url(url: &'static str) -> Option<Self> {
+        return Some(Repo {
+            url: url.to_string(),
+            stars: None,
+        })
+    }
+}
 
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Info {
-    pub name: &'static str,
+    pub name: String,
     pub owner: Owner,
-    pub description: &'static str,
+    pub description: String,
+    pub website: String,
     pub code_openness: SourceOpenness,
-    pub website: &'static str,
     pub impl_langs: Vec<Lang>,
+    pub source: Option<Repo>,
+}
+
+
+impl Info {
+    pub fn new(
+        name: &'static str, 
+        owner: Owner, 
+        description: &'static str, 
+        website: &'static str, 
+        code_openness: SourceOpenness, 
+        impl_langs: Vec<Lang>, 
+        source: Option<Repo>
+    ) -> Self {
+        return Info {
+            name: name.to_owned(),
+            owner: owner,
+            description: description.to_owned(),
+            website: website.to_owned(),
+            code_openness: code_openness,
+            impl_langs: impl_langs,
+            source: source,
+        }
+    }
 }
 
 

@@ -31,6 +31,8 @@ lazy_static = "1.4.0"
 wasm-timer = "0.2.5"
 wasm-bindgen = "0.2.87"
 js-sys = "0.3.64"
+reqwest = {version = "0.11.20", features = ["blocking", "json"]}
+chrono = {version = "0.4.26", features = ["serde"]}
 
 #colored = "2.0.0"
 #toml = "0.7.4"

@@ -1,8 +1,11 @@
 
 use serde;
+use wasm_bindgen::prelude::wasm_bindgen;
 
+use crate::STARS_FILE_PATH;
 use crate::dyna_tab::component::*;
 use crate::dyna_tab::Blockify;
+use crate::dyna_tab::StarCache;
 
 use crate::dyna_tab::stage::*;
 use crate::dyna_tab::owner::*;
@@ -10,7 +13,8 @@ use crate::dyna_tab::components::{langbridge::*, ui::*, layout::*, paint::*, ras
 use crate::dyna_tab::tree::*;
 
 
-#[derive(Debug, Clone, serde::Serialize)] 
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)] 
 pub struct Constellation {
     pub comps: Vec<Componentus>,
 }
@@ -20,7 +24,7 @@ const ASTERISK_ID: ComponentId = 9902;
 
 impl Constellation {
 
-    pub fn generate() -> Constellation {
+    pub fn generate_skeleton() -> Constellation {
         // info!("generating tree");
         let mut components: Vec<Componentus> = Vec::new();
         
@@ -38,12 +42,13 @@ impl Constellation {
             (ComponentType::Intergfx, Box::new(Intergfx{})),
             (ComponentType::Platform, Box::new(Platform{})),
         ];
-        
+
         for (ct, b) in r {
             for (str_ident, info, extra, paths) in b.add_all() {
+                assert!(info.source.is_none() || info.source.as_ref().unwrap().stars.is_none());
                 components.push(
                     Componentus {
-                        str_id: str_ident,
+                        str_id: str_ident.to_owned(),
                         id: components.len(),
                         typ: ct,
                         info: info,
@@ -106,13 +111,34 @@ impl Constellation {
             comp.splituptree.set_breadth_intervals(&c2);
         }
 
-        // for (bt, n) in &c.data {
-        //     // n.assert_valid();
-        // }
+
 
         return c
     }
     
+    pub fn incorporate_stars(&mut self) {
+        let stars: Vec<StarCache> = ron::from_str(include_str!("./../../res/state/stars.ron")).unwrap();
+
+        println!("{:?}", stars);
+
+        for (comp_id, comp) in self.comps.iter_mut().enumerate() {
+            assert!(comp.info.source.is_none() || comp.info.source.as_ref().unwrap().stars.is_none());
+            match comp.info.source {
+                Some(ref mut r) => {
+                    r.stars = stars.iter().find(|star_cache| star_cache.comp_str_id == comp.str_id)
+                        .expect(&format!("did not find star cache of component `{}`. Try running `cargo run --bin regen_data` to update cache", comp.str_id))
+                        .repo.clone()
+                        .expect(&format!("star cache state invalid. Try running `cargo run --bin regen_data` to update cache"))
+                        .stars;
+                },
+                None => {}
+            }
+        }
+
+    }
+
+    pub fn noop(&self) {}
+
     pub fn get_comp(&self, comp_ind: ComponentId) -> &Componentus {
         // assert!(self.comps.contains_key(bt), "called Constellation.getNode() with bt = {}", bt);
         return &self.comps[comp_ind]
@@ -239,8 +265,8 @@ impl Constellation {
     }
 
     pub fn load() -> Self {
-        todo!()
-        // bincode::deserialize::<Constellation>(&std::fs::read("./res/state/constellation.bincode").unwrap()).unwrap()
+        bincode::deserialize::<Constellation>(include_bytes!("./../../res/state/constellation.bincode")).unwrap()
         // ron::from_str::<Constellation>(&std::fs::read_to_string("./res/state/constellation.ron").unwrap()).unwrap()
     }
 }
+

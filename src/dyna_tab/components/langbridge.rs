@@ -14,37 +14,38 @@ use super::ExtraInfo;
 pub struct Langbridge {}
 
 impl Blockify for Langbridge {
-    fn add_all(&self) -> Vec<(ComponentStrId, Info, ExtraInfo, Vec<Vec<ComponentStrId>>)> {
+    fn add_all(&self) -> Vec<(&'static str, Info, ExtraInfo, Vec<Vec<&'static str>>)> {
         vec!
         [
         (
             "Erithaxlangbridge",
-                Info {
-                    name: "Erithax Langbridge",
-                    owner: Owner::Erithax,
-                    description: "TODO",
-                    code_openness: SourceOpenness::Copyleft,
-                    impl_langs: vec![Lang::Rust],
-                    website: "https://erithax.com",
-                },
+                Info::new(
+                    "Erithax Langbridge",
+                    Owner::Erithax,
+                    "TODO",
+                    "https://erithax.com",
+                    SourceOpenness::Copyleft,
+                    vec![Lang::Rust],
+                    None,
+                ),
                 ExtraInfo::Langbridge {
                     bind_langs: vec![Lang::C],
                 },
                 parsetree2!{
                     $
                 }
-                // vec![vec!["Erithaxlangbridge"]],
         ),
         (
         "Gtk3rs", 
-            Info {
-                name: "Gtk3-rs",
-                owner: Owner::Gtkrs,
-                description: "TODO",
-                code_openness: SourceOpenness::Copyleft,
-                impl_langs: vec![Lang::Rust],
-                website: "https://gtk-rs.org",
-            },
+            Info::new(
+                "Gtk3-rs",
+                Owner::Gtkrs,
+                "TODO",
+                "https://gtk-rs.org",
+                SourceOpenness::Copyleft,
+                vec![Lang::Rust],
+                Repo::opt_with_url("https://github.com/gtk-rs/gtk3-rs"),
+            ),
             ExtraInfo::Langbridge {
                 bind_langs: vec![Lang::Rust],
             },
