@@ -119,8 +119,6 @@ impl Constellation {
     pub fn incorporate_stars(&mut self) {
         let stars: Vec<StarCache> = ron::from_str(include_str!("./../../res/state/stars.ron")).unwrap();
 
-        println!("{:?}", stars);
-
         for (comp_id, comp) in self.comps.iter_mut().enumerate() {
             assert!(comp.info.source.is_none() || comp.info.source.as_ref().unwrap().stars.is_none());
             match comp.info.source {

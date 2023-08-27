@@ -49,7 +49,7 @@ impl Blockify for Ui {
                 "",
                 SourceOpenness::Superopen,
                 vec![Lang::Javascript],
-                Repo::opt_with_url("github.com/angular/angular"),
+                Repo::opt_with_url("https://github.com/angular/angular"),
             ),
             ExtraInfo::Ui {
                 is_immediate: false,

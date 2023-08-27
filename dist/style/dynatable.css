@@ -110,6 +110,7 @@ main > section.dynatable {
     margin-bottom: 10px;
     font-size: var(--font-siz);
     line-height: var(--line-hei);
+    overflow: auto;
 }
 
 .dynatable .settings > *:not(:last-child) {
@@ -225,6 +226,7 @@ main > section.dynatable {
     transition: var(--hover-stage-expand);
     display: inline-flex; 
     justify-content: center;
+    padding: 10px 0;
     align-items: center;
     text-align: center; 
     box-sizing: border-box; 
@@ -364,6 +366,8 @@ main > section.dynatable {
 
 .block_box .info > .source_repo .url {
     display: inline-block;
+    color: inherit;
+    text-decoration: none;
 }
 
 .block_box .info > .owner > .label::before {background-image: url("../img/hand_with_key.svg");}

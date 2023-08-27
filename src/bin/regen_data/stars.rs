@@ -21,10 +21,7 @@ pub fn update_repo(repo: &mut Option<Repo>, new_repo_base: &Option<Repo>) {
         (Some(_), None) => {None},
         (_, Some(r)) => {
             let mut temp = r.clone();
-            println!("is github?");
             temp.stars = if temp.url.contains("github.com") {
-                println!("making request {}", temp.url.replace("github.com", "api.github.com/repos"));
-
                 static APP_USER_AGENT: &str = concat!(
                     env!("CARGO_PKG_NAME"),
                     "/",
@@ -36,17 +33,15 @@ pub fn update_repo(repo: &mut Option<Repo>, new_repo_base: &Option<Repo>) {
                     .build()
                     .unwrap();
                 if let Ok(req) = client.get(temp.url.replace("github.com", "api.github.com/repos")).send() {
-                    println!("got Ok response");
-                    println!("{:?}", req);
                     if let Ok(res) = req.json::<StarsResponse>() {
-                        println!("json did YES parse!");
+                        println!("succesfully updated stars of {}", &temp.url);
                         Some(res.stargazers_count)
                     } else {
-                        println!("json did NOT parse!");
+                        println!("failed to update stars from {}: Invalid response.", &temp.url);
                         None
                     }
                 } else {
-                    println!("got Err response");
+                    println!("failed to update stars from {}: No response.", &temp.url);
                     None
                 }
             } else {
