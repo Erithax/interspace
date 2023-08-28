@@ -954,7 +954,7 @@ pub fn TreeComp(
     // info!("TreeComp(comp_id: {comp_id}, tree_type: {:?}", tree_type);
     
     let init_tree = |tree_type: TreeType, comp_type_filter: &ComponentTypeFilter, stage_filter: &StageFilter| -> Tree {
-        info!("tree state init");
+        // info!("tree state init");
         let mut tree = match tree_type {
             TreeType::LefToRig => {CONSTELLATION.get_comp(*comp_id).lefToRigTree.clone()},
             TreeType::RigToLef => {CONSTELLATION.get_comp(*comp_id).rigToLefTree.clone()},

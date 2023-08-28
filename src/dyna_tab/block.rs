@@ -112,6 +112,7 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
                         }
                     }
                     div {
+                        class: "description",
                         "{comp.info.description}",
                     }
                 }}

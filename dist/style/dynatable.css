@@ -41,7 +41,7 @@ main > section.dynatable {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 10px;
+    border-radius: calc(0.5 * (var(--section-title-line-hei) * var(--section-title-font-siz)));
     margin-bottom: 1px;
 }
 
@@ -321,7 +321,11 @@ main > section.dynatable {
 }
 
 .block_box .info {
-    color: #777;
+    color: var(--prim-fore-down-col);
+    text-shadow: 
+        -0.5px 0 1px var(--prim-back-col),
+        0 0 6px var(--prim-back-col)
+        ;
     font-size: 12px;
     position: relative;
 }
@@ -433,7 +437,7 @@ main > section.dynatable {
 
 .dynatable .header {
     --section-title-font-siz: 24px;
-    --section-title-line-hei: 1.25;
+    --section-title-line-hei: 2.5;
 }
 
 .dynatable .content {

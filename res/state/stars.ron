@@ -569,4 +569,13 @@
         comp_str_id: "Png",
         repo: None,
     ),
+    (
+        update_time: "2023-08-28T13:45:27.017654900Z",
+        comp_id: 15,
+        comp_str_id: "Sciter",
+        repo: Some((
+            url: "https://github.com/sciter-sdk/rust-sciter",
+            stars: Some(783),
+        )),
+    ),
 ]

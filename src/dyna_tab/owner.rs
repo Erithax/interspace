@@ -82,7 +82,10 @@ impl Owner {
                 name: "Erithax",
                 website: "https://www.erithax.com/",
                 ownertype: OwnerType::Individual,
-                light_back: Some("black"),
+                light_back: Some("
+                    linear-gradient(to top left,  black 0%, #0000 30%, #0000 70%, black 100%),
+                    linear-gradient(to top right, blueviolet 0%, #0000 70%, #0000 70%, black 100%)
+                "),
                 dark_back: Some("white"),
             },
             Owner::Apple => OwnerInfo {
@@ -300,12 +303,12 @@ impl Owner {
                 website: "w3.org",
                 ownertype: OwnerType::Community,
                 light_back: Some("
-                    linear-gradient(to top left: #3fb984 0%, #0000 50%, #31475e 100%),
-                    linear-gradient(to top right: #3fb984 0%, #0000 50%, #31475e 100%),
+                    linear-gradient(to top left,  #3fb984 0%, #0000 50%, #31475e 100%),
+                    linear-gradient(to top right, #3fb984 0%, #0000 50%, #31475e 100%)
                 "),
                 dark_back: Some("
                     linear-gradient(to top left: #3fb984 0%, #0000 50%, #31475e 100%),
-                    linear-gradient(to top right: #3fb984 0%, #0000 50%, #31475e 100%),
+                    linear-gradient(to top right: #3fb984 0%, #0000 50%, #31475e 100%)
                 "),
             },
             Owner::Webstandards => OwnerInfo {

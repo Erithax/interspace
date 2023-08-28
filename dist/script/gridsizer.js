@@ -21,7 +21,7 @@
 
 var document = window.document;
 
-const DEBUG_SHOW_COLLAPSED = false;
+const DEBUG_SHOW_COLLAPSED = true;
 
 var is_resizing = false;
 var needs_update = false;

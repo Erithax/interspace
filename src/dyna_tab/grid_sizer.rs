@@ -50,7 +50,7 @@ pub fn size_grid(id: usize) {
 
     // prev style
 
-    grid_sizer_style_node.set_inner_html(".sub_stage_back{border:none !important;}");
+    grid_sizer_style_node.set_inner_html(".sub_stage_back{border:none !important;} .block_box .description{width:min-content;}");
 
     if DEBUG_SHOW_MINIMIZED_GRID {
         return

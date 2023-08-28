@@ -554,6 +554,10 @@ imports.wbg.__wbg_matchMedia_12ef69056e32d0b3 = function() { return handleError(
     const ret = getObject(arg0).matchMedia(v0);
     return isLikeNone(ret) ? 0 : addHeapObject(ret);
 }, arguments) };
+imports.wbg.__wbg_documentElement_0df873a7503a9af9 = function() { return logError(function (arg0) {
+    const ret = getObject(arg0).documentElement;
+    return isLikeNone(ret) ? 0 : addHeapObject(ret);
+}, arguments) };
 imports.wbg.__wbg_createElement_4891554b28d3388b = function() { return handleError(function (arg0, arg1, arg2) {
     var v0 = getCachedStringFromWasm0(arg1, arg2);
     const ret = getObject(arg0).createElement(v0);
@@ -1303,20 +1307,20 @@ imports.wbg.__wbindgen_memory = function() {
     const ret = wasm.memory;
     return addHeapObject(ret);
 };
+imports.wbg.__wbindgen_closure_wrapper306 = function() { return logError(function (arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 95, __wbg_adapter_48);
+    return addHeapObject(ret);
+}, arguments) };
 imports.wbg.__wbindgen_closure_wrapper307 = function() { return logError(function (arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 94, __wbg_adapter_48);
+    const ret = makeMutClosure(arg0, arg1, 95, __wbg_adapter_51);
     return addHeapObject(ret);
 }, arguments) };
-imports.wbg.__wbindgen_closure_wrapper308 = function() { return logError(function (arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 94, __wbg_adapter_51);
+imports.wbg.__wbindgen_closure_wrapper309 = function() { return logError(function (arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 95, __wbg_adapter_54);
     return addHeapObject(ret);
 }, arguments) };
-imports.wbg.__wbindgen_closure_wrapper310 = function() { return logError(function (arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 94, __wbg_adapter_54);
-    return addHeapObject(ret);
-}, arguments) };
-imports.wbg.__wbindgen_closure_wrapper494 = function() { return logError(function (arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 193, __wbg_adapter_57);
+imports.wbg.__wbindgen_closure_wrapper493 = function() { return logError(function (arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 194, __wbg_adapter_57);
     return addHeapObject(ret);
 }, arguments) };
 imports['./snippets/dioxus-interpreter-js-603636eeca72cf05/inline0.js'] = __wbg_star0;

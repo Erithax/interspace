@@ -42,6 +42,7 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 
 use ui_overview::dyna_tab::DynaTab;
 use ui_overview::dyna_tab::CONSTELLATION;
+use ui_overview::infoboard::InfoBoard;
 
 use dioxus::prelude::*;
 use log::LevelFilter;
@@ -79,6 +80,17 @@ fn App(cx: Scope) -> Element {
         main {
             id: "main-content",
             div {
+                style: "display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px;",
+                div {
+                    style: "font-size: 32px; font-weight: 900;",
+                    "InterSpace"
+                },
+                div {
+                    style: "font-size: 18px; font-weight: 900; color: var(--prim-fore-down-col);",
+                    "The graphical interface pipeline visualized."
+                }
+            },
+            div {
                 style: "
                     margin: 10px 0;
                     background: #ff03;
@@ -88,28 +100,10 @@ fn App(cx: Scope) -> Element {
                 ",
                 "⚠️Work in progress. Data is incomplete and contains errors.",
             },
-            // div {
-            //     onclick: move |_| {
-            //         d_count.set(d_count.get()+1 % 5);
-            //         dyna_tab_id.set(dyna_tab_id.get() + 1);
-            //         let create_eval = use_eval(cx);
-            //         create_eval(r#"
-            //             updateGridSizerList()
-            //         "#).unwrap();
-            //     },
-            //     style: "
-            //         width: 40px; height: 40px; border-radius: 20px; background: #777; display: flex; justify-content: center; align-items: center;
-            //         margin: 10px 0;
-            //     ",
-            //     span {
-            //         "+"
-            //     }
-            // },
-            for _ in 0..*d_count.get() {
-                rsx!{DynaTab{
-                    id: *dyna_tab_id.get(),
-                }}
-            }
+            InfoBoard{},
+            rsx!{DynaTab{
+                id: 0,
+            }}
         },
     })
 }
@@ -136,12 +130,14 @@ impl Theme {
         let create_eval = use_eval(cx);
         match self {
             Theme::Dark => {
+                web_sys::window().unwrap().document().unwrap().document_element().unwrap().set_attribute("data-color-scheme", "dark");
                 create_eval(r#"
                     window.document.getElementById("entry").classList.remove("th_light");
                     window.document.getElementById("entry").classList.add("th_dark");
                 "#,).unwrap();
             },
             Theme::Light => {
+                web_sys::window().unwrap().document().unwrap().document_element().unwrap().set_attribute("data-color-scheme", "light");
                 create_eval(r#"
                     window.document.getElementById("entry").classList.remove("th_dark");
                     window.document.getElementById("entry").classList.add("th_light");

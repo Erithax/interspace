@@ -1,7 +1,8 @@
-
+#![allow(non_snake_case)]
 
 pub mod dyna_tab;
 pub mod image;
+pub mod infoboard;
 
 use dioxus::prelude::*;
 use dyna_tab::component::Repo;

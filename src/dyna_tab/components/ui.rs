@@ -20,7 +20,7 @@ impl Blockify for Ui {
             Info::new(
                 "Erithax UI",
                 Owner::Erithax,
-                "TODO",
+                "N/A",
                 "https://www.erithax.com/",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
@@ -45,8 +45,8 @@ impl Blockify for Ui {
             Info::new(
                 "Angular",
                 Owner::Google,
-                "TODO",
-                "",
+                "Model-view-controller / model-view-viewmodel UI framework for the DOM",
+                "https://angularjs.org",
                 SourceOpenness::Superopen,
                 vec![Lang::Javascript],
                 Repo::opt_with_url("https://github.com/angular/angular"),
@@ -69,8 +69,8 @@ impl Blockify for Ui {
             Info::new(
                 "DOM",
                 Owner::Webstandards,
-                "TODO",
-                "",
+                "Document Object Model is a cross-platform language-independant interface that treats HTML or XML as a tree structure",
+                "https://dom.spec.whatwg.org",
                 SourceOpenness::NA,
                 vec![Lang::TODO],
                 None,
@@ -96,8 +96,8 @@ impl Blockify for Ui {
             Info::new(
                 "Dioxus",
                 Owner::Dioxuslabs,
-                "TODO",
-                "",
+                "Cross-platform, portable UI framework using hooks and VDOM",
+                "https://dioxuslabs.com",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/dioxuslabs/dioxus"),
@@ -121,7 +121,7 @@ impl Blockify for Ui {
                 "Druid",
                 Owner::Linebender,
                 "TODO",
-                "",
+                "Data-first Rust-native UI toolkit",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/linebender/druid"),
@@ -144,8 +144,8 @@ impl Blockify for Ui {
             Info::new(
                 "Egui",
                 Owner::Emilk,
-                "TODO",
-                "",
+                "Easy-to-use immediate-mode GUI for Rust",
+                "https://www.egui.rs",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/emilk/egui"),
@@ -168,8 +168,8 @@ impl Blockify for Ui {
             Info::new(
                 "Fltk",
                 Owner::TODO,
-                "TODO",
-                "",
+                "Cross-platform Widget libray for GUIs made to accommodate 3D graphics programming",
+                "https://fltk.org",
                 SourceOpenness::NA,
                 vec![Lang::TODO],
                 Repo::opt_with_url("https://github.com/fltk/fltk"),
@@ -194,8 +194,8 @@ impl Blockify for Ui {
             Info::new(
                 "Flutter",
                 Owner::Google,
-                "TODO",
-                "",
+                "Cross-platform UI development kit",
+                "https://flutter.dev",
                 SourceOpenness::NA,
                 vec![Lang::C],
                 Repo::opt_with_url("https://github.com/flutter/flutter"),
@@ -218,8 +218,8 @@ impl Blockify for Ui {
             Info::new(
                 "GTK",
                 Owner::Gnome,
-                "TODO",
-                "",
+                "Cross-platform widget toolkit for creating GUIs",
+                "https://gtk.org",
                 SourceOpenness::NA,
                 vec![Lang::C],
                 Repo::opt_with_url("https://gitlab.gnome.org/GNOME/gtk"),
@@ -243,8 +243,8 @@ impl Blockify for Ui {
             Info::new(
                 "Iced",
                 Owner::Icedrs,
-                "TODO",
-                "",
+                "Cross-native-desktop GUI library for Rust focused on simplicity and type-safety",
+                "https://iced.rs",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/iced-rs/iced"),
@@ -267,8 +267,8 @@ impl Blockify for Ui {
             Info::new(
                 "Leptos",
                 Owner::Leptosrs,
-                "TODO",
-                "",
+                "UI-framework for Rust with fine-grained reactivity for the DOM",
+                "https://leptos.dev",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/leptos-rs/leptos"),
@@ -291,8 +291,8 @@ impl Blockify for Ui {
             Info::new(
                 "Qt",
                 Owner::Qtcompany,
-                "TODO",
-                "",
+                "Cross-platform (including embedded), cross-language UI-framework",
+                "https://qt.io",
                 SourceOpenness::NA,
                 vec![Lang::Cpp],
                 Repo::opt_with_url("https://code.qt.io/cgit/")
@@ -316,7 +316,7 @@ impl Blockify for Ui {
             Info::new(
                 "React",
                 Owner::Meta,
-                "TODO",
+                "UI-framework for JavaScript, supporting components and incremental rerenders for the DOM",
                 "https://react.dev",
                 SourceOpenness::Superopen,
                 vec![Lang::Javascript],
@@ -336,12 +336,12 @@ impl Blockify for Ui {
                 $ Dom *
             }
         ),
-        ("Scither",
+        ("Sciter",
             Info::new(
-                "Scither",
+                "Sciter",
                 Owner::Terrainformatica,
-                "TODO",
-                "",
+                "Cross-platform embeddable HTML/CSS/JavaScript engine",
+                "https://sciter.com",
                 SourceOpenness::NA,
                 vec![Lang::Cpp],
                 Repo::opt_with_url("https://github.com/sciter-sdk/rust-sciter"),
@@ -366,8 +366,8 @@ impl Blockify for Ui {
             Info::new(
                 "Slint",
                 Owner::Sixtyfps,
-                "TODO",
-                "",
+                "Cross-platform native and embedded GUI toolkit for Rust, C++, or JavaScript",
+                "https://slint.dev",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/slint-ui/slint"),
@@ -393,7 +393,7 @@ impl Blockify for Ui {
             Info::new(
                 "Svelte",
                 Owner::Svelte,
-                "TODO",
+                "Front-end component framework that compiles HTML templates to code that manipulates the DOM",
                 "https://svelte.dev/",
                 SourceOpenness::Superopen,
                 vec![Lang::Javascript],
@@ -418,7 +418,7 @@ impl Blockify for Ui {
             Info::new(
                 "SwiftUI",
                 Owner::Apple,
-                "TODO",
+                "Declarative UI framework for all Apple platforms",
                 "",
                 SourceOpenness::NA,
                 vec![],
@@ -443,7 +443,7 @@ impl Blockify for Ui {
             Info::new(
                 "Vue",
                 Owner::Vue,
-                "",
+                "Model-view-viewmodel Javascript UI library with components and declarative rendering",
                 "https://vuejs.org",
                 SourceOpenness::Superopen,
                 vec![],
@@ -491,8 +491,8 @@ impl Blockify for Ui {
             Info::new(
                 "Yew",
                 Owner::Yew,
-                "TODO",
-                "",
+                "UI framework for webapps with with WebAssembly",
+                "https://yew.rs",
                 SourceOpenness::NA,
                 vec![Lang::Rust],
                 Repo::opt_with_url("https://github.com/yewstack/yew"),

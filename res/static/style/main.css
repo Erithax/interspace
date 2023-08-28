@@ -136,9 +136,28 @@ header div.rig img.external {
     opacity: 0.1;
 }
 
+main > section {
+    /* border: var(--section-border); */
+    padding: 10px;
+    width: calc(88vw + 10px);
+    border-radius: 10px;
+    cursor: default;
+}
+
+
+[data-color-scheme="dark"] {
+    color-scheme: dark;
+}
+  
+[data-color-scheme="light"] {
+    color-scheme: light;
+}
+  
+
 .th_dark {
     --prim-back-col: #000;
     --prim-fore-col: #fff;
+    --prim-fore-down-col: #ccc;
     --emph-back-over-col: #fff1;
     --emph2-back-over-col: #fff2;
     --emph-fore-over-col: #0001;
@@ -149,6 +168,7 @@ header div.rig img.external {
 .th_light {
     --prim-back-col: #fff;
     --prim-fore-col: #000;
+    --prim-fore-down-col: #444;
     --emph-back-over-col: #0001;
     --emph2-back-over-col: #0002;
     --emph-fore-over-col: #fff1;
@@ -215,4 +235,45 @@ COLLAPSABLES
     border-width: 0px !important;
     opacity: 0 !important;
     transform: translateX(-5px);
+}
+
+
+
+main > .info {
+    font-size: 14px;
+}
+
+main > .info .stage_explanation > .stage {
+    place-self: stretch end;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+
+main > .info .stage_explanation > .stage::after {
+    content: "";
+    position: absolute;
+    height: calc(100% - 4px);
+    top: 2px;
+    right: 0;
+    width: 4px; 
+    border-radius: 2px;
+    background: var(--prim-fore-col);
+}
+
+main > .info .stage_explanation > .info {
+    place-self: center start;
+    margin-left: 6px;
+}
+
+main > .info .example_graph {
+    place-items: stretch stretch;
+}
+
+main > .info .example_graph > div {
+    text-align: center;
+    vertical-align: middle;
 }
