@@ -220,6 +220,12 @@ main > section.dynatable {
     transition: var(--hover-stage-expand);
 }
 
+.stage_headers {
+    width: fit-content;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(7, auto);
+}
 
 .stage_header {
     font-weight: 800;
@@ -255,7 +261,7 @@ main > section.dynatable {
 .stage-pa-empty .ssb-pa-all,
 .stage-ra-empty .ssb-ra-all,
 .stage-gx-empty .ssb-gx-all,
-.stage-pl-empty .ssb-pl-all {
+.stage-pf-empty .ssb-pf-all {
     cursor: pointer;
     font-size: 8px;
     color: #777;
@@ -268,7 +274,7 @@ main > section.dynatable {
 .stage-pa-emptyhovered .ssb-pa-all,
 .stage-ra-emptyhovered .ssb-ra-all,
 .stage-gx-emptyhovered .ssb-gx-all,
-.stage-pl-emptyhovered .ssb-pl-all {
+.stage-pf-emptyhovered .ssb-pf-all {
     cursor: pointer;
     background-color: var(--emph2-back-over-col);
     z-index: 2;

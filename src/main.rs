@@ -42,6 +42,7 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 
 use ui_overview::dyna_tab::DynaTab;
 use ui_overview::dyna_tab::CONSTELLATION;
+use ui_overview::dyna_tab::constellation::Constellation;
 use ui_overview::infoboard::InfoBoard;
 
 use dioxus::prelude::*;
@@ -211,7 +212,7 @@ fn Header(cx: Scope) -> Element {
                 class: "rig",
                 a {
                     class: "code",
-                    href: "https://github.com/erithax/ui-overview",
+                    href: "https://github.com/erithax/interspace",
                     target: "_blank",
                     img {
                         src: "./img/code.svg",

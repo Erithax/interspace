@@ -279,29 +279,29 @@ impl Tree {
         // remove duplicate subpaths
         let mut new_paths: Vec<&Vec<ComponentId>> = vec![];
         for (i, path) in paths.iter().enumerate() {
-            let is_sub_path = !paths.iter().enumerate()
-                .filter(|(j, other_path)| *j != i)
-                .any(
-                    |(_, other_path)| {
-                        // check if path is subpath of other_path
-                        let mut i = 0;
-                        let mut j = 0;
-                        while i < path.len() && j < other_path.len() {
-                            if path[i] == other_path[j] {
-                                i += 1;
-                                j += 1;
-                                if j == other_path.len() {
-                                    return true // is sub_path
-                                }
-                            } else {
-                                i = i - j + 1;
-                                j = 0;
-                            }
+       
+            let mut has_strict_super_path = false;
+            for (j, other_path) in paths.iter().enumerate() {
+                // check if `path` is strict subpath (not equal) of `other_path`
+                if path.len() <= other_path.len() {
+                    continue
+                }
+                let mut i = 0;
+                let mut j = 0;
+                while i < path.len() && j < other_path.len() {
+                    if path[i] == other_path[j] {
+                        i += 1;
+                        j += 1;
+                        if i == path.len() {
+                            has_strict_super_path = true;
                         }
-                        return false
+                    } else {
+                        j = j - i + 1;
+                        i = 0;
                     }
-                );
-            if !is_sub_path {
+                }
+            }
+            if !has_strict_super_path && !new_paths.contains(path) {
                 new_paths.push(*path);
             }
         }
@@ -977,13 +977,6 @@ pub fn TreeComp(
 
     let tree = use_ref(cx, || {init_tree(*tree_type, &*comp_type_filter.read(), &*stage_filter.read())});
 
-    for stage in Stage::iter_reals() {
-        let empty = !tree.read().blocks.iter()
-            .filter(|(block_id, block)| **block_id != tree.read().root)
-            .any(|(block_id, block)| block.block_type == BlockType::Normal && stage == Stage::from_comp_typ(CONSTELLATION.get_comp(block.comp).typ));
-
-    }
-
     let to_snip: Vec<BlockId> = tree.read().blocks.iter()
             .filter(|(id, bl)| 
                 **id != tree.read().root && 
@@ -996,18 +989,18 @@ pub fn TreeComp(
 
     let grid_sizer_use_effect_flag = use_state(cx, || false);
 
-    use_effect(cx, (&to_snip, tree_type), |(to_snip, tree_type)|{
+    use_effect(cx, (&to_snip, tree_type), |(_to_snip, tree_type)|{
         let tree_bonk = tree.clone();
         let grid_size_flag_bonk = grid_sizer_use_effect_flag.clone();
         to_owned![tree_type];
         *tree_bonk.write() = init_tree(tree_type, &*comp_type_filter.read(), &*stage_filter.read());
         async move {
-            tree_bonk.needs_update();
+            // tree_bonk.needs_update();
             grid_size_flag_bonk.set(!grid_size_flag_bonk.get());
         }
     });
 
-    use_effect(cx, grid_sizer_use_effect_flag, |grid_sizer_use_effect_flag|{
+    use_effect(cx, grid_sizer_use_effect_flag, |_grid_sizer_use_effect_flag|{
         to_owned![dynatab_id];
         async move {
             size_grid(dynatab_id);
@@ -1028,72 +1021,81 @@ pub fn TreeComp(
         div {
             class: "backs",
             style: "display: contents;",
-            for sub_stage in substages {{
-                let empty = !tree.read().iter_tree_attached_blocks()
-                    .any(|(block_id, block)|
-                            block_id != tree.read().root && 
-                            block.block_type == BlockType::Normal && 
-                            sub_stage.stage == Stage::from_comp_typ(CONSTELLATION.get_comp(block.comp).typ)
-                        );
-                if empty && sub_stage.pseudostage == PseudoStage::All {
-                    let prev_stage_state = stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap().clone();
-                    if prev_stage_state != StageState::Empty && prev_stage_state != StageState::EmptyHovered {
-                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
+            {
+                let mut stage_states_needs_update = false;
+                let temp = rsx!{for sub_stage in substages {{
+                    let empty = !tree.read().iter_tree_attached_blocks()
+                        .any(|(block_id, block)|
+                                block_id != tree.read().root && 
+                                block.block_type == BlockType::Normal && 
+                                sub_stage.stage == Stage::from_comp_typ(CONSTELLATION.get_comp(block.comp).typ)
+                            );
+                    if empty && sub_stage.pseudostage == PseudoStage::All {
+                        let prev_stage_state = stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap().clone();
+                        if prev_stage_state != StageState::Empty && prev_stage_state != StageState::EmptyHovered {
+                            *stage_states.write_silent().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
+                            stage_states_needs_update = true;
+                        }
+                    } else if sub_stage.pseudostage == PseudoStage::All {
+                        if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Content {
+                            *stage_states.write_silent().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Content;
+                            stage_states_needs_update = true;
+                        }
                     }
-                } else if sub_stage.pseudostage == PseudoStage::All {
-                    if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Content {
-                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Content;
-                    }
-                }
-                
-                if 
-                    sub_stage.pseudostage == PseudoStage::All && 
-                    (
-                        *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::Empty ||
-                        *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::EmptyHovered
-                    )
-                {
-                    rsx!{
-                        div {
-                            onclick: move |_| {
-                                if !stage_filter.read().allowed.contains(&sub_stage.stage) {
-                                    stage_filter.write().toggle(sub_stage.stage);
-                                }
-                                let allowed_comp_typs = comp_type_filter.read().allowed.clone();
-                                for comp_typ in ComponentType::iterator() {
-                                    if !allowed_comp_typs.contains(&comp_typ) && Stage::from_comp_typ(comp_typ) == sub_stage.stage {
-                                        comp_type_filter.write().toggle(comp_typ);
+                    
+                    if 
+                        sub_stage.pseudostage == PseudoStage::All && 
+                        (
+                            *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::Empty ||
+                            *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() == StageState::EmptyHovered
+                        )
+                    {
+                        rsx!{
+                            div {
+                                onclick: move |_| {
+                                    if !stage_filter.read().allowed.contains(&sub_stage.stage) {
+                                        stage_filter.write().toggle(sub_stage.stage);
                                     }
-                                }
-                            },
-                            onmouseenter: move |_| {
-                                if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::EmptyHovered {
-                                    *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::EmptyHovered;
-                                }
-                            },
-                            onmouseleave: move |_| {
-                                if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Empty {
-                                    *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
-                                }
-                            },
+                                    let allowed_comp_typs = comp_type_filter.read().allowed.clone();
+                                    for comp_typ in ComponentType::iterator() {
+                                        if !allowed_comp_typs.contains(&comp_typ) && Stage::from_comp_typ(comp_typ) == sub_stage.stage {
+                                            comp_type_filter.write().toggle(comp_typ);
+                                        }
+                                    }
+                                },
+                                onmouseenter: move |_| {
+                                    if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::EmptyHovered {
+                                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::EmptyHovered;
+                                    }
+                                },
+                                onmouseleave: move |_| {
+                                    if *stage_states.read().get(comp_id).unwrap().get(&sub_stage.stage).unwrap() != StageState::Empty {
+                                        *stage_states.write().get_mut(comp_id).unwrap().get_mut(&sub_stage.stage).unwrap() = StageState::Empty;
+                                    }
+                                },
+                                class: "sub_stage_back ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}",
+                                style: " 
+                                    grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
+                                    grid-row: 1 / -1;
+                                ",
+                            }
+                        }
+                    } else {
+                        rsx!{div {
                             class: "sub_stage_back ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}",
                             style: " 
                                 grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
                                 grid-row: 1 / -1;
                             ",
-                        }
+                        }}
                     }
-                } else {
-                    rsx!{div {
-                        class: "sub_stage_back ssb-{sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}",
-                        style: " 
-                            grid-column: {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-0-1 / {sub_stage.stage.short_rep()}-{sub_stage.pseudostage.short_rep()}-1-1;
-                            grid-row: 1 / -1;
-                        ",
-                    }}
+                }}};
+                if stage_states_needs_update {
+                    stage_states.needs_update();
                 }
+                temp
                 
-            }},
+            },
         },
         for ch_id in tree.read().get(tree.read().root).children.iter() {
             NodeComp{

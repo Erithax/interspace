@@ -142,6 +142,11 @@ impl Constellation {
         return &self.comps[comp_ind]
     }
 
+    pub fn get_comp_by_str_id(&self, str_id: &str) -> &Componentus {
+        assert!(self.comps.iter().any(|comp| comp.str_id == str_id));
+        return self.comps.iter().find(|comp| comp.str_id == str_id).unwrap();
+    }
+
     pub fn get_all_ids_of_comp_typ(&self, comp_typ: ComponentType) -> Vec<ComponentId> {
         let mut res = Vec::new();
         for (i, comp) in self.comps.iter().enumerate() {

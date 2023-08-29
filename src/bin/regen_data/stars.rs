@@ -22,11 +22,7 @@ pub fn update_repo(repo: &mut Option<Repo>, new_repo_base: &Option<Repo>) {
         (_, Some(r)) => {
             let mut temp = r.clone();
             temp.stars = if temp.url.contains("github.com") {
-                static APP_USER_AGENT: &str = concat!(
-                    env!("CARGO_PKG_NAME"),
-                    "/",
-                    env!("CARGO_PKG_VERSION"),
-                );
+                static APP_USER_AGENT: &str = "erithax-InterSpace";
                 
                 let client = reqwest::blocking::Client::builder()
                     .user_agent(APP_USER_AGENT)
@@ -66,7 +62,10 @@ pub fn update_stars_cache() {
         Ok(s) => {
             match ron::from_str(&s) {
                 Ok(s) => {s},
-                Err(_) => {Vec::new()}
+                Err(_) => {
+                    println!("COULD NOT PARSE {}, REFETCHING ALL STARS", STARS_FILE_PATH);
+                    Vec::new()
+                }
             }
         }
     };   
@@ -86,6 +85,7 @@ pub fn update_stars_cache() {
                 {
                     let repo_base = &comp.info.source;
                     update_repo(&mut res[i].repo, repo_base);
+                    res[i].update_time = chrono::Utc::now();
                 }
             },
             None => {

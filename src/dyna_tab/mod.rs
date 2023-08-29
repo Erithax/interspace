@@ -121,9 +121,7 @@ impl std::fmt::Display for StageState {
 
 #[inline_props]
 pub fn DynaTab(cx: Scope, id: usize) -> Element {
-
     info!("rerender DynaTab[{}]", id);
-
     let _ = use_state(cx, || {info!("initializing DynaTab[{}] hooks", id); true});
     
     let settings_coll = use_state(cx, || CollapsableToggle::Expanded);
@@ -166,25 +164,15 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
         }
     }
     
-    let empty_stages = use_ref(cx, || {
-        BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, 0)))
-    });
-
+    // GRID RESIZE
     use_effect(
         cx, 
         (in_tree_comp_type_filter, in_tree_stage_filter, selection_comp_type_filter, tree_type), 
         |(in_tree_comp_type_filter, in_tree_stage_filter, selection_comp_type_filter, tree_type)| 
         {
             to_owned![id];
-            to_owned![empty_stages];
             async move {
                 size_grid(id);
-                let content = web_sys::window().unwrap().document().unwrap().get_element_by_id(&format!("content_{}", id)).unwrap();
-                for stage in Stage::iter_reals() {
-                    if *empty_stages.read().get(&stage).unwrap() != 0 {
-                        content.class_list().add_1(&format!("stage-empty-{}", stage.short_rep())).unwrap();
-                    }
-                }
             }
         }
     );
@@ -192,7 +180,6 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
     let comps_stage_states = use_ref(cx, || {
         BTreeMap::from_iter(
             CONSTELLATION.comps.iter().enumerate()
-                // .filter(|(comp_id, _)| comp_id != ROOT_C)
                 .map(|(comp_id, _)| (
                     comp_id, 
                     BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, StageState::NA)))
@@ -208,7 +195,6 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
         if selection_comp_type_filter.read().filter(CONSTELLATION.get_comp(*comp_id)) {
             shown_comps.push(*comp_id);
             for (stage, &stage_state) in comp_stage_states {
-
                 if 
                     stage_state != StageState::NA && 
                     stage_state != StageState::Empty && 
@@ -222,22 +208,11 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
     }    
 
     let stage_states_classes = || -> String {
+        if stage_states.iter().all(|(s, ss)| *ss == StageState::Empty || *ss == StageState::EmptyHovered) {
+            return stage_states.iter().fold("".to_string(), |acc, nex| acc + &format!(" stage-{}-{}", nex.0.short_rep(), StageState::Content))
+        }
         return stage_states.iter().fold("".to_string(), |acc, nex| acc + &format!(" stage-{}-{}", nex.0.short_rep(), nex.1))
     };
-
-    // info!("{}", stage_states_classes());
-    
-    let ele = web_sys::window().unwrap().document().unwrap().get_element_by_id(&format!("content_{}", id));
-    match ele {
-        None => {},
-        Some(ele) => {
-            // info!("applying classes");
-            let class_array = js_sys::Array::new();
-            stage_states.iter().for_each(|ss| {class_array.push(&wasm_bindgen::JsValue::from_str(&format!("stage-{}-{}", ss.0.short_rep(), ss.1)));});
-            ele.class_list().add(&class_array).unwrap();
-        }
-    }
-
 
     cx.render(rsx!{
         section {
@@ -342,6 +317,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                     // innerHMTL overridden
                 },
                 div {
+                    class: "stage_headers",
                     for stage in Stage::iter_reals() {
                         div {
                             class: "ssb-{stage.short_rep()}-all stage_header",
