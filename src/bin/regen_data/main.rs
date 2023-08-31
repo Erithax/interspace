@@ -1,5 +1,5 @@
 
-use ui_overview::dyna_tab::constellation::Constellation;
+use interspace::dyna_tab::constellation::Constellation;
 
 pub mod stars;
 use stars::update_stars_cache;

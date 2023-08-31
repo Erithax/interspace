@@ -152,6 +152,13 @@ main > section {
 [data-color-scheme="light"] {
     color-scheme: light;
 }
+
+.th_dark .svg_black {
+    filter: invert();
+}
+.th_light .svg_white {
+    filter: invert();
+}
   
 
 .th_dark {
@@ -235,6 +242,46 @@ COLLAPSABLES
     border-width: 0px !important;
     opacity: 0 !important;
     transform: translateX(-5px);
+}
+
+
+.part_collapsable {
+    width: 100%;
+    overflow: hidden;
+    
+    display: grid;
+    grid-template-rows: var(--mh) 0fr;
+    grid-template-columns: 100%;
+    transition: grid-template-rows 150ms linear;
+    -webkit-mask-image: linear-gradient(to bottom, #000f 0%, #000f 50%, #0000 90%);
+  }
+
+  .part_collapsable.collapsed-false {
+    grid-template-rows: var(--mh) 1fr;
+    -webkit-mask-image: none;
+  }
+  
+/* .part_collapsable::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    grid-row: 1 / span 1;
+    grid-column: 1 / -1;
+    background: #00f4;
+}
+
+.part_collapsable::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    grid-row: 2 / span 1;
+    grid-column: 1 / -1;
+    background: #f004;
+} */
+
+.part_collapsable > div {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
 }
 
 

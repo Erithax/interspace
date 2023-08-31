@@ -37,7 +37,7 @@ pub fn StageFilterComp(cx: Scope, dynatab_id: usize, self_: UseRef<StageFilter>)
     cx.render(rsx!{
         div {
             class: "selector",
-            div {
+            h4 {
                 "Stage Filter",
             },
             div {

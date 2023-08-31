@@ -1,11 +1,11 @@
 
 
-// import {size_grid} from '../assets/dioxus/ui_overview.js';
+// import {size_grid} from '../assets/dioxus/interspace.js';
 
-// import init from "/./assets/dioxus/ui_overview.js";
+// import init from "/./assets/dioxus/interspace.js";
 
 
-// init("/./assets/dioxus/ui_overview_bg.wasm").then(wasm => {
+// init("/./assets/dioxus/interspace_bg.wasm").then(wasm => {
 //   if (wasm.__wbindgen_start == undefined) {
 //     // wasm.main();
 //     console.log("YAAAAAAAAAAAAAAAAAAAAAAA");

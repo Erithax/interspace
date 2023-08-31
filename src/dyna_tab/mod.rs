@@ -18,10 +18,11 @@ mod grid_sizer;
 mod filters;
 
 use crate::*;
+use crate::dyna_tab::owner::Owner;
 use constellation::*;
 use component::*;
 use stage::*;
-use filters::{component_type_filter::*, stage_filter::*};
+use filters::{component_type_filter::*, stage_filter::*, component_id_filter::*, owner_filter::*};
 use filters::*;
 use grid_sizer::*;
 
@@ -129,8 +130,22 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
 
     let tree_type = use_ref(cx, || DynaTabTree::Hourglass);
 
+    let selection_comp_id_filter = use_ref(cx, ||
+        ComponentIdFilter{
+            disallowed: vec![],
+        }
+    );
+
     let selection_comp_type_filter = use_ref(cx, || 
         ComponentTypeFilter{allowed: vec![ComponentType::Ui],}
+    );
+
+    let selection_stage_filter = use_ref(cx, ||
+        StageFilter{allowed: Stage::iter_reals().collect()}
+    );
+
+    let selection_owner_filter = use_ref(cx, ||
+        OwnerFilter{disallowed: vec![Owner::Erithax]}
     );
 
     let in_tree_comp_type_filter = use_ref(cx, || 
@@ -192,7 +207,12 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
     let mut shown_comps: Vec<ComponentId> = vec![];
     let mut stage_states: BTreeMap<Stage, StageState> = BTreeMap::from_iter(Stage::iter_reals().map(|stage| (stage, StageState::Empty)));
     for (comp_id, comp_stage_states) in comps_stage_states.read().iter() {
-        if selection_comp_type_filter.read().filter(CONSTELLATION.get_comp(*comp_id)) {
+        let comp = CONSTELLATION.get_comp(*comp_id);
+        if 
+            selection_comp_type_filter.read().filter(comp) &&
+            selection_comp_id_filter.read().filter(comp) &&
+            selection_owner_filter.read().filter(comp)
+        {
             shown_comps.push(*comp_id);
             for (stage, &stage_state) in comp_stage_states {
                 if 
@@ -276,9 +296,19 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                     h3 {
                         "Selection component filter",
                     },
+                    ComponentIdFilterComp{
+                        self_: selection_comp_id_filter.clone(),
+                    },
+                    OwnerFilterComp{
+                        self_: selection_owner_filter.clone(),
+                    },
                     ComponentTypeFilterComp{
                         dynatab_id: *id,
                         self_: selection_comp_type_filter.clone(),
+                    },
+                    StageFilterComp{
+                        dynatab_id: *id,
+                        self_: selection_stage_filter.clone(),
                     },
                 },
                 div {

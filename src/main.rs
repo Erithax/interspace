@@ -40,10 +40,11 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 */
 
 
-use ui_overview::dyna_tab::DynaTab;
-use ui_overview::dyna_tab::CONSTELLATION;
-use ui_overview::dyna_tab::constellation::Constellation;
-use ui_overview::infoboard::InfoBoard;
+use interspace::LargeBackSelectorComp;
+use interspace::dyna_tab::DynaTab;
+use interspace::dyna_tab::CONSTELLATION;
+use interspace::dyna_tab::constellation::Constellation;
+use interspace::infoboard::InfoBoard;
 
 use dioxus::prelude::*;
 use log::LevelFilter;
@@ -75,6 +76,8 @@ fn App(cx: Scope) -> Element {
 
     let dyna_tab_id = use_state(cx, || 0 as usize);
     let d_count = use_state(cx, || 1);
+
+    let s = use_state(cx, || "".to_string());
 
     cx.render(rsx!{
         Header{},

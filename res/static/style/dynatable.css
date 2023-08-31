@@ -122,6 +122,8 @@ main > section.dynatable {
     font-size: var(--font-siz-settings-title);
 }
 
+
+
 .dynatable .settings .selector > div:last-child {
     display: flex;
     flex-direction: row;
@@ -153,8 +155,18 @@ main > section.dynatable {
 }
 
 .dynatable .settings > div > h3 {
+    font-size: 20px;
     margin: 0;
-    border-bottom: 0.2px solid var(--emph2-back-over-col);
+    border-bottom: 2px solid var(--emph2-back-over-col);
+}
+
+.dynatable .settings h4 {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 4px;
+    margin-top: 8px;
 }
 
 .dynatable .settings > div:not(:last-child) {
@@ -165,6 +177,41 @@ main > section.dynatable {
     margin-left: 20px;
 }
 
+.large_bag_selector .input_bar img {
+    opacity: 1;
+    transition: opacity 100ms linear;
+}
+
+.large_bag_selector .input_bar:focus-within img {
+    opacity: 0;
+}
+
+.large_bag_selector input {
+    background: #0000;
+    border: var(--settings-item-border);
+}
+
+.large_bag_selector input:focus {
+    background: var(--emph2-back-over-col);
+}
+
+.large_bag_selector .items > div {
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.large_bag_selector .items > div > div {
+    padding: 2px 6px;
+    margin: 4px;
+    border-radius: 8px;
+    border: var(--settings-item-border);
+}
+
+.large_bag_selector .items .selected-true {
+    background: var(--settings-hover-back);
+}
 
 /*/////////////////////////////////////////////////////////*/
 /*CONTENT*/

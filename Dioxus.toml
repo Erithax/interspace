@@ -1,6 +1,6 @@
 [application]
 
-name = "ui_overview"        # dioxus project name
+name = "interspace"        # dioxus project name
 default_platform = "web"    # default platfrom: web | desktop
 out_dir = "dist"            # Web `build` & `serve` dist path
 asset_dir = "res/static"    # resource (static) file folder
@@ -9,7 +9,7 @@ asset_dir = "res/static"    # resource (static) file folder
 binaryen = { wasm_opt = true }
 
 [web.app]
-title = "UI OVERVIEW"       # HTML title tag content
+title = "InterSpace"       # HTML title tag content
 
 
 [web.watcher]

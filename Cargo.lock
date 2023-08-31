@@ -339,6 +339,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
 
 [[package]]
+name = "cov-mark"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ffa3d3e0138386cd4361f63537765cac7ee40698028844635a54495a92f67f3"
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1155,6 +1161,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "interspace"
+version = "0.1.0"
+dependencies = [
+ "async-std",
+ "bincode",
+ "chrono",
+ "dioxus",
+ "dioxus-logger",
+ "dioxus-web",
+ "image",
+ "js-sys",
+ "lazy_static",
+ "log",
+ "macroni",
+ "nucleo-matcher",
+ "num-integer",
+ "reqwest",
+ "ron",
+ "serde",
+ "sha2",
+ "strsim",
+ "strum",
+ "strum_macros",
+ "wasm-bindgen",
+ "wasm-timer",
+ "web-sys",
+]
+
+[[package]]
 name = "intmap"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1364,6 +1399,17 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "tempfile",
+]
+
+[[package]]
+name = "nucleo-matcher"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b702b402fe286162d1f00b552a046ce74365d2ac473a2607ff36ba650f9bd57"
+dependencies = [
+ "cov-mark",
+ "memchr",
+ "unicode-segmentation",
 ]
 
 [[package]]
@@ -2194,33 +2240,6 @@ name = "typenum"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "497961ef93d974e23eb6f433eb5fe1b7930b659f06d12dec6fc44a8f554c0bba"
-
-[[package]]
-name = "ui-overview"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "bincode",
- "chrono",
- "dioxus",
- "dioxus-logger",
- "dioxus-web",
- "image",
- "js-sys",
- "lazy_static",
- "log",
- "macroni",
- "num-integer",
- "reqwest",
- "ron",
- "serde",
- "sha2",
- "strum",
- "strum_macros",
- "wasm-bindgen",
- "wasm-timer",
- "web-sys",
-]
 
 [[package]]
 name = "unicode-bidi"

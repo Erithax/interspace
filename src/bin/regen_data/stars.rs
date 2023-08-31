@@ -1,9 +1,9 @@
 
-use ui_overview::dyna_tab::component::Repo;
-use ui_overview::dyna_tab::constellation::Constellation;
+use interspace::dyna_tab::component::Repo;
+use interspace::dyna_tab::constellation::Constellation;
 
-use ui_overview::STARS_FILE_PATH;
-use ui_overview::StarCache;
+use interspace::STARS_FILE_PATH;
+use interspace::StarCache;
 
 
 

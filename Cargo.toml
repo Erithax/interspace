@@ -1,5 +1,5 @@
 [package]
-name = "ui-overview"
+name = "interspace"
 version = "0.1.0"
 edition = "2021"
 
@@ -14,8 +14,6 @@ dioxus = "0.4.0"
 dioxus-web = "0.4.0"
 #dioxus = { git = "https://github.com/dioxuslabs/dioxus.git" }
 #dioxus-web = { git = "https://github.com/dioxuslabs/dioxus.git" }
-#dioxus-web = "0.3.1"
-#dioxus-web = { git = "https://github.com/dioxusLabs/dioxus/packages/web.git"}
 
 serde = "1.0.163"
 dioxus-logger = "0.4.1"
@@ -33,13 +31,8 @@ wasm-bindgen = "0.2.87"
 js-sys = "0.3.64"
 reqwest = {version = "0.11.20", features = ["blocking", "json"]}
 chrono = {version = "0.4.26", features = ["serde"]}
+strsim = "0.10.0"
+nucleo-matcher = "0.2.0"
 
-#colored = "2.0.0"
-#toml = "0.7.4"
-#clap = {version = "4.3.3", features = ["derive"]}
-#pest = "2.6.0"
-#pest_derive = "2.6.0"
-#petgraph = {version = "0.6.3", features=["serde-1"]}
-#
-#serde_cbor = "0.11.2"
+
 

@@ -5,7 +5,8 @@ use crate::dyna_tab::component::*;
 
 pub mod component_type_filter;
 pub mod stage_filter;
-
+pub mod owner_filter;
+pub mod component_id_filter;
 
 
 pub trait CompFilter {

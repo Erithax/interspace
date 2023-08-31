@@ -35,7 +35,7 @@ pub fn ComponentTypeFilterComp(cx: Scope, dynatab_id: usize, self_: UseRef<Compo
     cx.render(rsx!{
         div {
             class: "selector",
-            div {
+            h4 {
                 "Component Type Filter",
             },
             div {
