@@ -4,7 +4,7 @@
 
 use strum::IntoEnumIterator;
 
-use crate::LargeBackSelectorComp;
+use crate::utils::largebag::LargeBackSelectorComp;
 use crate::dyna_tab::CONSTELLATION;
 use crate::dyna_tab::owner::*;
 use crate::dyna_tab::filters::*;

@@ -298,6 +298,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                     },
                     ComponentIdFilterComp{
                         self_: selection_comp_id_filter.clone(),
+                        key: "{selection_comp_id_filter.read().disallowed:?}",
                     },
                     OwnerFilterComp{
                         self_: selection_owner_filter.clone(),
@@ -366,6 +367,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                             dynatab_id: *id,
                             comp_id: comp_id,
                             tree_type: *tree_type.read(),
+                            selection_comp_id_filter: selection_comp_id_filter.clone(),
                             comp_type_filter: in_tree_comp_type_filter.clone(),
                             stage_filter: in_tree_stage_filter.clone(),
                             stage_states: comps_stage_states.clone(),

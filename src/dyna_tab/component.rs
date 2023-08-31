@@ -129,6 +129,7 @@ pub fn ComponentusComp(
     dynatab_id: usize,
     comp_id: ComponentId, 
     tree_type: DynaTabTree, 
+    selection_comp_id_filter: UseRef<ComponentIdFilter>,
     comp_type_filter: UseRef<ComponentTypeFilter>,
     stage_filter: UseRef<StageFilter>,
     stage_states: UseRef<BTreeMap<ComponentId, BTreeMap<Stage, StageState>>>,
@@ -223,8 +224,18 @@ pub fn ComponentusComp(
                         display: relative;
                     ",
                     div {
-                        onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1); info!("bonk {}", tree_remount_trigger.get());},
-                        class: "component_reset_button shown-{primary_hovered.get()}",
+                        class: "component_buttons",
+                        div {
+                            onclick: move |_| {selection_comp_id_filter.write().toggle(comp.id);},
+                            class: "component_remove_button shown-{primary_hovered.get()} hint--bottom-right hint--rounded svg_black",
+                            aria_label: "remove component",
+                        },
+                        div {
+                            onclick: move |_| {tree_remount_trigger.set(tree_remount_trigger.get() + 1);},
+                            class: "component_reset_button shown-{primary_hovered.get()} hint--bottom-right hint--rounded svg_black",
+                            aria_label: "undo in-tree modifications",
+                        },
+                        
                     },
                     div {
                         style: "

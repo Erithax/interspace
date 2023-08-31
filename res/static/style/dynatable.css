@@ -12,8 +12,6 @@
 
 main > section.dynatable {
     /* border: var(--section-border); */
-    padding: 10px;
-    width: calc(88vw + 10px);
     border-radius: 10px;
     cursor: default;
 }
@@ -207,10 +205,19 @@ main > section.dynatable {
     margin: 4px;
     border-radius: 8px;
     border: var(--settings-item-border);
+    cursor: pointer;
+    transition: background 150ms linear;
+}
+
+.large_bag_selector .items > div > div:hover {
+    background: var(--settings-hover-back);
 }
 
 .large_bag_selector .items .selected-true {
     background: var(--settings-hover-back);
+}
+.large_bag_selector .items .selected-true:hover {
+    background: #0000;
 }
 
 /*/////////////////////////////////////////////////////////*/
@@ -235,31 +242,42 @@ main > section.dynatable {
     position: relative;
 }
 
-.component_reset_button {
-    cursor: pointer;
+.component_buttons {
     position: absolute;
     top: 0;
     left: 0;
-    height: 16px;
-    aspect-ratio: 1 / 1;
-    transition: opacity 100ms linear 0ms;
-    background-image: url("../img/rotate_right_arrow.svg");
+    z-index: 5;
+    height: 16px;  
+    display: flex;
+    flex-direction: row;
 }
 
-.component_reset_button.shown-true {
+.component_buttons > div {
+    cursor: pointer;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    transition: opacity 100ms linear 0ms;
+    /* background-size: contain; */
+    background-position: center;
+}
+
+.component_buttons > div.shown-true {
     opacity: 0.7;
     visibility: visible;
 }
-
-.component_reset_button.shown-true:hover {
-    opacity: 1;
-
-}
-
-.component_reset_button.shown-false {
+.component_buttons > div.shown-false {
     opacity: 0;
     visibility: hidden;
 }
+
+.component_buttons > div.shown-true:hover {
+    opacity: 1;
+}
+
+.component_reset_button  {background-image: url("../img/rotate_right_arrow.svg");}
+.component_remove_button {background-image: url("../img/cross.svg"); background-size: 170%;}
+
+
 
 
 .content .sub_stage_back {
@@ -521,8 +539,7 @@ main > section.dynatable {
 }
 .th_dark .dynatable .block_box.deleted > div,
 .th_dark .dynatable .settingstoggle,
-.th_dark .dynatable .block_button,
-.th_dark .dynatable .primary .component_reset_button {
+.th_dark .dynatable .block_button {
     filter: invert();
 }
 

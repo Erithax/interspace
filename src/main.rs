@@ -40,7 +40,6 @@ WebDOM, WebSVG, Webcanvas, WebGL, WebGPU
 */
 
 
-use interspace::LargeBackSelectorComp;
 use interspace::dyna_tab::DynaTab;
 use interspace::dyna_tab::CONSTELLATION;
 use interspace::dyna_tab::constellation::Constellation;
@@ -57,7 +56,6 @@ Before rewrite: size in bytes:
         fulluptree: 1192
         splitdowntree: 808
         splituptree: 616
-
 */
 
 

@@ -2,7 +2,7 @@
 
 
 
-use crate::LargeBackSelectorComp;
+use crate::utils::largebag::LargeBackSelectorComp;
 use crate::dyna_tab::CONSTELLATION;
 use crate::dyna_tab::stage::*;
 use crate::dyna_tab::filters::*;
@@ -40,6 +40,10 @@ pub fn ComponentIdFilterComp(cx: Scope, self_: UseRef<ComponentIdFilter>) -> Ele
 
     let selected = use_ref(cx, || self_.read().disallowed.clone());
 
+    if *selected.read() != self_.read().disallowed {
+        *selected.write() = self_.read().disallowed.clone();
+    }
+
     cx.render(rsx!{
         div {
             class: "",
@@ -51,7 +55,6 @@ pub fn ComponentIdFilterComp(cx: Scope, self_: UseRef<ComponentIdFilter>) -> Ele
                 selected: selected.clone(),
                 ontoggleitem: move |id: usize| {
                     self_.write().toggle(id);
-                    *selected.write() = self_.read().disallowed.clone();
                 },
             }
         }
