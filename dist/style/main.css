@@ -250,14 +250,14 @@ COLLAPSABLES
     overflow: hidden;
     
     display: grid;
-    grid-template-rows: var(--mh) 0fr;
+    grid-template-rows: minmax(fit-content, var(--mh)) 0fr;
     grid-template-columns: 100%;
     transition: grid-template-rows 150ms linear;
     -webkit-mask-image: linear-gradient(to bottom, #000f 0%, #000f 50%, #0000 90%);
   }
 
   .part_collapsable.collapsed-false {
-    grid-template-rows: var(--mh) 1fr;
+    grid-template-rows: minmax(fit-content, var(--mh)) 1fr;
     -webkit-mask-image: none;
   }
   
