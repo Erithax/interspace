@@ -40,10 +40,18 @@ pub fn Block<'a>(cx: Scope<'a>, comp_id: ComponentId, is_focussed: bool, on_bonk
             div {
                 class: "block_button snip",
                 onclick: move |_| {on_bonk.call(BlockBoxerEvent::Snip)},
+                div {
+                    class: "hint--top-left hint--rounded",
+                    aria_label: "snip branch here"
+                }
             },
             div {
                 class: "block_button skip",
                 onclick: move |_| {on_bonk.call(BlockBoxerEvent::Skip);},
+                div {
+                    class: "hint--top-left hint--rounded",
+                    aria_label: "skip node"
+                }
             },
             if show_debug_info && debug_info.is_some() {
                 rsx!{div {

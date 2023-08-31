@@ -180,6 +180,12 @@ main > section.dynatable {
     transition: opacity 100ms linear;
 }
 
+.large_bag_selector .collapse-arrow:hover {
+    background: var(--emph2-back-over-col);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
 .large_bag_selector .input_bar:focus-within img {
     opacity: 0;
 }
@@ -463,6 +469,7 @@ main > section.dynatable {
 
 .block_button {
     cursor: pointer;
+
     position: absolute;
     opacity: 0.5;
     aspect-ratio: 1 / 1;
@@ -473,6 +480,11 @@ main > section.dynatable {
 
 .block_box .block_button:hover {
     opacity: 1;
+}
+
+.block_box .block_button > div {
+    width: 100%;
+    height: 100%;
 }
 
 .block_button.delete {

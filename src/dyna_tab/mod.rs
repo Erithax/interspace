@@ -54,6 +54,17 @@ impl DynaTabTree {
     }
 }
 
+impl std::fmt::Display for DynaTabTree {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", 
+            match self {
+                Self::LefToRig => "UI to Platform",
+                Self::Hourglass => "Hourglass",
+                Self::RigToLef => "Platform to UI",
+            }
+        )
+    }
+}
 
 
 #[inline_props]
@@ -78,7 +89,7 @@ pub fn DynaTabTreeComp(cx: Scope, dynatab_id: usize, self_: UseRef<DynaTabTree>)
                                 }
                             },
                             class: "{active} clickabletrue",
-                            "{pot_dyna_tab_tree:?}",
+                            "{pot_dyna_tab_tree}",
                         }
                     }
                 }}
