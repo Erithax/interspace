@@ -248,16 +248,17 @@ COLLAPSABLES
 .part_collapsable {
     width: 100%;
     overflow: hidden;
-    
+    height: min-content;
+    /* TODO: fix min-content when content < --mh */
     display: grid;
-    grid-template-rows: minmax(fit-content, var(--mh)) 0fr;
+    grid-template-rows: minmax(0px, var(--mh)) 0fr;
     grid-template-columns: 100%;
     transition: grid-template-rows 150ms linear;
     -webkit-mask-image: linear-gradient(to bottom, #000f 0%, #000f 50%, #0000 90%);
   }
 
   .part_collapsable.collapsed-false {
-    grid-template-rows: minmax(fit-content, var(--mh)) 1fr;
+    grid-template-rows: minmax(0px, var(--mh)) 1fr;
     -webkit-mask-image: none;
   }
   
@@ -280,6 +281,7 @@ COLLAPSABLES
 } */
 
 .part_collapsable > div {
+    height: min-content;
     grid-column: 1 / -1;
     grid-row: 1 / -1;
 }
