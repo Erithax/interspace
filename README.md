@@ -23,7 +23,6 @@ InterSpace is made using [Dioxus](https://github.com/dioxuslabs/dioxus) (_React,
 - [ ] Improve guide
 - [ ] Universal popularity metric
 - [ ] Selection sorting
-- [ ] Manual selection and comparison tool
 - [ ] Sharable chart settings
 - [ ] ? Include shell component in chart?
 - [ ] ? UI benchmark info
