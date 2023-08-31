@@ -63,7 +63,7 @@ pub fn DynaTabTreeComp(cx: Scope, dynatab_id: usize, self_: UseRef<DynaTabTree>)
     cx.render(rsx!{
         div {
             class: "selector",
-            div {
+            h4 {
                 "Select tree type",
             },
             div {
@@ -369,6 +369,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
                             comp_type_filter: in_tree_comp_type_filter.clone(),
                             stage_filter: in_tree_stage_filter.clone(),
                             stage_states: comps_stage_states.clone(),
+                            key: "{comp_id}"
                         }
                     }
                 }
