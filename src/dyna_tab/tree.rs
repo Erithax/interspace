@@ -1000,12 +1000,12 @@ pub fn TreeComp(
         }
     });
 
-    use_effect(cx, grid_sizer_use_effect_flag, |_grid_sizer_use_effect_flag|{
-        to_owned![dynatab_id];
-        async move {
-            size_grid(dynatab_id);
-        }
-    });
+    // use_effect(cx, grid_sizer_use_effect_flag, |_grid_sizer_use_effect_flag|{
+    //     to_owned![dynatab_id];
+    //     async move {
+    //         // size_grid(dynatab_id);
+    //     }
+    // });
 
     use std::hash::Hash;
     let mut prop_deep_rerender_hasher = DefaultHasher::new();

@@ -6,9 +6,11 @@ use nucleo_matcher::pattern::*;
 pub fn LargeBackSelectorComp<'a, ID> (
     cx: Scope<'a>, 
     items: Vec<(ID, String)>, 
-    selected: UseRef<Vec<ID>>,
+    selected: Vec<ID>,
     ontoggleitem: EventHandler<'a, ID>,
-) -> Element<'a> where ID: PartialEq + Clone + core::fmt::Debug + 'static {
+) -> Element<'a> 
+    where ID: PartialEq + Clone + core::fmt::Debug + 'static 
+{
     assert!(items.len() > 0);
 
     let item_order: &UseRef<Vec<usize>> = use_ref(cx, || (0..items.len()).collect());
@@ -133,7 +135,7 @@ pub fn LargeBackSelectorComp<'a, ID> (
                 div {
                     for (id, s) in item_order.read().iter().map(|&i| &items[i]) {
                         div {
-                            class: "selected-{selected.read().contains(id)}",
+                            class: "selected-{selected.contains(id)}",
                             onclick: move |_| {
                                 ontoggleitem.call(id.clone());
                             },

@@ -52,7 +52,7 @@ pub fn ComponentIdFilterComp(cx: Scope, self_: UseRef<ComponentIdFilter>) -> Ele
             },
             LargeBackSelectorComp{
                 items: CONSTELLATION.comps.iter().map(|comp| (comp.id, comp.info.name.clone())).collect(),
-                selected: selected.clone(),
+                selected: self_.read().disallowed.clone(),
                 ontoggleitem: move |id: usize| {
                     self_.write().toggle(id);
                 },

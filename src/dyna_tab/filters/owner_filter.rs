@@ -40,7 +40,7 @@ impl CompFilter for OwnerFilter {
 #[inline_props]
 pub fn OwnerFilterComp(cx: Scope, self_: UseRef<OwnerFilter>) -> Element {
 
-    let selected = use_ref(cx, || self_.read().disallowed.clone());
+    // let selected = use_ref(cx, || );
 
     cx.render(rsx!{
         div {
@@ -50,10 +50,10 @@ pub fn OwnerFilterComp(cx: Scope, self_: UseRef<OwnerFilter>) -> Element {
             },
             LargeBackSelectorComp{
                 items: Owner::iter().map(|o| (o, o.value().name.to_string())).collect(),
-                selected: selected.clone(),
+                selected: self_.read().disallowed.clone(),
                 ontoggleitem: move |owner: Owner| {
                     self_.write().toggle(owner);
-                    *selected.write() = self_.read().disallowed.clone();
+                    // *selected.write() = self_.read().disallowed.clone();
                 },
             }
         }

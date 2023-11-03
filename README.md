@@ -14,9 +14,8 @@ InterSpace is made using [Dioxus](https://github.com/dioxuslabs/dioxus) (_React,
 3) Install Dioxus CLI with `cargo install dioxus-cli`
 4) Fork the repo and clone it locally
 5) Serve the website locally with `dx serve` 
-6) After editing the constellation, or to refetch Github stars, run `cargo run --bin regen_data` before serving again
-7) Build release with `dx build --release`
-8) Create pull request
+6) Discard your changes to ./dist
+7) Create pull request
 
 # Todo
 - [ ] Improve data

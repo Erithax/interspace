@@ -198,6 +198,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
         {
             to_owned![id];
             async move {
+                info!("use_effect");
                 size_grid(id);
             }
         }
@@ -248,6 +249,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
     cx.render(rsx!{
         section {
             onmounted: move |_| {
+                info!("onmounted");
                 size_grid(*id);
             },
             class: "dynatable expanded{content_coll.get().is_expanded()}",
@@ -260,6 +262,7 @@ pub fn DynaTab(cx: Scope, id: usize) -> Element {
             ",
             div {
                 onclick: move |_| {
+                    info!("resize_observer");
                     size_grid(*id);
                 },
                 id: "resize_observer_ele_{id}",

@@ -50,15 +50,6 @@ use log::LevelFilter;
 use log::info;
 
 
-/*
-Before rewrite: size in bytes:
-    Skia fulldowntree : 1384
-        fulluptree: 1192
-        splitdowntree: 808
-        splituptree: 616
-*/
-
-
 pub fn main() {
     dioxus_logger::init(LevelFilter::Info).expect("failed to init dioxus logger");
     dioxus_web::launch_cfg(App, dioxus_web::Config::new().rootname("entry"));

@@ -2,3 +2,4 @@
 *target/
 *various/
 *.vscode/
+./wasm-opt.exe

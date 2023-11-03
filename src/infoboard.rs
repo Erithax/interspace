@@ -27,11 +27,11 @@ pub fn InfoBoard(cx: Scope) -> Element {
                 },
                 div {class: "stage", style: "grid-row: 3 / 4; grid-column: 1 / 2;", div{"raster"}},
                 div {class: "info",  style: "grid-row: 3 / 4; grid-column: 2 / 3;",
-                    "Converts geometric primitives (vector shapes) to a raster via software or hardware rendering. This stage is skipped when rendering to a vector canvas like SVG or PDF.",
+                    "Converts geometric primitives (vector shapes) to a raster via software or hardware rendering. Frames are composited to form the final buffer, raster multimedia (images and video) is composited in."
                 },
                 div {class: "stage", style: "grid-row: 4 / 5; grid-column: 1 / 2;", div{"paint"}},
                 div {class: "info",  style: "grid-row: 4 / 5; grid-column: 2 / 3;",
-                    "Converts frames into geometric primitives",
+                    "A widget's graphical content (text, background, borders) is painted onto a frame.",
                 },
                 div {class: "stage", style: "grid-row: 5 / 6; grid-column: 1 / 2;", div{"layout"}},
                 div {class: "info",  style: "grid-row: 5 / 6; grid-column: 2 / 3;",
@@ -39,11 +39,11 @@ pub fn InfoBoard(cx: Scope) -> Element {
                 },
                 div {class: "stage", style: "grid-row: 6 / 7; grid-column: 1 / 2;", div{"ui"}},
                 div {class: "info",  style: "grid-row: 6 / 7; grid-column: 2 / 3;",
-                    "supplies ui-developer with means to describe the UI, (content, style, logic), often with declarative UI, reactive state-management, deployment to Web via SSR or Liveview, deployment to native with native renderer or through shell like WebView, embedded browser"
+                    "Supplies ui-developer with means to describe the UI, (content, style, logic), often with declarative UI, reactive state-management, deployment to Web via SSR or Liveview, deployment to native with native renderer or through shell like WebView, embedded browser."
                 },
                 div {class: "stage", style: "grid-row: 7 / 8; grid-column: 1 / 2;", div{"langbridge"}},
                 div {class: "info",  style: "grid-row: 7 / 8; grid-column: 2 / 3;",
-                    "language bindings for ui framework/library",
+                    "Language bindings for ui framework/library",
                 },
             },
             br{},
